@@ -137,7 +137,7 @@ export function App() {
         const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
         await setDoc(configDocRef, config, { merge: true });
       } catch (err) {
-        console.error('Failed to save vault config to Firestore:', err);
+        console.warn('Vault config Cloud sync requires Firestore rules update:', err);
       }
     }
 
@@ -146,7 +146,7 @@ export function App() {
     saveStoredEncryptedEntries([]);
   };
 
-  // Firebase Auth listener & cross-device Firestore sync
+  // Firebase Auth listener & cross-device Firestore sync with graceful permission handling
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -164,12 +164,12 @@ export function App() {
             } else {
               const localConfig = getVaultConfig();
               if (localConfig) {
-                setDoc(configDocRef, localConfig, { merge: true }).catch(console.error);
+                setDoc(configDocRef, localConfig, { merge: true }).catch(() => {});
               }
             }
           },
           (err) => {
-            console.warn('Firestore vault config listener error:', err);
+            console.warn('Firestore vault_config sync info: Add Firestore Security Rules for Little Pages if Cloud sync is needed.', err.message);
           }
         );
 
@@ -188,15 +188,17 @@ export function App() {
               }
             });
 
-            setEncryptedEntries(remoteEncrypted);
-            saveStoredEncryptedEntries(remoteEncrypted);
+            if (remoteEncrypted.length > 0) {
+              setEncryptedEntries(remoteEncrypted);
+              saveStoredEncryptedEntries(remoteEncrypted);
 
-            if (encryptionKey) {
-              await loadAndDecryptEntries(encryptionKey, remoteEncrypted);
+              if (encryptionKey) {
+                await loadAndDecryptEntries(encryptionKey, remoteEncrypted);
+              }
             }
           },
           (err) => {
-            console.warn('Firestore entries snapshot listener error:', err);
+            console.warn('Firestore journal_entries sync info: Add Firestore Security Rules for Little Pages if Cloud sync is needed.', err.message);
           }
         );
 
@@ -293,8 +295,13 @@ export function App() {
           const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
           await setDoc(configDocRef, vaultConfig, { merge: true });
         }
-      } catch (err) {
-        console.error('Failed to sync encrypted entry to Firestore:', err);
+      } catch (err: unknown) {
+        const firebaseErr = err as { code?: string; message?: string };
+        if (firebaseErr?.code === 'permission-denied') {
+          console.warn('Cloud sync requires Firestore Rules update. Saved locally to browser!');
+        } else {
+          console.error('Failed to sync encrypted entry to Firestore:', err);
+        }
       }
     }
 
@@ -316,7 +323,7 @@ export function App() {
         const docRef = doc(db, 'users', user.uid, 'journal_entries', id);
         await deleteDoc(docRef);
       } catch (err) {
-        console.error('Failed to delete from Firestore:', err);
+        console.warn('Firestore delete note: Saved locally.', err);
       }
     }
 
