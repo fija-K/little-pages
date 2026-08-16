@@ -132,7 +132,6 @@ export function App() {
     setVaultConfig(config);
     setEncryptionKey(key);
 
-    // Sync vault config to Firestore if signed in
     if (user) {
       try {
         const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
@@ -163,7 +162,6 @@ export function App() {
               setVaultConfig(remoteConfig);
               saveVaultConfig(remoteConfig);
             } else {
-              // If local vaultConfig exists, sync it up to Firestore
               const localConfig = getVaultConfig();
               if (localConfig) {
                 setDoc(configDocRef, localConfig, { merge: true }).catch(console.error);
@@ -214,13 +212,22 @@ export function App() {
 
   const { currentStreak } = calculateStreak(decryptedEntries);
 
-  // Google Sign-In
+  // Google Sign-In with friendly unauthorized-domain error handling
   const handleSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-    } catch (err) {
-      console.error('Sign-in error:', err);
-      alert('Sign-in cancelled or failed.');
+    } catch (err: unknown) {
+      const authError = err as { code?: string; message?: string };
+      console.error('Sign-in error:', authError);
+
+      if (authError?.code === 'auth/unauthorized-domain') {
+        const currentHost = window.location.hostname;
+        alert(
+          `Firebase Authorization Action Required:\n\nTo allow Google sign-in on "${currentHost}", please add it to Authorized Domains in Firebase Console:\n\n1. Go to Firebase Console (skulk-45c23)\n2. Navigate to Authentication -> Settings -> Authorized domains\n3. Click "Add domain" and enter "${currentHost}"`
+        );
+      } else {
+        alert(`Sign-in status: ${authError?.message || 'Sign-in cancelled'}`);
+      }
     }
   };
 
@@ -254,10 +261,8 @@ export function App() {
       return;
     }
 
-    // Encrypt entry with Web Crypto AES-256-GCM
     const encryptedPayload = await encryptJournalEntry(savedPlaintext, encryptionKey);
 
-    // Update in-memory decrypted list
     const updatedDecryptedIndex = decryptedEntries.findIndex(e => e.id === savedPlaintext.id);
     let updatedDecrypted: JournalEntry[];
     if (updatedDecryptedIndex >= 0) {
@@ -268,7 +273,6 @@ export function App() {
     }
     setDecryptedEntries(updatedDecrypted);
 
-    // Update encrypted entries list in localStorage
     const updatedEncryptedIndex = encryptedEntries.findIndex(e => e.id === encryptedPayload.id);
     let updatedEncrypted: EncryptedJournalEntry[];
     if (updatedEncryptedIndex >= 0) {
@@ -280,13 +284,11 @@ export function App() {
     setEncryptedEntries(updatedEncrypted);
     saveStoredEncryptedEntries(updatedEncrypted);
 
-    // Sync encrypted payload to Firestore if signed in
     if (user) {
       try {
         const docRef = doc(db, 'users', user.uid, 'journal_entries', encryptedPayload.id);
         await setDoc(docRef, encryptedPayload, { merge: true });
 
-        // Also ensure vault config is synced to Firestore
         if (vaultConfig) {
           const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
           await setDoc(configDocRef, vaultConfig, { merge: true });
