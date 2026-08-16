@@ -1,0 +1,1368 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-cream: #FFF6EE;
+    --card-blush: #FDEFF3;
+    --card-lavender: #F3EEFF;
+    --card-sage: #EBF3E8;
+    --card-butter: #FFF9E6;
+    --card-peach: #FDF0E6;
+    --card-sky: #E8F4F8;
+
+    --accent-pink: #F4A6BA;
+    --accent-lavender: #C9B6E4;
+    --accent-sage: #B8CFAE;
+    --accent-butter: #F6D186;
+    
+    --text-charcoal: #4A3F3B;
+    --text-muted: #7A6B65;
+    --text-ink: #2C221E;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    background-image: radial-gradient(#E8D7C8 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--text-charcoal);
+    font-family: 'Nunito', 'Quicksand', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .font-handwritten {
+    font-family: 'Patrick Hand', 'Caveat', cursive;
+  }
+}
+
+/* Animations */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.06); }
+  75% { transform: rotate(5deg) scale(1.06); }
+}
+
+@keyframes stamp {
+  0% { transform: scale(1.2) rotate(-5deg); opacity: 0.5; }
+  50% { transform: scale(0.95) rotate(1deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Header & Nav Styling */
+.diary-header {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 0.5rem;
+}
+
+.header-top-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (min-width: 640px) {
+  .header-top-bar {
+    flex-direction: row;
+  }
+}
+
+.title-area {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notebook-spine-accent {
+  width: 8px;
+  height: 44px;
+  background: repeating-linear-gradient(
+    0deg,
+    #F4A6BA,
+    #F4A6BA 8px,
+    #C9B6E4 8px,
+    #C9B6E4 16px
+  );
+  border-radius: 4px;
+}
+
+.diary-main-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-ink);
+  margin: 0;
+}
+
+.sparkle-doodle {
+  display: inline-block;
+  color: #F6D186;
+}
+
+.diary-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0;
+  font-family: 'Patrick Hand', cursive;
+}
+
+.header-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Gentle Streak Badge */
+.streak-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #EBF3E8;
+  border: 1.5px dashed #B8CFAE;
+  color: #264A1F;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(184, 207, 174, 0.25);
+}
+
+/* User & Backup Buttons */
+.backup-btn-pill, .cloud-sync-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: white;
+  border: 1px solid #E8D7C8;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  color: var(--text-charcoal);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.backup-btn-pill:hover, .cloud-sync-btn:hover {
+  background: #FFF5E6;
+  border-color: #F6D186;
+  transform: translateY(-1px);
+}
+
+.user-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  border: 1px solid #F4A6BA;
+  padding: 0.25rem 0.5rem 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: #A07870;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+.logout-btn:hover {
+  color: #E87A90;
+}
+
+/* Navigation Tabs */
+.header-nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  border-bottom: 2px solid #F0E2D6;
+  padding-bottom: 0.5rem;
+}
+
+.nav-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-tab-btn:hover {
+  background: #FDEFF3;
+  color: var(--text-charcoal);
+}
+
+.nav-tab-btn.active {
+  background: white;
+  color: var(--text-ink);
+  box-shadow: 0 2px 8px rgba(74, 63, 59, 0.08);
+  border: 1px solid #F4A6BA;
+}
+
+.new-page-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  background: linear-gradient(135deg, #F4A6BA 0%, #C9B6E4 100%);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.1rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(244, 166, 186, 0.35);
+  transition: all 0.2s ease;
+}
+
+.new-page-cta-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 16px rgba(244, 166, 186, 0.45);
+}
+
+/* Main Container */
+.diary-app-body {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Mood Picker & Stickers */
+.mood-picker-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mood-picker-title {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+}
+
+.mood-sticker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.mood-sticker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mood-sticker-btn:hover {
+  animation: wiggle 0.4s ease infinite;
+}
+
+.sticker-blob {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--sticker-bg);
+  border: 2px solid var(--sticker-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sticker-emoji {
+  font-size: 1.4rem;
+}
+
+.sticker-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--sticker-color);
+}
+
+.mood-sticker-btn.selected .sticker-blob {
+  border-width: 3px;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.sticker-check-ring {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 14px;
+  height: 14px;
+  background: #E87A90;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Sticky Note Tags */
+.sticky-tags-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tags-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+}
+
+.sticky-tags-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.sticky-note-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Patrick Hand', cursive;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.sticky-pin {
+  font-size: 0.75rem;
+}
+
+.sticky-remove-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.1rem;
+  opacity: 0.6;
+}
+.sticky-remove-btn:hover {
+  opacity: 1;
+}
+
+.tag-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tag-text-field {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed #C9B6E4;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+  outline: none;
+  color: var(--text-charcoal);
+  width: 180px;
+}
+.tag-text-field:focus {
+  background: white;
+  border-color: #F4A6BA;
+}
+
+.tag-add-btn {
+  background: #F4A6BA;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.35rem;
+  margin-left: 0.3rem;
+  cursor: pointer;
+}
+
+.tag-suggestions-popover {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.4rem;
+  background: white;
+  border: 1px solid #F0E2D6;
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 8px 24px rgba(74, 63, 59, 0.12);
+  z-index: 20;
+  width: 220px;
+}
+
+.popover-title {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.suggestion-chip {
+  background: #FDEFF3;
+  border: 1px solid #F4A6BA;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--text-charcoal);
+}
+.suggestion-chip:hover {
+  background: #F4A6BA;
+  color: white;
+}
+
+/* Torn Paper Entry Cards */
+.torn-paper-card {
+  position: relative;
+  border-radius: 20px;
+  border-width: 2px;
+  border-style: solid;
+  padding: 1.5rem 1.25rem 1rem;
+  box-shadow: 0 6px 18px rgba(74, 63, 59, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.torn-paper-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(74, 63, 59, 0.1);
+}
+
+.washi-tape-strip {
+  position: absolute;
+  top: -10px;
+  left: 30%;
+  width: 80px;
+  height: 20px;
+  background: rgba(246, 209, 134, 0.75);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    rgba(255, 255, 255, 0.4) 5px,
+    rgba(255, 255, 255, 0.4) 10px
+  );
+  transform: rotate(-3deg);
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-date-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-muted);
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1rem;
+}
+
+.card-mood-sticker {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  border-width: 1.5px;
+  border-style: solid;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.card-title {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-ink);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.card-ruled-content {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 23px,
+    rgba(180, 160, 150, 0.2) 24px
+  );
+  line-height: 24px;
+  min-height: 72px;
+  color: var(--text-charcoal);
+  font-size: 0.95rem;
+}
+
+.card-snippet {
+  margin: 0;
+  white-space: pre-line;
+}
+
+.card-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+
+.card-sticky-tag {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: 'Patrick Hand', cursive;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(0, 0, 0, 0.08);
+  padding-top: 0.5rem;
+  margin-top: auto;
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+.footer-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: white;
+  border: 1px solid #E8D7C8;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.action-icon-btn:hover {
+  background: #FFF5E6;
+  color: var(--text-ink);
+}
+
+/* Entries Grid & Empty State */
+.entries-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .entries-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .entries-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.empty-state-card {
+  text-align: center;
+  background: white;
+  border: 2px dashed #F4A6BA;
+  border-radius: 20px;
+  padding: 3rem 1.5rem;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.doodle-graphic {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.empty-title {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 2rem;
+  color: var(--text-ink);
+  margin: 0;
+}
+
+.empty-subtitle {
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.empty-write-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #F4A6BA;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(244, 166, 186, 0.4);
+}
+
+/* Search & Filter Bar */
+.search-filter-card {
+  background: white;
+  border: 1px solid #F0E2D6;
+  border-radius: 20px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(74, 63, 59, 0.04);
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+}
+
+.search-icon {
+  color: var(--text-muted);
+}
+
+.search-text-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: var(--text-ink);
+}
+
+.clear-search-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.filter-chips-row {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 45px;
+}
+
+.filter-pills-scroll {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+.filter-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  color: var(--text-charcoal);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.filter-pill.active {
+  background: #F4A6BA;
+  border-color: #F4A6BA;
+  color: white;
+  font-weight: 700;
+}
+
+.reset-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #F0E2D6;
+  font-size: 0.8rem;
+}
+
+.filtering-active-text {
+  color: #E87A90;
+  font-weight: 600;
+}
+
+.reset-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* Calendar View */
+.calendar-view-card {
+  background: white;
+  border: 2px solid #F4A6BA;
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: 0 6px 20px rgba(74, 63, 59, 0.06);
+  position: relative;
+}
+
+.calendar-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.month-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.calendar-month-name {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-ink);
+  margin: 0;
+}
+
+.calendar-today-btn {
+  background: #FDEFF3;
+  border: 1px solid #F4A6BA;
+  color: #E87A90;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.calendar-nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.calendar-nav-btn {
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  padding: 0.4rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-charcoal);
+}
+
+.calendar-weekdays-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.calendar-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+}
+
+.calendar-day-cell {
+  aspect-ratio: 1;
+  background: var(--cell-bg, #FFF6EE);
+  border: 1px solid var(--cell-border, #F0E2D6);
+  border-radius: 12px;
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.calendar-day-cell:hover {
+  transform: scale(1.04);
+  z-index: 5;
+}
+
+.calendar-day-cell.other-month {
+  opacity: 0.35;
+}
+
+.calendar-day-cell.today-cell {
+  border: 2px solid #F4A6BA;
+  box-shadow: 0 0 0 2px rgba(244, 166, 186, 0.2);
+}
+
+.day-number-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.today-badge-dot {
+  color: #F4A6BA;
+  font-size: 0.6rem;
+}
+
+.calendar-mood-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.1rem 0.2rem;
+}
+
+.calendar-mood-emoji {
+  font-size: 0.85rem;
+}
+
+.calendar-mood-label-short {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.add-entry-hover-icon {
+  opacity: 0;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: center;
+}
+
+.calendar-day-cell:hover .add-entry-hover-icon {
+  opacity: 0.6;
+}
+
+.calendar-preview-popover {
+  position: absolute;
+  bottom: 4rem;
+  right: 1.5rem;
+  width: 260px;
+  background: white;
+  border: 2px solid #F4A6BA;
+  border-radius: 16px;
+  padding: 0.75rem;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  z-index: 30;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.popover-title {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+  margin: 0.2rem 0;
+  color: var(--text-ink);
+}
+
+.popover-snippet {
+  font-size: 0.8rem;
+  color: var(--text-charcoal);
+  margin: 0;
+}
+
+.calendar-legend {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #F0E2D6;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.legend-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.legend-items {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Ruled Diary Page & Editor */
+.entry-editor-wrapper {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.editor-top-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: white;
+  border: 1px solid #E8D7C8;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  color: var(--text-charcoal);
+  cursor: pointer;
+}
+
+.top-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fav-toggle-btn, .editor-delete-btn {
+  background: white;
+  border: 1px solid #E8D7C8;
+  padding: 0.4rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.save-page-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #F4A6BA;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.ruled-diary-page-card {
+  position: relative;
+  border-radius: 20px;
+  border-width: 2px;
+  border-style: solid;
+  padding: 2rem 1.5rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(74, 63, 59, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.binder-holes-strip {
+  position: absolute;
+  left: 12px;
+  top: 40px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.hole {
+  width: 14px;
+  height: 14px;
+  background: var(--bg-cream);
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.washi-tape-header {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(1deg);
+  width: 140px;
+  height: 24px;
+  background: rgba(201, 182, 228, 0.8);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    rgba(255, 255, 255, 0.5) 6px,
+    rgba(255, 255, 255, 0.5) 12px
+  );
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.date-header-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px dashed rgba(0, 0, 0, 0.08);
+  padding-bottom: 0.75rem;
+}
+
+.friendly-date-text {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-ink);
+  margin: 0;
+}
+
+.date-picker-input {
+  border: 1px solid #E8D7C8;
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  font-family: inherit;
+  background: white;
+  font-size: 0.85rem;
+}
+
+/* Page Color Picker Swatches */
+.page-color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.color-picker-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.color-swatches-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-swatch-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.color-swatch-btn:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch-btn.selected {
+  transform: scale(1.2);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.diary-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-ink);
+  outline: none;
+  padding: 0.25rem 0;
+}
+
+.diary-title-input:focus {
+  border-bottom-color: var(--accent-color, #F4A6BA);
+}
+
+/* Ruled Lined Textarea */
+.lined-paper-container {
+  width: 100%;
+}
+
+.ruled-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(160, 140, 130, 0.2) 32px
+  );
+  line-height: 32px;
+  font-size: 1.1rem;
+  color: var(--text-ink);
+  outline: none;
+  resize: vertical;
+  font-family: 'Nunito', sans-serif;
+  padding: 0.25rem 0;
+}
+
+.editor-footer-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+  padding-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .editor-footer-bar {
+    flex-direction: row;
+  }
+}
+
+.live-writing-stats {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.dot-divider {
+  opacity: 0.5;
+}
+
+.save-page-btn-large {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #F4A6BA 0%, #C9B6E4 100%);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(244, 166, 186, 0.4);
+  transition: all 0.2s ease;
+}
+
+.save-page-btn-large:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(244, 166, 186, 0.5);
+}
+
+.stamp-animation .ruled-diary-page-card {
+  animation: stamp 0.5s ease forwards;
+}
+
+/* Modal Styling */
+.modal-backdrop-blur {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 63, 59, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.backup-modal-card {
+  background: white;
+  border: 2px solid #F4A6BA;
+  border-radius: 24px;
+  padding: 1.5rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.modal-title {
+  margin: 0;
+  color: var(--text-ink);
+}
+
+.modal-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0;
+}
+
+.modal-close-btn {
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  padding: 0.35rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal-body-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.backup-card-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.option-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.option-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0.1rem 0 0;
+}
+
+.export-action-btn, .import-action-btn {
+  background: white;
+  border: 1px solid #F4A6BA;
+  color: #E87A90;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.privacy-note {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: #EBF3E8;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+}
