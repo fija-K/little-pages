@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { JournalEntry, EncryptedJournalEntry, FilterState } from './types/journal';
 import type { VaultSecurityConfig } from './utils/crypto';
 import {
@@ -55,7 +55,7 @@ export function App() {
     sortBy: 'newest'
   });
 
-  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Manual Lock action
   const handleLockNow = useCallback(() => {
