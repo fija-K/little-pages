@@ -4,13 +4,14 @@ import type { User } from 'firebase/auth';
 import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB0rBRHNFfYJ6QdODFG83gRFLtZ0VHvAv0",
-  authDomain: "skulk-45c23.firebaseapp.com",
-  projectId: "skulk-45c23",
-  storageBucket: "skulk-45c23.firebasestorage.app",
-  messagingSenderId: "57978390139",
-  appId: "1:57978390139:web:bea7167e8cecb4f3aa44de",
-  databaseURL: "https://skulk-45c23-default-rtdb.asia-southeast1.firebasedatabase.app"
+  apiKey: "AIzaSyDgbPNyT2C9dZyHkMuKOupWlj5zkP-Qba8",
+  authDomain: "little-page-3ac9d.firebaseapp.com",
+  databaseURL: "https://little-page-3ac9d-default-rtdb.firebaseio.com",
+  projectId: "little-page-3ac9d",
+  storageBucket: "little-page-3ac9d.firebasestorage.app",
+  messagingSenderId: "951965445628",
+  appId: "1:951965445628:web:6e63bee75f94e9be20d679",
+  measurementId: "G-1R4R4K9NL8"
 };
 
 const app = initializeApp(firebaseConfig);
