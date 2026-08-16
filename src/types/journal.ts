@@ -12,11 +12,28 @@ export interface MoodConfig {
   description: string;
 }
 
+// Plaintext entry in-memory only during an unlocked session
 export interface JournalEntry {
   id: string;
   date: string; // ISO format YYYY-MM-DD
   title: string;
   content: string;
+  mood: MoodType;
+  pageColor: PageColor;
+  tags: string[];
+  createdAt: number;
+  updatedAt: number;
+  isFavorite?: boolean;
+}
+
+// Encrypted entry stored on disk (localStorage or Firestore)
+export interface EncryptedJournalEntry {
+  id: string;
+  date: string;
+  encryptedTitle: string; // Base64 ciphertext
+  titleIv: string; // Base64 IV
+  encryptedContent: string; // Base64 ciphertext
+  contentIv: string; // Base64 IV
   mood: MoodType;
   pageColor: PageColor;
   tags: string[];

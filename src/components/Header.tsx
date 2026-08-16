@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut } from 'lucide-react';
+import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck } from 'lucide-react';
 import type { User } from '../firebase';
 import { StreakBadge } from './StreakBadge';
 
@@ -12,6 +12,8 @@ interface HeaderProps {
   onSignIn: () => void;
   onSignOut: () => void;
   onOpenBackup: () => void;
+  isUnlocked: boolean;
+  onLockNow: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -22,7 +24,9 @@ export const Header: React.FC<HeaderProps> = ({
   user,
   onSignIn,
   onSignOut,
-  onOpenBackup
+  onOpenBackup,
+  isUnlocked,
+  onLockNow
 }) => {
   return (
     <header className="diary-header">
@@ -33,12 +37,32 @@ export const Header: React.FC<HeaderProps> = ({
             <h1 className="diary-main-title">
               Little Pages <span className="sparkle-doodle">✨</span>
             </h1>
-            <p className="diary-subtitle">your cozy handwritten corner~</p>
+            <div className="subtitle-e2ee-row">
+              <span className="diary-subtitle">your cozy handwritten corner~</span>
+              {isUnlocked && (
+                <span className="e2ee-badge" title="End-to-End Encrypted with AES-256-GCM">
+                  <ShieldCheck className="w-3 h-3 text-emerald-600 inline mr-0.5" />
+                  <span>E2EE Vault</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="header-actions-right">
           <StreakBadge currentStreak={currentStreak} />
+
+          {isUnlocked && (
+            <button
+              type="button"
+              className="lock-now-btn"
+              onClick={onLockNow}
+              title="Lock journal & clear decrypted entries from memory"
+            >
+              <Lock className="w-3.5 h-3.5 text-pink-600" />
+              <span>Lock Now</span>
+            </button>
+          )}
 
           <button
             type="button"
@@ -52,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {user ? (
             <div className="user-profile-pill">
-              <span className="cloud-indicator" title="Connected to Cloud Firestore">
+              <span className="cloud-indicator" title="Connected to Cloud Firestore (Encrypted E2EE at rest)">
                 <Cloud className="w-3.5 h-3.5 text-emerald-600 inline" />
               </span>
               <img
@@ -75,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               className="cloud-sync-btn"
               onClick={onSignIn}
-              title="Sign in with Google to sync entries with Firebase"
+              title="Sign in with Google to sync encrypted entries with Firebase"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sync Cloud</span>

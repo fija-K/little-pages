@@ -1,7 +1,10 @@
-import type { JournalEntry } from '../types/journal';
+import type { JournalEntry, EncryptedJournalEntry } from '../types/journal';
+import type { VaultSecurityConfig } from './crypto';
+import { encryptText, decryptText } from './crypto';
 import { getTodayIsoString } from './dateUtils';
 
-const STORAGE_KEY = 'little_pages_entries_v1';
+const VAULT_CONFIG_KEY = 'little_pages_vault_config';
+const ENCRYPTED_STORAGE_KEY = 'little_pages_encrypted_entries_v1';
 
 export const INITIAL_SAMPLE_ENTRIES: JournalEntry[] = [
   {
@@ -54,48 +57,94 @@ function getDaysAgoIsoString(days: number): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-export function getLocalEntries(): JournalEntry[] {
+// Vault config persistence
+export function getVaultConfig(): VaultSecurityConfig | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      saveLocalEntries(INITIAL_SAMPLE_ENTRIES);
-      return INITIAL_SAMPLE_ENTRIES;
-    }
+    const raw = localStorage.getItem(VAULT_CONFIG_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (err) {
+    console.error('Failed to parse vault config:', err);
+    return null;
+  }
+}
+
+export function saveVaultConfig(config: VaultSecurityConfig): void {
+  try {
+    localStorage.setItem(VAULT_CONFIG_KEY, JSON.stringify(config));
+  } catch (err) {
+    console.error('Failed to save vault config:', err);
+  }
+}
+
+// Encrypt a single entry
+export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): Promise<EncryptedJournalEntry> {
+  const titleEnc = await encryptText(entry.title || '', key);
+  const contentEnc = await encryptText(entry.content || '', key);
+
+  return {
+    id: entry.id,
+    date: entry.date,
+    encryptedTitle: titleEnc.ciphertext,
+    titleIv: titleEnc.iv,
+    encryptedContent: contentEnc.ciphertext,
+    contentIv: contentEnc.iv,
+    mood: entry.mood,
+    pageColor: entry.pageColor,
+    tags: entry.tags,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt,
+    isFavorite: entry.isFavorite
+  };
+}
+
+// Decrypt a single entry
+export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key: CryptoKey): Promise<JournalEntry> {
+  let title = 'Untitled Page';
+  let content = '';
+
+  try {
+    title = await decryptText(encrypted.encryptedTitle, encrypted.titleIv, key);
+  } catch (e) {
+    console.error('Failed to decrypt title:', e);
+  }
+
+  try {
+    content = await decryptText(encrypted.encryptedContent, encrypted.contentIv, key);
+  } catch (e) {
+    console.error('Failed to decrypt content:', e);
+  }
+
+  return {
+    id: encrypted.id,
+    date: encrypted.date,
+    title,
+    content,
+    mood: encrypted.mood,
+    pageColor: encrypted.pageColor,
+    tags: encrypted.tags,
+    createdAt: encrypted.createdAt,
+    updatedAt: encrypted.updatedAt,
+    isFavorite: encrypted.isFavorite
+  };
+}
+
+// Encrypted entries persistence
+export function getStoredEncryptedEntries(): EncryptedJournalEntry[] {
+  try {
+    const raw = localStorage.getItem(ENCRYPTED_STORAGE_KEY);
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : INITIAL_SAMPLE_ENTRIES;
+    return Array.isArray(parsed) ? parsed : [];
   } catch (err) {
-    console.error('Failed to parse local entries:', err);
-    return INITIAL_SAMPLE_ENTRIES;
+    console.error('Failed to load encrypted entries:', err);
+    return [];
   }
 }
 
-export function saveLocalEntries(entries: JournalEntry[]): void {
+export function saveStoredEncryptedEntries(entries: EncryptedJournalEntry[]): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    localStorage.setItem(ENCRYPTED_STORAGE_KEY, JSON.stringify(entries));
   } catch (err) {
-    console.error('Failed to save to localStorage:', err);
+    console.error('Failed to save encrypted entries to localStorage:', err);
   }
-}
-
-export function saveLocalEntry(entry: JournalEntry): JournalEntry[] {
-  const current = getLocalEntries();
-  const index = current.findIndex(e => e.id === entry.id);
-  let updated: JournalEntry[];
-
-  if (index >= 0) {
-    updated = [...current];
-    updated[index] = { ...entry, updatedAt: Date.now() };
-  } else {
-    updated = [entry, ...current];
-  }
-
-  saveLocalEntries(updated);
-  return updated;
-}
-
-export function deleteLocalEntry(id: string): JournalEntry[] {
-  const current = getLocalEntries();
-  const updated = current.filter(e => e.id !== id);
-  saveLocalEntries(updated);
-  return updated;
 }
