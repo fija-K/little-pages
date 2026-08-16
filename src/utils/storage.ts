@@ -30,10 +30,14 @@ export function clearLocalVaultConfig(): void {
   localStorage.removeItem(VAULT_CONFIG_KEY);
 }
 
-// Encrypt a single entry
+// Encrypt a single entry (title, content, AND tags)
 export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): Promise<EncryptedJournalEntry> {
   const titleEnc = await encryptText(entry.title || '', key);
   const contentEnc = await encryptText(entry.content || '', key);
+  
+  // Encrypt JSON-serialized tags array
+  const tagsJson = JSON.stringify(entry.tags || []);
+  const tagsEnc = await encryptText(tagsJson, key);
 
   return {
     id: entry.id,
@@ -42,19 +46,21 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
     titleIv: titleEnc.iv,
     encryptedContent: contentEnc.ciphertext,
     contentIv: contentEnc.iv,
+    encryptedTags: tagsEnc.ciphertext,
+    tagsIv: tagsEnc.iv,
     mood: entry.mood,
     pageColor: entry.pageColor,
-    tags: entry.tags,
     createdAt: entry.createdAt,
     updatedAt: entry.updatedAt,
     isFavorite: entry.isFavorite
   };
 }
 
-// Decrypt a single entry
+// Decrypt a single entry (title, content, AND tags)
 export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key: CryptoKey): Promise<JournalEntry> {
   let title = 'Untitled Page';
   let content = '';
+  let tags: string[] = [];
 
   try {
     title = await decryptText(encrypted.encryptedTitle, encrypted.titleIv, key);
@@ -68,6 +74,21 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
     console.error('Failed to decrypt content:', e);
   }
 
+  if (encrypted.encryptedTags && encrypted.tagsIv) {
+    try {
+      const tagsRaw = await decryptText(encrypted.encryptedTags, encrypted.tagsIv, key);
+      const parsed = JSON.parse(tagsRaw);
+      if (Array.isArray(parsed)) {
+        tags = parsed;
+      }
+    } catch (e) {
+      console.error('Failed to decrypt tags:', e);
+    }
+  } else if (Array.isArray(encrypted.tags)) {
+    // Backward-compatible fallback for legacy unencrypted tags
+    tags = encrypted.tags;
+  }
+
   return {
     id: encrypted.id,
     date: encrypted.date,
@@ -75,7 +96,7 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
     content,
     mood: encrypted.mood,
     pageColor: encrypted.pageColor,
-    tags: encrypted.tags,
+    tags,
     createdAt: encrypted.createdAt,
     updatedAt: encrypted.updatedAt,
     isFavorite: encrypted.isFavorite
@@ -89,7 +110,6 @@ export function getStoredEncryptedEntries(): EncryptedJournalEntry[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    // Filter out sample entries if present
     return parsed.filter(e => !e.id.startsWith('sample-entry-'));
   } catch (err) {
     console.error('Failed to load encrypted entries:', err);

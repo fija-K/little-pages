@@ -34,9 +34,11 @@ export interface EncryptedJournalEntry {
   titleIv: string; // Base64 IV
   encryptedContent: string; // Base64 ciphertext
   contentIv: string; // Base64 IV
+  encryptedTags?: string; // Base64 ciphertext of JSON.stringify(tags)
+  tagsIv?: string; // Base64 IV
+  tags?: string[]; // Legacy optional fallback
   mood: MoodType;
   pageColor: PageColor;
-  tags: string[];
   createdAt: number;
   updatedAt: number;
   isFavorite?: boolean;
