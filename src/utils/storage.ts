@@ -1,63 +1,13 @@
 import type { JournalEntry, EncryptedJournalEntry } from '../types/journal';
 import type { VaultSecurityConfig } from './crypto';
 import { encryptText, decryptText } from './crypto';
-import { getTodayIsoString } from './dateUtils';
 
 const VAULT_CONFIG_KEY = 'little_pages_vault_config';
 const ENCRYPTED_STORAGE_KEY = 'little_pages_encrypted_entries_v1';
 
-export const INITIAL_SAMPLE_ENTRIES: JournalEntry[] = [
-  {
-    id: 'sample-entry-1',
-    date: getTodayIsoString(),
-    title: 'Warm tea & cozy morning thoughts',
-    content: 'Started the morning with a hot mug of chamomile tea and listened to the gentle rain outside my window. Worked on project ideas and took a short walk around the block in my oversized sweater.\n\nFeeling really grounded and grateful for quiet moments like this.',
-    mood: 'cozy',
-    pageColor: 'blush',
-    tags: ['thoughts', 'reading', 'nature'],
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    isFavorite: true
-  },
-  {
-    id: 'sample-entry-2',
-    date: getYesterdayIsoString(),
-    title: 'Late night coding & Skulk sync',
-    content: 'Made so much progress today! Worked on Skulk and sketched out little UI details for my diary. Sometimes when inspiration strikes late at night, everything just flows seamlessly.',
-    mood: 'excited',
-    pageColor: 'butter',
-    tags: ['skulk', 'college', 'doodles'],
-    createdAt: Date.now() - 86400000,
-    updatedAt: Date.now() - 86400000,
-    isFavorite: false
-  },
-  {
-    id: 'sample-entry-3',
-    date: getDaysAgoIsoString(2),
-    title: 'Gym session & evening walk',
-    content: 'Pushed through my workout today even though I felt pretty sluggish at first. Afterward, grabbed a matcha latte and sat on a park bench watching the sunset colors fade from dusty pink to soft lavender.',
-    mood: 'happy',
-    pageColor: 'sage',
-    tags: ['gym', 'nature'],
-    createdAt: Date.now() - 86400000 * 2,
-    updatedAt: Date.now() - 86400000 * 2,
-    isFavorite: false
-  }
-];
+export const INITIAL_SAMPLE_ENTRIES: JournalEntry[] = [];
 
-function getYesterdayIsoString(): string {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-function getDaysAgoIsoString(days: number): string {
-  const d = new Date();
-  d.setDate(d.getDate() - days);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
-
-// Vault config persistence
+// Vault config persistence locally
 export function getVaultConfig(): VaultSecurityConfig | null {
   try {
     const raw = localStorage.getItem(VAULT_CONFIG_KEY);
@@ -74,6 +24,10 @@ export function saveVaultConfig(config: VaultSecurityConfig): void {
   } catch (err) {
     console.error('Failed to save vault config:', err);
   }
+}
+
+export function clearLocalVaultConfig(): void {
+  localStorage.removeItem(VAULT_CONFIG_KEY);
 }
 
 // Encrypt a single entry
@@ -128,13 +82,15 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
   };
 }
 
-// Encrypted entries persistence
+// Encrypted entries persistence locally
 export function getStoredEncryptedEntries(): EncryptedJournalEntry[] {
   try {
     const raw = localStorage.getItem(ENCRYPTED_STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    // Filter out sample entries if present
+    return parsed.filter(e => !e.id.startsWith('sample-entry-'));
   } catch (err) {
     console.error('Failed to load encrypted entries:', err);
     return [];
@@ -143,8 +99,14 @@ export function getStoredEncryptedEntries(): EncryptedJournalEntry[] {
 
 export function saveStoredEncryptedEntries(entries: EncryptedJournalEntry[]): void {
   try {
-    localStorage.setItem(ENCRYPTED_STORAGE_KEY, JSON.stringify(entries));
+    const cleaned = entries.filter(e => !e.id.startsWith('sample-entry-'));
+    localStorage.setItem(ENCRYPTED_STORAGE_KEY, JSON.stringify(cleaned));
   } catch (err) {
     console.error('Failed to save encrypted entries to localStorage:', err);
   }
+}
+
+export function clearLocalEntries(): void {
+  localStorage.removeItem(ENCRYPTED_STORAGE_KEY);
+  localStorage.removeItem('little_pages_entries_v1');
 }

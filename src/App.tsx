@@ -7,8 +7,7 @@ import {
   getStoredEncryptedEntries,
   saveStoredEncryptedEntries,
   encryptJournalEntry,
-  decryptJournalEntry,
-  INITIAL_SAMPLE_ENTRIES
+  decryptJournalEntry
 } from './utils/storage';
 import { calculateStreak } from './utils/streakUtils';
 import {
@@ -57,6 +56,16 @@ export function App() {
 
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Clear legacy sample entries on initial mount
+  useEffect(() => {
+    const stored = getStoredEncryptedEntries();
+    const cleaned = stored.filter(e => !e.id.startsWith('sample-entry-'));
+    if (stored.length !== cleaned.length) {
+      saveStoredEncryptedEntries(cleaned);
+      setEncryptedEntries(cleaned);
+    }
+  }, []);
+
   // Manual Lock action
   const handleLockNow = useCallback(() => {
     setEncryptionKey(null);
@@ -98,6 +107,7 @@ export function App() {
   const loadAndDecryptEntries = useCallback(async (key: CryptoKey, storedList: EncryptedJournalEntry[]) => {
     const decryptedList: JournalEntry[] = [];
     for (const encryptedItem of storedList) {
+      if (encryptedItem.id.startsWith('sample-entry-')) continue;
       try {
         const decrypted = await decryptJournalEntry(encryptedItem, key);
         decryptedList.push(decrypted);
@@ -116,53 +126,86 @@ export function App() {
     await loadAndDecryptEntries(key, stored);
   };
 
-  // Complete initial setup callback
+  // Complete initial vault setup callback
   const handleCompleteSetup = async (config: VaultSecurityConfig, key: CryptoKey) => {
     saveVaultConfig(config);
     setVaultConfig(config);
     setEncryptionKey(key);
 
-    // Encrypt sample entries for first time experience
-    const initialEncrypted: EncryptedJournalEntry[] = [];
-    for (const sample of INITIAL_SAMPLE_ENTRIES) {
-      const enc = await encryptJournalEntry(sample, key);
-      initialEncrypted.push(enc);
+    // Sync vault config to Firestore if signed in
+    if (user) {
+      try {
+        const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
+        await setDoc(configDocRef, config, { merge: true });
+      } catch (err) {
+        console.error('Failed to save vault config to Firestore:', err);
+      }
     }
 
-    saveStoredEncryptedEntries(initialEncrypted);
-    setEncryptedEntries(initialEncrypted);
-    setDecryptedEntries(INITIAL_SAMPLE_ENTRIES);
+    setEncryptedEntries([]);
+    setDecryptedEntries([]);
+    saveStoredEncryptedEntries([]);
   };
 
-  // Firebase Auth listener & Firestore sync
+  // Firebase Auth listener & cross-device Firestore sync
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
 
-      if (currentUser && encryptionKey) {
+      if (currentUser) {
+        // 1. Sync Vault Config from Firestore for cross-device passphrase verification
+        const configDocRef = doc(db, 'users', currentUser.uid, 'vault_config', 'config');
+        const unsubscribeConfig = onSnapshot(
+          configDocRef,
+          (docSnap) => {
+            if (docSnap.exists()) {
+              const remoteConfig = docSnap.data() as VaultSecurityConfig;
+              setVaultConfig(remoteConfig);
+              saveVaultConfig(remoteConfig);
+            } else {
+              // If local vaultConfig exists, sync it up to Firestore
+              const localConfig = getVaultConfig();
+              if (localConfig) {
+                setDoc(configDocRef, localConfig, { merge: true }).catch(console.error);
+              }
+            }
+          },
+          (err) => {
+            console.warn('Firestore vault config listener error:', err);
+          }
+        );
+
+        // 2. Sync Encrypted Journal Entries from Firestore across devices
         const userEntriesRef = collection(db, 'users', currentUser.uid, 'journal_entries');
         const q = query(userEntriesRef);
 
-        const unsubscribeSnapshot = onSnapshot(
+        const unsubscribeEntries = onSnapshot(
           q,
           async (snapshot) => {
             const remoteEncrypted: EncryptedJournalEntry[] = [];
             snapshot.forEach((docSnap) => {
-              remoteEncrypted.push(docSnap.data() as EncryptedJournalEntry);
+              const data = docSnap.data() as EncryptedJournalEntry;
+              if (!data.id.startsWith('sample-entry-')) {
+                remoteEncrypted.push(data);
+              }
             });
 
-            if (remoteEncrypted.length > 0) {
-              setEncryptedEntries(remoteEncrypted);
-              saveStoredEncryptedEntries(remoteEncrypted);
+            setEncryptedEntries(remoteEncrypted);
+            saveStoredEncryptedEntries(remoteEncrypted);
+
+            if (encryptionKey) {
               await loadAndDecryptEntries(encryptionKey, remoteEncrypted);
             }
           },
           (err) => {
-            console.warn('Firestore snapshot listener error:', err);
+            console.warn('Firestore entries snapshot listener error:', err);
           }
         );
 
-        return () => unsubscribeSnapshot();
+        return () => {
+          unsubscribeConfig();
+          unsubscribeEntries();
+        };
       }
     });
 
@@ -186,6 +229,7 @@ export function App() {
     try {
       await signOut(auth);
       setUser(null);
+      handleLockNow();
     } catch (err) {
       console.error('Sign-out error:', err);
     }
@@ -203,7 +247,7 @@ export function App() {
     setCurrentView('editor');
   };
 
-  // Save entry (Encrypt plaintext before storing!)
+  // Save entry (Encrypt plaintext before storing & syncing to Firestore!)
   const handleSaveEntry = async (savedPlaintext: JournalEntry) => {
     if (!encryptionKey) {
       alert('Vault is locked. Please unlock to save entries.');
@@ -241,6 +285,12 @@ export function App() {
       try {
         const docRef = doc(db, 'users', user.uid, 'journal_entries', encryptedPayload.id);
         await setDoc(docRef, encryptedPayload, { merge: true });
+
+        // Also ensure vault config is synced to Firestore
+        if (vaultConfig) {
+          const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
+          await setDoc(configDocRef, vaultConfig, { merge: true });
+        }
       } catch (err) {
         console.error('Failed to sync encrypted entry to Firestore:', err);
       }
