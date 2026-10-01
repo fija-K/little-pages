@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Little Pages - Sticker Reviewer (Stage 1)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    :root {
+      --bg-cream: #FFF6EE;
+      --card-pink: #FDEFF3;
+      --accent-pink: #F4A6BA;
+      --text-charcoal: #4A3F3B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-cream);
+      background-image: radial-gradient(#E8D7C8 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--text-charcoal);
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      max-width: 1200px;
+      margin: 0 auto 1.5rem;
+      background: white;
+      border: 2px solid #F4A6BA;
+      border-radius: 20px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(244, 166, 186, 0.2);
+    }
+
+    .header-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .title-group h1 {
+      font-size: 1.75rem;
+      color: #2C221E;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #7A6B65;
+      margin-top: 0.25rem;
+    }
+
+    .actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid #E8D7C8;
+      background: white;
+      color: #4A3F3B;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .btn:hover {
+      background: #FDEFF3;
+      border-color: #F4A6BA;
+    }
+
+    .btn-primary {
+      background: #F4A6BA;
+      color: white;
+      border-color: #F4A6BA;
+      box-shadow: 0 4px 12px rgba(244, 166, 186, 0.4);
+    }
+    .btn-primary:hover {
+      background: #e590a5;
+    }
+
+    .btn-toggle.active {
+      background: #C9B6E4;
+      color: white;
+      border-color: #C9B6E4;
+    }
+
+    .category-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #E8D7C8;
+    }
+
+    .tab-btn {
+      padding: 0.4rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid #E8D7C8;
+      background: #FFF6EE;
+      color: #7A6B65;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: #FDEFF3;
+      border-color: #F4A6BA;
+      color: #D93856;
+    }
+
+    .summary-card {
+      max-width: 1200px;
+      margin: 0 auto 1.5rem;
+      background: #FFF9E6;
+      border: 1.5px solid #F6D186;
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      color: #5C4813;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .sheet-annotated-container {
+      max-width: 1200px;
+      margin: 0 auto 1.5rem;
+      background: white;
+      border: 2px solid #C9B6E4;
+      border-radius: 20px;
+      padding: 1rem;
+      display: none;
+      text-align: center;
+    }
+    .sheet-annotated-container.visible {
+      display: block;
+    }
+
+    .annotated-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .doodles-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .doodle-card {
+      background: white;
+      border: 1.5px solid #F0E2D6;
+      border-radius: 18px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 12px rgba(74, 63, 59, 0.05);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .doodle-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(74, 63, 59, 0.1);
+    }
+
+    .img-preview-box {
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Checkerboard transparency background */
+    .bg-checkered {
+      background-color: #f7f7f7;
+      background-image: conic-gradient(#e0e0e0 90deg, transparent 90deg 180deg, #e0e0e0 180deg 270deg, transparent 270deg);
+      background-size: 16px 16px;
+    }
+
+    .bg-blush {
+      background-color: #FDEFF3;
+    }
+
+    .bg-dark {
+      background-color: #2C221E;
+    }
+
+    .doodle-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: filter 0.2s ease;
+    }
+
+    .doodle-img.shadow-effect {
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .doodle-number-tag {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(44, 34, 30, 0.75);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .suspicious-badge {
+      background: #FDEFF3;
+      border: 1px solid #F4A6BA;
+      color: #D93856;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .doodle-info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: center;
+    }
+
+    .doodle-filename {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #2C221E;
+    }
+
+    .doodle-dimensions {
+      font-size: 0.75rem;
+      color: #7A6B65;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 0.25rem;
+    }
+
+    .checkbox-label input {
+      accent-color: #F4A6BA;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .badge-count {
+      background: #FDEFF3;
+      color: #D93856;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      margin-left: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-header">
+    <div class="header-top">
+      <div class="title-group">
+        <h1>✨ Doodle Sticker Extractor (Stage 1 Review)</h1>
+        <p class="subtitle">Review extracted transparent cutouts before enabling in Little Pages diary</p>
+      </div>
+
+      <div class="actions-bar">
+        <button id="toggleBorderBtn" class="btn btn-toggle">
+          🏷️ Sticker White Border
+        </button>
+
+        <button id="toggleSheetBtn" class="btn btn-toggle">
+          🖼️ Show Annotated Sheet Boxes
+        </button>
+
+        <select id="bgSelect" class="btn">
+          <option value="bg-checkered">🏁 Checkered BG</option>
+          <option value="bg-blush">🌸 Blush BG</option>
+          <option value="bg-dark">🌙 Dark BG</option>
+        </select>
+
+        <button id="selectAllBtn" class="btn">
+          ☑️ Select All
+        </button>
+
+        <button id="deselectAllBtn" class="btn">
+          ☐ Deselect All
+        </button>
+
+        <button id="downloadZipBtn" class="btn btn-primary">
+          📦 Download Kept as ZIP
+        </button>
+      </div>
+    </div>
+
+    <div class="category-tabs" id="categoryTabs">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+
+  <div class="summary-card" id="summaryCard">
+    <!-- Generated by JS -->
+  </div>
+
+  <div class="sheet-annotated-container" id="annotatedContainer">
+    <h3 style="margin-bottom: 0.75rem; color: #4A3F3B;">Original Sheet with Detection Bounding Boxes</h3>
+    <img id="annotatedImg" class="annotated-img" src="" alt="Annotated Sheet">
+  </div>
+
+  <div class="doodles-grid" id="doodlesGrid">
+    <!-- Generated by JS -->
+  </div>
+
+  <script>
+    let manifestData = [];
+    let currentCategoryIndex = 0;
+    let showWhiteBorder = false;
+    let showAnnotatedSheet = false;
+    let currentBgClass = 'bg-checkered';
+    let keptState = {}; // { doodleId: boolean }
+
+    async function loadManifest() {
+      try {
+        const response = await fetch('stickers/manifest.json');
+        manifestData = await response.json();
+        renderTabs();
+        renderCurrentCategory();
+      } catch (err) {
+        console.error('Failed to load manifest.json:', err);
+        document.getElementById('summaryCard').innerHTML = '<b style="color:#D93856;">Error loading manifest.json. Ensure python script has completed extraction.</b>';
+      }
+    }
+
+    function renderTabs() {
+      const tabsContainer = document.getElementById('categoryTabs');
+      tabsContainer.innerHTML = manifestData.map((cat, idx) => `
+        <button class="tab-btn ${idx === currentCategoryIndex ? 'active' : ''}" onclick="switchCategory(${idx})">
+          ${cat.title} <span class="badge-count">${cat.total_count}</span>
+        </button>
+      `).join('');
+    }
+
+    function switchCategory(index) {
+      currentCategoryIndex = index;
+      renderTabs();
+      renderCurrentCategory();
+    }
+
+    function renderCurrentCategory() {
+      const cat = manifestData[currentCategoryIndex];
+      if (!cat) return;
+
+      // Render summary
+      const summaryCard = document.getElementById('summaryCard');
+      summaryCard.innerHTML = `
+        <div>
+          <b>Category:</b> ${cat.title} &nbsp;|&nbsp; 
+          <b>Total Extracted Cutouts:</b> ${cat.total_count} &nbsp;|&nbsp;
+          <b>Suspicious Flags:</b> ${cat.suspicious_count}
+        </div>
+        <div>
+          <span>Outer background flood-filled &nbsp;•&nbsp; Interior faces/bodies 100% white opaque</span>
+        </div>
+      `;
+
+      // Update annotated sheet
+      const annotatedImg = document.getElementById('annotatedImg');
+      annotatedImg.src = cat.annotated_image;
+
+      // Render doodle grid
+      const grid = document.getElementById('doodlesGrid');
+      grid.innerHTML = cat.doodles.map((doodle) => {
+        const isKept = keptState[doodle.id] !== false;
+        const imgPath = showWhiteBorder ? doodle.path_border : doodle.path;
+
+        return `
+          <div class="doodle-card">
+            <span class="doodle-number-tag">#${doodle.number}</span>
+            <div class="img-preview-box ${currentBgClass}">
+              <img src="${imgPath}" class="doodle-img ${showWhiteBorder ? 'shadow-effect' : ''}" alt="${doodle.filename}">
+            </div>
+
+            ${doodle.is_suspicious ? `<div class="suspicious-badge">⚠️ ${doodle.suspicious_reason}</div>` : ''}
+
+            <div class="doodle-info">
+              <span class="doodle-filename">${doodle.filename}</span>
+              <span class="doodle-dimensions">${doodle.width} × ${doodle.height} px</span>
+            </div>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="check_${doodle.id}" ${isKept ? 'checked' : ''} onchange="toggleKeep('${doodle.id}', this.checked)">
+              <span>Keep Doodle</span>
+            </label>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleKeep(id, isChecked) {
+      keptState[id] = isChecked;
+    }
+
+    // Toggle Handlers
+    document.getElementById('toggleBorderBtn').addEventListener('click', () => {
+      showWhiteBorder = !showWhiteBorder;
+      document.getElementById('toggleBorderBtn').classList.toggle('active', showWhiteBorder);
+      renderCurrentCategory();
+    });
+
+    document.getElementById('toggleSheetBtn').addEventListener('click', () => {
+      showAnnotatedSheet = !showAnnotatedSheet;
+      document.getElementById('toggleSheetBtn').classList.toggle('active', showAnnotatedSheet);
+      document.getElementById('annotatedContainer').classList.toggle('visible', showAnnotatedSheet);
+    });
+
+    document.getElementById('bgSelect').addEventListener('change', (e) => {
+      currentBgClass = e.target.value;
+      renderCurrentCategory();
+    });
+
+    document.getElementById('selectAllBtn').addEventListener('click', () => {
+      const cat = manifestData[currentCategoryIndex];
+      if (cat) {
+        cat.doodles.forEach(d => keptState[d.id] = true);
+        renderCurrentCategory();
+      }
+    });
+
+    document.getElementById('deselectAllBtn').addEventListener('click', () => {
+      const cat = manifestData[currentCategoryIndex];
+      if (cat) {
+        cat.doodles.forEach(d => keptState[d.id] = false);
+        renderCurrentCategory();
+      }
+    });
+
+    // Download kept stickers as ZIP
+    document.getElementById('downloadZipBtn').addEventListener('click', async () => {
+      const zip = new JSZip();
+      let totalAdded = 0;
+
+      for (const cat of manifestData) {
+        const catFolder = zip.folder(cat.id);
+        for (const doodle of cat.doodles) {
+          if (keptState[doodle.id] !== false) {
+            const imgPath = showWhiteBorder ? doodle.path_border : doodle.path;
+            try {
+              const res = await fetch(imgPath);
+              const blob = await res.blob();
+              catFolder.file(doodle.filename, blob);
+              totalAdded++;
+            } catch (err) {
+              console.error('Error fetching file for ZIP:', imgPath, err);
+            }
+          }
+        }
+      }
+
+      if (totalAdded === 0) {
+        alert('No doodles selected to download!');
+        return;
+      }
+
+      zip.generateAsync({ type: 'blob' }).then((content) => {
+        saveAs(content, 'little_pages_doodles_kept.zip');
+      });
+    });
+
+    loadManifest();
+  </script>
+</body>
+</html>

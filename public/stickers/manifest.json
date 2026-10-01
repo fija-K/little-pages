@@ -1,0 +1,3188 @@
+[
+  {
+    "id": "cute-doodles",
+    "title": "Cute Doodles",
+    "annotated_image": "stickers/cute-doodles_annotated.png",
+    "total_count": 45,
+    "suspicious_count": 1,
+    "doodles": [
+      {
+        "id": "cute-doodles_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/cute-doodles/doodle_01.png",
+        "path_border": "stickers/cute-doodles/doodle_01_border.png",
+        "width": 88,
+        "height": 76,
+        "box": [
+          48,
+          151,
+          72,
+          60
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/cute-doodles/doodle_02.png",
+        "path_border": "stickers/cute-doodles/doodle_02_border.png",
+        "width": 69,
+        "height": 66,
+        "box": [
+          164,
+          157,
+          53,
+          50
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/cute-doodles/doodle_03.png",
+        "path_border": "stickers/cute-doodles/doodle_03_border.png",
+        "width": 91,
+        "height": 73,
+        "box": [
+          258,
+          154,
+          75,
+          57
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/cute-doodles/doodle_04.png",
+        "path_border": "stickers/cute-doodles/doodle_04_border.png",
+        "width": 67,
+        "height": 90,
+        "box": [
+          374,
+          141,
+          51,
+          74
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/cute-doodles/doodle_05.png",
+        "path_border": "stickers/cute-doodles/doodle_05_border.png",
+        "width": 72,
+        "height": 72,
+        "box": [
+          465,
+          154,
+          56,
+          56
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/cute-doodles/doodle_06.png",
+        "path_border": "stickers/cute-doodles/doodle_06_border.png",
+        "width": 84,
+        "height": 61,
+        "box": [
+          571,
+          171,
+          68,
+          45
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/cute-doodles/doodle_07.png",
+        "path_border": "stickers/cute-doodles/doodle_07_border.png",
+        "width": 66,
+        "height": 93,
+        "box": [
+          55,
+          255,
+          50,
+          77
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/cute-doodles/doodle_08.png",
+        "path_border": "stickers/cute-doodles/doodle_08_border.png",
+        "width": 91,
+        "height": 86,
+        "box": [
+          146,
+          265,
+          75,
+          70
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/cute-doodles/doodle_09.png",
+        "path_border": "stickers/cute-doodles/doodle_09_border.png",
+        "width": 79,
+        "height": 88,
+        "box": [
+          261,
+          265,
+          63,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/cute-doodles/doodle_10.png",
+        "path_border": "stickers/cute-doodles/doodle_10_border.png",
+        "width": 83,
+        "height": 68,
+        "box": [
+          368,
+          272,
+          67,
+          52
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/cute-doodles/doodle_11.png",
+        "path_border": "stickers/cute-doodles/doodle_11_border.png",
+        "width": 63,
+        "height": 75,
+        "box": [
+          484,
+          273,
+          47,
+          59
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/cute-doodles/doodle_12.png",
+        "path_border": "stickers/cute-doodles/doodle_12_border.png",
+        "width": 73,
+        "height": 73,
+        "box": [
+          572,
+          272,
+          57,
+          57
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/cute-doodles/doodle_13.png",
+        "path_border": "stickers/cute-doodles/doodle_13_border.png",
+        "width": 63,
+        "height": 64,
+        "box": [
+          56,
+          391,
+          47,
+          48
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/cute-doodles/doodle_14.png",
+        "path_border": "stickers/cute-doodles/doodle_14_border.png",
+        "width": 53,
+        "height": 72,
+        "box": [
+          168,
+          380,
+          37,
+          56
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_15",
+        "number": 15,
+        "filename": "doodle_15.png",
+        "filename_border": "doodle_15_border.png",
+        "path": "stickers/cute-doodles/doodle_15.png",
+        "path_border": "stickers/cute-doodles/doodle_15_border.png",
+        "width": 71,
+        "height": 70,
+        "box": [
+          269,
+          385,
+          55,
+          54
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_16",
+        "number": 16,
+        "filename": "doodle_16.png",
+        "filename_border": "doodle_16_border.png",
+        "path": "stickers/cute-doodles/doodle_16.png",
+        "path_border": "stickers/cute-doodles/doodle_16_border.png",
+        "width": 53,
+        "height": 111,
+        "box": [
+          381,
+          375,
+          37,
+          95
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_17",
+        "number": 17,
+        "filename": "doodle_17.png",
+        "filename_border": "doodle_17_border.png",
+        "path": "stickers/cute-doodles/doodle_17.png",
+        "path_border": "stickers/cute-doodles/doodle_17_border.png",
+        "width": 94,
+        "height": 90,
+        "box": [
+          459,
+          378,
+          78,
+          74
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_18",
+        "number": 18,
+        "filename": "doodle_18.png",
+        "filename_border": "doodle_18_border.png",
+        "path": "stickers/cute-doodles/doodle_18.png",
+        "path_border": "stickers/cute-doodles/doodle_18_border.png",
+        "width": 67,
+        "height": 63,
+        "box": [
+          579,
+          390,
+          51,
+          47
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_19",
+        "number": 19,
+        "filename": "doodle_19.png",
+        "filename_border": "doodle_19_border.png",
+        "path": "stickers/cute-doodles/doodle_19.png",
+        "path_border": "stickers/cute-doodles/doodle_19_border.png",
+        "width": 82,
+        "height": 88,
+        "box": [
+          41,
+          492,
+          66,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_20",
+        "number": 20,
+        "filename": "doodle_20.png",
+        "filename_border": "doodle_20_border.png",
+        "path": "stickers/cute-doodles/doodle_20.png",
+        "path_border": "stickers/cute-doodles/doodle_20_border.png",
+        "width": 74,
+        "height": 89,
+        "box": [
+          155,
+          483,
+          58,
+          73
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_21",
+        "number": 21,
+        "filename": "doodle_21.png",
+        "filename_border": "doodle_21_border.png",
+        "path": "stickers/cute-doodles/doodle_21.png",
+        "path_border": "stickers/cute-doodles/doodle_21_border.png",
+        "width": 78,
+        "height": 95,
+        "box": [
+          265,
+          484,
+          62,
+          79
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_22",
+        "number": 22,
+        "filename": "doodle_22.png",
+        "filename_border": "doodle_22_border.png",
+        "path": "stickers/cute-doodles/doodle_22.png",
+        "path_border": "stickers/cute-doodles/doodle_22_border.png",
+        "width": 73,
+        "height": 72,
+        "box": [
+          373,
+          497,
+          57,
+          56
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_23",
+        "number": 23,
+        "filename": "doodle_23.png",
+        "filename_border": "doodle_23_border.png",
+        "path": "stickers/cute-doodles/doodle_23.png",
+        "path_border": "stickers/cute-doodles/doodle_23_border.png",
+        "width": 67,
+        "height": 85,
+        "box": [
+          471,
+          489,
+          51,
+          69
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_24",
+        "number": 24,
+        "filename": "doodle_24.png",
+        "filename_border": "doodle_24_border.png",
+        "path": "stickers/cute-doodles/doodle_24.png",
+        "path_border": "stickers/cute-doodles/doodle_24_border.png",
+        "width": 88,
+        "height": 76,
+        "box": [
+          568,
+          495,
+          72,
+          60
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_25",
+        "number": 25,
+        "filename": "doodle_25.png",
+        "filename_border": "doodle_25_border.png",
+        "path": "stickers/cute-doodles/doodle_25.png",
+        "path_border": "stickers/cute-doodles/doodle_25_border.png",
+        "width": 62,
+        "height": 88,
+        "box": [
+          161,
+          594,
+          46,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_26",
+        "number": 26,
+        "filename": "doodle_26.png",
+        "filename_border": "doodle_26_border.png",
+        "path": "stickers/cute-doodles/doodle_26.png",
+        "path_border": "stickers/cute-doodles/doodle_26_border.png",
+        "width": 79,
+        "height": 88,
+        "box": [
+          42,
+          601,
+          63,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_27",
+        "number": 27,
+        "filename": "doodle_27.png",
+        "filename_border": "doodle_27_border.png",
+        "path": "stickers/cute-doodles/doodle_27.png",
+        "path_border": "stickers/cute-doodles/doodle_27_border.png",
+        "width": 42,
+        "height": 38,
+        "box": [
+          272,
+          619,
+          26,
+          22
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very small component"
+      },
+      {
+        "id": "cute-doodles_28",
+        "number": 28,
+        "filename": "doodle_28.png",
+        "filename_border": "doodle_28_border.png",
+        "path": "stickers/cute-doodles/doodle_28.png",
+        "path_border": "stickers/cute-doodles/doodle_28_border.png",
+        "width": 84,
+        "height": 76,
+        "box": [
+          356,
+          604,
+          68,
+          60
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_29",
+        "number": 29,
+        "filename": "doodle_29.png",
+        "filename_border": "doodle_29_border.png",
+        "path": "stickers/cute-doodles/doodle_29.png",
+        "path_border": "stickers/cute-doodles/doodle_29_border.png",
+        "width": 76,
+        "height": 81,
+        "box": [
+          462,
+          600,
+          60,
+          65
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_30",
+        "number": 30,
+        "filename": "doodle_30.png",
+        "filename_border": "doodle_30_border.png",
+        "path": "stickers/cute-doodles/doodle_30.png",
+        "path_border": "stickers/cute-doodles/doodle_30_border.png",
+        "width": 82,
+        "height": 68,
+        "box": [
+          569,
+          613,
+          66,
+          52
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_31",
+        "number": 31,
+        "filename": "doodle_31.png",
+        "filename_border": "doodle_31_border.png",
+        "path": "stickers/cute-doodles/doodle_31.png",
+        "path_border": "stickers/cute-doodles/doodle_31_border.png",
+        "width": 102,
+        "height": 61,
+        "box": [
+          49,
+          709,
+          86,
+          45
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_32",
+        "number": 32,
+        "filename": "doodle_32.png",
+        "filename_border": "doodle_32_border.png",
+        "path": "stickers/cute-doodles/doodle_32.png",
+        "path_border": "stickers/cute-doodles/doodle_32_border.png",
+        "width": 88,
+        "height": 80,
+        "box": [
+          180,
+          698,
+          72,
+          64
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_33",
+        "number": 33,
+        "filename": "doodle_33.png",
+        "filename_border": "doodle_33_border.png",
+        "path": "stickers/cute-doodles/doodle_33.png",
+        "path_border": "stickers/cute-doodles/doodle_33_border.png",
+        "width": 68,
+        "height": 92,
+        "box": [
+          304,
+          689,
+          52,
+          76
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_34",
+        "number": 34,
+        "filename": "doodle_34.png",
+        "filename_border": "doodle_34_border.png",
+        "path": "stickers/cute-doodles/doodle_34.png",
+        "path_border": "stickers/cute-doodles/doodle_34_border.png",
+        "width": 74,
+        "height": 71,
+        "box": [
+          421,
+          708,
+          58,
+          55
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_35",
+        "number": 35,
+        "filename": "doodle_35.png",
+        "filename_border": "doodle_35_border.png",
+        "path": "stickers/cute-doodles/doodle_35.png",
+        "path_border": "stickers/cute-doodles/doodle_35_border.png",
+        "width": 102,
+        "height": 78,
+        "box": [
+          545,
+          704,
+          86,
+          62
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_36",
+        "number": 36,
+        "filename": "doodle_36.png",
+        "filename_border": "doodle_36_border.png",
+        "path": "stickers/cute-doodles/doodle_36.png",
+        "path_border": "stickers/cute-doodles/doodle_36_border.png",
+        "width": 71,
+        "height": 58,
+        "box": [
+          46,
+          803,
+          55,
+          42
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_37",
+        "number": 37,
+        "filename": "doodle_37.png",
+        "filename_border": "doodle_37_border.png",
+        "path": "stickers/cute-doodles/doodle_37.png",
+        "path_border": "stickers/cute-doodles/doodle_37_border.png",
+        "width": 87,
+        "height": 100,
+        "box": [
+          145,
+          799,
+          71,
+          84
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_38",
+        "number": 38,
+        "filename": "doodle_38.png",
+        "filename_border": "doodle_38_border.png",
+        "path": "stickers/cute-doodles/doodle_38.png",
+        "path_border": "stickers/cute-doodles/doodle_38_border.png",
+        "width": 80,
+        "height": 86,
+        "box": [
+          264,
+          798,
+          64,
+          70
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_39",
+        "number": 39,
+        "filename": "doodle_39.png",
+        "filename_border": "doodle_39_border.png",
+        "path": "stickers/cute-doodles/doodle_39.png",
+        "path_border": "stickers/cute-doodles/doodle_39_border.png",
+        "width": 88,
+        "height": 82,
+        "box": [
+          361,
+          812,
+          72,
+          66
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_40",
+        "number": 40,
+        "filename": "doodle_40.png",
+        "filename_border": "doodle_40_border.png",
+        "path": "stickers/cute-doodles/doodle_40.png",
+        "path_border": "stickers/cute-doodles/doodle_40_border.png",
+        "width": 63,
+        "height": 93,
+        "box": [
+          478,
+          799,
+          47,
+          77
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_41",
+        "number": 41,
+        "filename": "doodle_41.png",
+        "filename_border": "doodle_41_border.png",
+        "path": "stickers/cute-doodles/doodle_41.png",
+        "path_border": "stickers/cute-doodles/doodle_41_border.png",
+        "width": 69,
+        "height": 69,
+        "box": [
+          566,
+          811,
+          53,
+          53
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_42",
+        "number": 42,
+        "filename": "doodle_42.png",
+        "filename_border": "doodle_42_border.png",
+        "path": "stickers/cute-doodles/doodle_42.png",
+        "path_border": "stickers/cute-doodles/doodle_42_border.png",
+        "width": 79,
+        "height": 90,
+        "box": [
+          45,
+          906,
+          63,
+          74
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_43",
+        "number": 43,
+        "filename": "doodle_43.png",
+        "filename_border": "doodle_43_border.png",
+        "path": "stickers/cute-doodles/doodle_43.png",
+        "path_border": "stickers/cute-doodles/doodle_43_border.png",
+        "width": 95,
+        "height": 74,
+        "box": [
+          223,
+          921,
+          79,
+          58
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_44",
+        "number": 44,
+        "filename": "doodle_44.png",
+        "filename_border": "doodle_44_border.png",
+        "path": "stickers/cute-doodles/doodle_44.png",
+        "path_border": "stickers/cute-doodles/doodle_44_border.png",
+        "width": 144,
+        "height": 71,
+        "box": [
+          351,
+          922,
+          128,
+          55
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cute-doodles_45",
+        "number": 45,
+        "filename": "doodle_45.png",
+        "filename_border": "doodle_45_border.png",
+        "path": "stickers/cute-doodles/doodle_45.png",
+        "path_border": "stickers/cute-doodles/doodle_45_border.png",
+        "width": 119,
+        "height": 99,
+        "box": [
+          528,
+          900,
+          103,
+          83
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "cat-doodles-1",
+    "title": "Cat Doodles 1",
+    "annotated_image": "stickers/cat-doodles-1_annotated.png",
+    "total_count": 9,
+    "suspicious_count": 2,
+    "doodles": [
+      {
+        "id": "cat-doodles-1_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/cat-doodles-1/doodle_01.png",
+        "path_border": "stickers/cat-doodles-1/doodle_01_border.png",
+        "width": 461,
+        "height": 364,
+        "box": [
+          13,
+          54,
+          445,
+          348
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very large component"
+      },
+      {
+        "id": "cat-doodles-1_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/cat-doodles-1/doodle_02.png",
+        "path_border": "stickers/cat-doodles-1/doodle_02_border.png",
+        "width": 199,
+        "height": 172,
+        "box": [
+          526,
+          58,
+          183,
+          156
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/cat-doodles-1/doodle_03.png",
+        "path_border": "stickers/cat-doodles-1/doodle_03_border.png",
+        "width": 213,
+        "height": 159,
+        "box": [
+          502,
+          246,
+          197,
+          143
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/cat-doodles-1/doodle_04.png",
+        "path_border": "stickers/cat-doodles-1/doodle_04_border.png",
+        "width": 209,
+        "height": 204,
+        "box": [
+          506,
+          422,
+          193,
+          188
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/cat-doodles-1/doodle_05.png",
+        "path_border": "stickers/cat-doodles-1/doodle_05_border.png",
+        "width": 228,
+        "height": 159,
+        "box": [
+          41,
+          429,
+          212,
+          143
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/cat-doodles-1/doodle_06.png",
+        "path_border": "stickers/cat-doodles-1/doodle_06_border.png",
+        "width": 171,
+        "height": 158,
+        "box": [
+          285,
+          440,
+          155,
+          142
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/cat-doodles-1/doodle_07.png",
+        "path_border": "stickers/cat-doodles-1/doodle_07_border.png",
+        "width": 451,
+        "height": 214,
+        "box": [
+          16,
+          603,
+          435,
+          198
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very large component"
+      },
+      {
+        "id": "cat-doodles-1_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/cat-doodles-1/doodle_08.png",
+        "path_border": "stickers/cat-doodles-1/doodle_08_border.png",
+        "width": 178,
+        "height": 70,
+        "box": [
+          507,
+          640,
+          162,
+          54
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-1_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/cat-doodles-1/doodle_09.png",
+        "path_border": "stickers/cat-doodles-1/doodle_09_border.png",
+        "width": 184,
+        "height": 109,
+        "box": [
+          530,
+          713,
+          168,
+          93
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "gojo-stickers",
+    "title": "Gojo Stickers",
+    "annotated_image": "stickers/gojo-stickers_annotated.png",
+    "total_count": 19,
+    "suspicious_count": 1,
+    "doodles": [
+      {
+        "id": "gojo-stickers_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/gojo-stickers/doodle_01.png",
+        "path_border": "stickers/gojo-stickers/doodle_01_border.png",
+        "width": 120,
+        "height": 149,
+        "box": [
+          30,
+          17,
+          104,
+          133
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/gojo-stickers/doodle_02.png",
+        "path_border": "stickers/gojo-stickers/doodle_02_border.png",
+        "width": 117,
+        "height": 167,
+        "box": [
+          172,
+          16,
+          101,
+          151
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/gojo-stickers/doodle_03.png",
+        "path_border": "stickers/gojo-stickers/doodle_03_border.png",
+        "width": 129,
+        "height": 164,
+        "box": [
+          315,
+          10,
+          113,
+          148
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/gojo-stickers/doodle_04.png",
+        "path_border": "stickers/gojo-stickers/doodle_04_border.png",
+        "width": 128,
+        "height": 150,
+        "box": [
+          447,
+          13,
+          112,
+          134
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/gojo-stickers/doodle_05.png",
+        "path_border": "stickers/gojo-stickers/doodle_05_border.png",
+        "width": 120,
+        "height": 148,
+        "box": [
+          15,
+          176,
+          104,
+          132
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/gojo-stickers/doodle_06.png",
+        "path_border": "stickers/gojo-stickers/doodle_06_border.png",
+        "width": 151,
+        "height": 126,
+        "box": [
+          166,
+          189,
+          135,
+          110
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/gojo-stickers/doodle_07.png",
+        "path_border": "stickers/gojo-stickers/doodle_07_border.png",
+        "width": 119,
+        "height": 135,
+        "box": [
+          328,
+          181,
+          103,
+          119
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/gojo-stickers/doodle_08.png",
+        "path_border": "stickers/gojo-stickers/doodle_08_border.png",
+        "width": 140,
+        "height": 129,
+        "box": [
+          444,
+          193,
+          125,
+          113
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/gojo-stickers/doodle_09.png",
+        "path_border": "stickers/gojo-stickers/doodle_09_border.png",
+        "width": 425,
+        "height": 344,
+        "box": [
+          156,
+          323,
+          409,
+          328
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very large component"
+      },
+      {
+        "id": "gojo-stickers_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/gojo-stickers/doodle_10.png",
+        "path_border": "stickers/gojo-stickers/doodle_10_border.png",
+        "width": 137,
+        "height": 119,
+        "box": [
+          5,
+          352,
+          124,
+          103
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/gojo-stickers/doodle_11.png",
+        "path_border": "stickers/gojo-stickers/doodle_11_border.png",
+        "width": 138,
+        "height": 177,
+        "box": [
+          3,
+          493,
+          127,
+          161
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/gojo-stickers/doodle_12.png",
+        "path_border": "stickers/gojo-stickers/doodle_12_border.png",
+        "width": 126,
+        "height": 147,
+        "box": [
+          443,
+          679,
+          110,
+          131
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/gojo-stickers/doodle_13.png",
+        "path_border": "stickers/gojo-stickers/doodle_13_border.png",
+        "width": 121,
+        "height": 118,
+        "box": [
+          15,
+          730,
+          105,
+          102
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/gojo-stickers/doodle_14.png",
+        "path_border": "stickers/gojo-stickers/doodle_14_border.png",
+        "width": 115,
+        "height": 165,
+        "box": [
+          167,
+          697,
+          99,
+          149
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_15",
+        "number": 15,
+        "filename": "doodle_15.png",
+        "filename_border": "doodle_15_border.png",
+        "path": "stickers/gojo-stickers/doodle_15.png",
+        "path_border": "stickers/gojo-stickers/doodle_15_border.png",
+        "width": 129,
+        "height": 154,
+        "box": [
+          314,
+          693,
+          113,
+          138
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_16",
+        "number": 16,
+        "filename": "doodle_16.png",
+        "filename_border": "doodle_16_border.png",
+        "path": "stickers/gojo-stickers/doodle_16.png",
+        "path_border": "stickers/gojo-stickers/doodle_16_border.png",
+        "width": 125,
+        "height": 155,
+        "box": [
+          23,
+          861,
+          109,
+          139
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_17",
+        "number": 17,
+        "filename": "doodle_17.png",
+        "filename_border": "doodle_17_border.png",
+        "path": "stickers/gojo-stickers/doodle_17.png",
+        "path_border": "stickers/gojo-stickers/doodle_17_border.png",
+        "width": 142,
+        "height": 128,
+        "box": [
+          164,
+          882,
+          126,
+          112
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_18",
+        "number": 18,
+        "filename": "doodle_18.png",
+        "filename_border": "doodle_18_border.png",
+        "path": "stickers/gojo-stickers/doodle_18.png",
+        "path_border": "stickers/gojo-stickers/doodle_18_border.png",
+        "width": 139,
+        "height": 118,
+        "box": [
+          317,
+          896,
+          123,
+          102
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "gojo-stickers_19",
+        "number": 19,
+        "filename": "doodle_19.png",
+        "filename_border": "doodle_19_border.png",
+        "path": "stickers/gojo-stickers/doodle_19.png",
+        "path_border": "stickers/gojo-stickers/doodle_19_border.png",
+        "width": 109,
+        "height": 149,
+        "box": [
+          467,
+          852,
+          93,
+          133
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "anime-heads",
+    "title": "Anime Heads",
+    "annotated_image": "stickers/anime-heads_annotated.png",
+    "total_count": 18,
+    "suspicious_count": 1,
+    "doodles": [
+      {
+        "id": "anime-heads_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/anime-heads/doodle_01.png",
+        "path_border": "stickers/anime-heads/doodle_01_border.png",
+        "width": 160,
+        "height": 150,
+        "box": [
+          37,
+          18,
+          144,
+          134
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/anime-heads/doodle_02.png",
+        "path_border": "stickers/anime-heads/doodle_02_border.png",
+        "width": 158,
+        "height": 144,
+        "box": [
+          213,
+          24,
+          142,
+          128
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/anime-heads/doodle_03.png",
+        "path_border": "stickers/anime-heads/doodle_03_border.png",
+        "width": 147,
+        "height": 166,
+        "box": [
+          386,
+          0,
+          131,
+          158
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/anime-heads/doodle_04.png",
+        "path_border": "stickers/anime-heads/doodle_04_border.png",
+        "width": 170,
+        "height": 194,
+        "box": [
+          566,
+          11,
+          154,
+          178
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/anime-heads/doodle_05.png",
+        "path_border": "stickers/anime-heads/doodle_05_border.png",
+        "width": 499,
+        "height": 161,
+        "box": [
+          28,
+          175,
+          483,
+          145
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very large component"
+      },
+      {
+        "id": "anime-heads_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/anime-heads/doodle_06.png",
+        "path_border": "stickers/anime-heads/doodle_06_border.png",
+        "width": 160,
+        "height": 319,
+        "box": [
+          561,
+          229,
+          144,
+          303
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/anime-heads/doodle_07.png",
+        "path_border": "stickers/anime-heads/doodle_07_border.png",
+        "width": 347,
+        "height": 194,
+        "box": [
+          32,
+          348,
+          331,
+          178
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/anime-heads/doodle_08.png",
+        "path_border": "stickers/anime-heads/doodle_08_border.png",
+        "width": 156,
+        "height": 199,
+        "box": [
+          381,
+          353,
+          140,
+          183
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/anime-heads/doodle_09.png",
+        "path_border": "stickers/anime-heads/doodle_09_border.png",
+        "width": 183,
+        "height": 153,
+        "box": [
+          31,
+          551,
+          167,
+          137
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/anime-heads/doodle_10.png",
+        "path_border": "stickers/anime-heads/doodle_10_border.png",
+        "width": 165,
+        "height": 310,
+        "box": [
+          216,
+          546,
+          149,
+          294
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/anime-heads/doodle_11.png",
+        "path_border": "stickers/anime-heads/doodle_11_border.png",
+        "width": 160,
+        "height": 139,
+        "box": [
+          393,
+          564,
+          144,
+          123
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/anime-heads/doodle_12.png",
+        "path_border": "stickers/anime-heads/doodle_12_border.png",
+        "width": 167,
+        "height": 298,
+        "box": [
+          576,
+          567,
+          151,
+          282
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/anime-heads/doodle_13.png",
+        "path_border": "stickers/anime-heads/doodle_13_border.png",
+        "width": 163,
+        "height": 153,
+        "box": [
+          23,
+          706,
+          147,
+          137
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/anime-heads/doodle_14.png",
+        "path_border": "stickers/anime-heads/doodle_14_border.png",
+        "width": 161,
+        "height": 144,
+        "box": [
+          395,
+          717,
+          145,
+          128
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_15",
+        "number": 15,
+        "filename": "doodle_15.png",
+        "filename_border": "doodle_15_border.png",
+        "path": "stickers/anime-heads/doodle_15.png",
+        "path_border": "stickers/anime-heads/doodle_15_border.png",
+        "width": 139,
+        "height": 140,
+        "box": [
+          35,
+          887,
+          123,
+          124
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_16",
+        "number": 16,
+        "filename": "doodle_16.png",
+        "filename_border": "doodle_16_border.png",
+        "path": "stickers/anime-heads/doodle_16.png",
+        "path_border": "stickers/anime-heads/doodle_16_border.png",
+        "width": 161,
+        "height": 163,
+        "box": [
+          216,
+          869,
+          145,
+          148
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_17",
+        "number": 17,
+        "filename": "doodle_17.png",
+        "filename_border": "doodle_17_border.png",
+        "path": "stickers/anime-heads/doodle_17.png",
+        "path_border": "stickers/anime-heads/doodle_17_border.png",
+        "width": 174,
+        "height": 161,
+        "box": [
+          391,
+          871,
+          158,
+          151
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "anime-heads_18",
+        "number": 18,
+        "filename": "doodle_18.png",
+        "filename_border": "doodle_18_border.png",
+        "path": "stickers/anime-heads/doodle_18.png",
+        "path_border": "stickers/anime-heads/doodle_18_border.png",
+        "width": 175,
+        "height": 147,
+        "box": [
+          582,
+          876,
+          159,
+          131
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "cat-doodles-2",
+    "title": "Cat Doodles 2",
+    "annotated_image": "stickers/cat-doodles-2_annotated.png",
+    "total_count": 14,
+    "suspicious_count": 1,
+    "doodles": [
+      {
+        "id": "cat-doodles-2_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/cat-doodles-2/doodle_01.png",
+        "path_border": "stickers/cat-doodles-2/doodle_01_border.png",
+        "width": 148,
+        "height": 134,
+        "box": [
+          19,
+          71,
+          132,
+          118
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/cat-doodles-2/doodle_02.png",
+        "path_border": "stickers/cat-doodles-2/doodle_02_border.png",
+        "width": 138,
+        "height": 57,
+        "box": [
+          202,
+          69,
+          122,
+          41
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/cat-doodles-2/doodle_03.png",
+        "path_border": "stickers/cat-doodles-2/doodle_03_border.png",
+        "width": 195,
+        "height": 147,
+        "box": [
+          382,
+          77,
+          179,
+          131
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/cat-doodles-2/doodle_04.png",
+        "path_border": "stickers/cat-doodles-2/doodle_04_border.png",
+        "width": 157,
+        "height": 93,
+        "box": [
+          196,
+          129,
+          141,
+          77
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/cat-doodles-2/doodle_05.png",
+        "path_border": "stickers/cat-doodles-2/doodle_05_border.png",
+        "width": 169,
+        "height": 157,
+        "box": [
+          0,
+          238,
+          161,
+          141
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/cat-doodles-2/doodle_06.png",
+        "path_border": "stickers/cat-doodles-2/doodle_06_border.png",
+        "width": 189,
+        "height": 171,
+        "box": [
+          221,
+          230,
+          173,
+          155
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/cat-doodles-2/doodle_07.png",
+        "path_border": "stickers/cat-doodles-2/doodle_07_border.png",
+        "width": 165,
+        "height": 144,
+        "box": [
+          414,
+          226,
+          149,
+          128
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/cat-doodles-2/doodle_08.png",
+        "path_border": "stickers/cat-doodles-2/doodle_08_border.png",
+        "width": 141,
+        "height": 62,
+        "box": [
+          43,
+          418,
+          125,
+          46
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/cat-doodles-2/doodle_09.png",
+        "path_border": "stickers/cat-doodles-2/doodle_09_border.png",
+        "width": 150,
+        "height": 173,
+        "box": [
+          409,
+          412,
+          134,
+          157
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/cat-doodles-2/doodle_10.png",
+        "path_border": "stickers/cat-doodles-2/doodle_10_border.png",
+        "width": 149,
+        "height": 91,
+        "box": [
+          39,
+          488,
+          133,
+          75
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/cat-doodles-2/doodle_11.png",
+        "path_border": "stickers/cat-doodles-2/doodle_11_border.png",
+        "width": 186,
+        "height": 166,
+        "box": [
+          214,
+          438,
+          170,
+          150
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/cat-doodles-2/doodle_12.png",
+        "path_border": "stickers/cat-doodles-2/doodle_12_border.png",
+        "width": 374,
+        "height": 339,
+        "box": [
+          12,
+          629,
+          358,
+          323
+        ],
+        "is_suspicious": true,
+        "suspicious_reason": "Very large component"
+      },
+      {
+        "id": "cat-doodles-2_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/cat-doodles-2/doodle_13.png",
+        "path_border": "stickers/cat-doodles-2/doodle_13_border.png",
+        "width": 132,
+        "height": 162,
+        "box": [
+          452,
+          603,
+          124,
+          146
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "cat-doodles-2_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/cat-doodles-2/doodle_14.png",
+        "path_border": "stickers/cat-doodles-2/doodle_14_border.png",
+        "width": 188,
+        "height": 182,
+        "box": [
+          392,
+          799,
+          172,
+          166
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "flork-memes",
+    "title": "Flork Memes",
+    "annotated_image": "stickers/flork-memes_annotated.png",
+    "total_count": 9,
+    "suspicious_count": 0,
+    "doodles": [
+      {
+        "id": "flork-memes_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/flork-memes/doodle_01.png",
+        "path_border": "stickers/flork-memes/doodle_01_border.png",
+        "width": 171,
+        "height": 149,
+        "box": [
+          62,
+          84,
+          155,
+          133
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/flork-memes/doodle_02.png",
+        "path_border": "stickers/flork-memes/doodle_02_border.png",
+        "width": 135,
+        "height": 150,
+        "box": [
+          299,
+          83,
+          119,
+          134
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/flork-memes/doodle_03.png",
+        "path_border": "stickers/flork-memes/doodle_03_border.png",
+        "width": 135,
+        "height": 150,
+        "box": [
+          511,
+          83,
+          119,
+          134
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/flork-memes/doodle_04.png",
+        "path_border": "stickers/flork-memes/doodle_04_border.png",
+        "width": 148,
+        "height": 154,
+        "box": [
+          62,
+          291,
+          132,
+          138
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/flork-memes/doodle_05.png",
+        "path_border": "stickers/flork-memes/doodle_05_border.png",
+        "width": 139,
+        "height": 147,
+        "box": [
+          303,
+          298,
+          123,
+          131
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/flork-memes/doodle_06.png",
+        "path_border": "stickers/flork-memes/doodle_06_border.png",
+        "width": 138,
+        "height": 154,
+        "box": [
+          511,
+          290,
+          122,
+          138
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/flork-memes/doodle_07.png",
+        "path_border": "stickers/flork-memes/doodle_07_border.png",
+        "width": 196,
+        "height": 162,
+        "box": [
+          46,
+          502,
+          180,
+          146
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/flork-memes/doodle_08.png",
+        "path_border": "stickers/flork-memes/doodle_08_border.png",
+        "width": 149,
+        "height": 167,
+        "box": [
+          298,
+          504,
+          133,
+          151
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "flork-memes_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/flork-memes/doodle_09.png",
+        "path_border": "stickers/flork-memes/doodle_09_border.png",
+        "width": 137,
+        "height": 184,
+        "box": [
+          520,
+          487,
+          121,
+          168
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "pink-pixel",
+    "title": "Pink Pixel Art",
+    "annotated_image": "stickers/pink-pixel_annotated.png",
+    "total_count": 36,
+    "suspicious_count": 0,
+    "doodles": [
+      {
+        "id": "pink-pixel_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/pink-pixel/doodle_01.png",
+        "path_border": "stickers/pink-pixel/doodle_01_border.png",
+        "width": 129,
+        "height": 115,
+        "box": [
+          27,
+          33,
+          113,
+          99
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/pink-pixel/doodle_02.png",
+        "path_border": "stickers/pink-pixel/doodle_02_border.png",
+        "width": 108,
+        "height": 94,
+        "box": [
+          173,
+          43,
+          92,
+          78
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/pink-pixel/doodle_03.png",
+        "path_border": "stickers/pink-pixel/doodle_03_border.png",
+        "width": 271,
+        "height": 268,
+        "box": [
+          283,
+          26,
+          255,
+          252
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/pink-pixel/doodle_04.png",
+        "path_border": "stickers/pink-pixel/doodle_04_border.png",
+        "width": 107,
+        "height": 130,
+        "box": [
+          568,
+          23,
+          91,
+          114
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/pink-pixel/doodle_05.png",
+        "path_border": "stickers/pink-pixel/doodle_05_border.png",
+        "width": 120,
+        "height": 132,
+        "box": [
+          25,
+          157,
+          104,
+          116
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/pink-pixel/doodle_06.png",
+        "path_border": "stickers/pink-pixel/doodle_06_border.png",
+        "width": 122,
+        "height": 107,
+        "box": [
+          162,
+          165,
+          106,
+          91
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/pink-pixel/doodle_07.png",
+        "path_border": "stickers/pink-pixel/doodle_07_border.png",
+        "width": 124,
+        "height": 115,
+        "box": [
+          548,
+          169,
+          108,
+          99
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/pink-pixel/doodle_08.png",
+        "path_border": "stickers/pink-pixel/doodle_08_border.png",
+        "width": 138,
+        "height": 126,
+        "box": [
+          16,
+          288,
+          122,
+          110
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/pink-pixel/doodle_09.png",
+        "path_border": "stickers/pink-pixel/doodle_09_border.png",
+        "width": 101,
+        "height": 104,
+        "box": [
+          163,
+          286,
+          85,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/pink-pixel/doodle_10.png",
+        "path_border": "stickers/pink-pixel/doodle_10_border.png",
+        "width": 143,
+        "height": 121,
+        "box": [
+          269,
+          297,
+          127,
+          105
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/pink-pixel/doodle_11.png",
+        "path_border": "stickers/pink-pixel/doodle_11_border.png",
+        "width": 106,
+        "height": 105,
+        "box": [
+          418,
+          309,
+          90,
+          89
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/pink-pixel/doodle_12.png",
+        "path_border": "stickers/pink-pixel/doodle_12_border.png",
+        "width": 136,
+        "height": 104,
+        "box": [
+          540,
+          306,
+          120,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/pink-pixel/doodle_13.png",
+        "path_border": "stickers/pink-pixel/doodle_13_border.png",
+        "width": 119,
+        "height": 122,
+        "box": [
+          557,
+          423,
+          103,
+          106
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/pink-pixel/doodle_14.png",
+        "path_border": "stickers/pink-pixel/doodle_14_border.png",
+        "width": 98,
+        "height": 145,
+        "box": [
+          27,
+          427,
+          82,
+          129
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_15",
+        "number": 15,
+        "filename": "doodle_15.png",
+        "filename_border": "doodle_15_border.png",
+        "path": "stickers/pink-pixel/doodle_15.png",
+        "path_border": "stickers/pink-pixel/doodle_15_border.png",
+        "width": 131,
+        "height": 107,
+        "box": [
+          150,
+          444,
+          115,
+          91
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_16",
+        "number": 16,
+        "filename": "doodle_16.png",
+        "filename_border": "doodle_16_border.png",
+        "path": "stickers/pink-pixel/doodle_16.png",
+        "path_border": "stickers/pink-pixel/doodle_16_border.png",
+        "width": 89,
+        "height": 142,
+        "box": [
+          297,
+          425,
+          73,
+          126
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_17",
+        "number": 17,
+        "filename": "doodle_17.png",
+        "filename_border": "doodle_17_border.png",
+        "path": "stickers/pink-pixel/doodle_17.png",
+        "path_border": "stickers/pink-pixel/doodle_17_border.png",
+        "width": 149,
+        "height": 134,
+        "box": [
+          401,
+          429,
+          133,
+          118
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_18",
+        "number": 18,
+        "filename": "doodle_18.png",
+        "filename_border": "doodle_18_border.png",
+        "path": "stickers/pink-pixel/doodle_18.png",
+        "path_border": "stickers/pink-pixel/doodle_18_border.png",
+        "width": 112,
+        "height": 123,
+        "box": [
+          23,
+          575,
+          96,
+          107
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_19",
+        "number": 19,
+        "filename": "doodle_19.png",
+        "filename_border": "doodle_19_border.png",
+        "path": "stickers/pink-pixel/doodle_19.png",
+        "path_border": "stickers/pink-pixel/doodle_19_border.png",
+        "width": 139,
+        "height": 107,
+        "box": [
+          150,
+          574,
+          123,
+          91
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_20",
+        "number": 20,
+        "filename": "doodle_20.png",
+        "filename_border": "doodle_20_border.png",
+        "path": "stickers/pink-pixel/doodle_20.png",
+        "path_border": "stickers/pink-pixel/doodle_20_border.png",
+        "width": 111,
+        "height": 106,
+        "box": [
+          293,
+          585,
+          95,
+          90
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_21",
+        "number": 21,
+        "filename": "doodle_21.png",
+        "filename_border": "doodle_21_border.png",
+        "path": "stickers/pink-pixel/doodle_21.png",
+        "path_border": "stickers/pink-pixel/doodle_21_border.png",
+        "width": 133,
+        "height": 127,
+        "box": [
+          414,
+          567,
+          117,
+          111
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_22",
+        "number": 22,
+        "filename": "doodle_22.png",
+        "filename_border": "doodle_22_border.png",
+        "path": "stickers/pink-pixel/doodle_22.png",
+        "path_border": "stickers/pink-pixel/doodle_22_border.png",
+        "width": 93,
+        "height": 144,
+        "box": [
+          580,
+          555,
+          77,
+          128
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_23",
+        "number": 23,
+        "filename": "doodle_23.png",
+        "filename_border": "doodle_23_border.png",
+        "path": "stickers/pink-pixel/doodle_23.png",
+        "path_border": "stickers/pink-pixel/doodle_23_border.png",
+        "width": 104,
+        "height": 105,
+        "box": [
+          33,
+          702,
+          88,
+          89
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_24",
+        "number": 24,
+        "filename": "doodle_24.png",
+        "filename_border": "doodle_24_border.png",
+        "path": "stickers/pink-pixel/doodle_24.png",
+        "path_border": "stickers/pink-pixel/doodle_24_border.png",
+        "width": 109,
+        "height": 122,
+        "box": [
+          154,
+          693,
+          93,
+          106
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_25",
+        "number": 25,
+        "filename": "doodle_25.png",
+        "filename_border": "doodle_25_border.png",
+        "path": "stickers/pink-pixel/doodle_25.png",
+        "path_border": "stickers/pink-pixel/doodle_25_border.png",
+        "width": 122,
+        "height": 83,
+        "box": [
+          286,
+          717,
+          106,
+          67
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_26",
+        "number": 26,
+        "filename": "doodle_26.png",
+        "filename_border": "doodle_26_border.png",
+        "path": "stickers/pink-pixel/doodle_26.png",
+        "path_border": "stickers/pink-pixel/doodle_26_border.png",
+        "width": 101,
+        "height": 110,
+        "box": [
+          429,
+          701,
+          85,
+          94
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_27",
+        "number": 27,
+        "filename": "doodle_27.png",
+        "filename_border": "doodle_27_border.png",
+        "path": "stickers/pink-pixel/doodle_27.png",
+        "path_border": "stickers/pink-pixel/doodle_27_border.png",
+        "width": 109,
+        "height": 107,
+        "box": [
+          566,
+          704,
+          93,
+          91
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_28",
+        "number": 28,
+        "filename": "doodle_28.png",
+        "filename_border": "doodle_28_border.png",
+        "path": "stickers/pink-pixel/doodle_28.png",
+        "path_border": "stickers/pink-pixel/doodle_28_border.png",
+        "width": 131,
+        "height": 99,
+        "box": [
+          16,
+          821,
+          115,
+          83
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_29",
+        "number": 29,
+        "filename": "doodle_29.png",
+        "filename_border": "doodle_29_border.png",
+        "path": "stickers/pink-pixel/doodle_29.png",
+        "path_border": "stickers/pink-pixel/doodle_29_border.png",
+        "width": 100,
+        "height": 91,
+        "box": [
+          161,
+          824,
+          84,
+          75
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_30",
+        "number": 30,
+        "filename": "doodle_30.png",
+        "filename_border": "doodle_30_border.png",
+        "path": "stickers/pink-pixel/doodle_30.png",
+        "path_border": "stickers/pink-pixel/doodle_30_border.png",
+        "width": 126,
+        "height": 106,
+        "box": [
+          287,
+          811,
+          110,
+          90
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_31",
+        "number": 31,
+        "filename": "doodle_31.png",
+        "filename_border": "doodle_31_border.png",
+        "path": "stickers/pink-pixel/doodle_31.png",
+        "path_border": "stickers/pink-pixel/doodle_31_border.png",
+        "width": 96,
+        "height": 97,
+        "box": [
+          430,
+          827,
+          80,
+          81
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_32",
+        "number": 32,
+        "filename": "doodle_32.png",
+        "filename_border": "doodle_32_border.png",
+        "path": "stickers/pink-pixel/doodle_32.png",
+        "path_border": "stickers/pink-pixel/doodle_32_border.png",
+        "width": 130,
+        "height": 202,
+        "box": [
+          546,
+          820,
+          114,
+          186
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_33",
+        "number": 33,
+        "filename": "doodle_33.png",
+        "filename_border": "doodle_33_border.png",
+        "path": "stickers/pink-pixel/doodle_33.png",
+        "path_border": "stickers/pink-pixel/doodle_33_border.png",
+        "width": 104,
+        "height": 104,
+        "box": [
+          32,
+          919,
+          88,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_34",
+        "number": 34,
+        "filename": "doodle_34.png",
+        "filename_border": "doodle_34_border.png",
+        "path": "stickers/pink-pixel/doodle_34.png",
+        "path_border": "stickers/pink-pixel/doodle_34_border.png",
+        "width": 107,
+        "height": 101,
+        "box": [
+          153,
+          921,
+          91,
+          85
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_35",
+        "number": 35,
+        "filename": "doodle_35.png",
+        "filename_border": "doodle_35_border.png",
+        "path": "stickers/pink-pixel/doodle_35.png",
+        "path_border": "stickers/pink-pixel/doodle_35_border.png",
+        "width": 147,
+        "height": 80,
+        "box": [
+          275,
+          933,
+          131,
+          64
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "pink-pixel_36",
+        "number": 36,
+        "filename": "doodle_36.png",
+        "filename_border": "doodle_36_border.png",
+        "path": "stickers/pink-pixel/doodle_36.png",
+        "path_border": "stickers/pink-pixel/doodle_36_border.png",
+        "width": 106,
+        "height": 88,
+        "box": [
+          438,
+          933,
+          90,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  },
+  {
+    "id": "red-pixel",
+    "title": "Red Pixel Art",
+    "annotated_image": "stickers/red-pixel_annotated.png",
+    "total_count": 23,
+    "suspicious_count": 0,
+    "doodles": [
+      {
+        "id": "red-pixel_1",
+        "number": 1,
+        "filename": "doodle_01.png",
+        "filename_border": "doodle_01_border.png",
+        "path": "stickers/red-pixel/doodle_01.png",
+        "path_border": "stickers/red-pixel/doodle_01_border.png",
+        "width": 93,
+        "height": 104,
+        "box": [
+          19,
+          19,
+          77,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_2",
+        "number": 2,
+        "filename": "doodle_02.png",
+        "filename_border": "doodle_02_border.png",
+        "path": "stickers/red-pixel/doodle_02.png",
+        "path_border": "stickers/red-pixel/doodle_02_border.png",
+        "width": 116,
+        "height": 102,
+        "box": [
+          135,
+          19,
+          100,
+          86
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_3",
+        "number": 3,
+        "filename": "doodle_03.png",
+        "filename_border": "doodle_03_border.png",
+        "path": "stickers/red-pixel/doodle_03.png",
+        "path_border": "stickers/red-pixel/doodle_03_border.png",
+        "width": 291,
+        "height": 296,
+        "box": [
+          250,
+          30,
+          275,
+          280
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_4",
+        "number": 4,
+        "filename": "doodle_04.png",
+        "filename_border": "doodle_04_border.png",
+        "path": "stickers/red-pixel/doodle_04.png",
+        "path_border": "stickers/red-pixel/doodle_04_border.png",
+        "width": 188,
+        "height": 72,
+        "box": [
+          534,
+          19,
+          172,
+          56
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_5",
+        "number": 5,
+        "filename": "doodle_05.png",
+        "filename_border": "doodle_05_border.png",
+        "path": "stickers/red-pixel/doodle_05.png",
+        "path_border": "stickers/red-pixel/doodle_05_border.png",
+        "width": 52,
+        "height": 61,
+        "box": [
+          40,
+          156,
+          36,
+          45
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_6",
+        "number": 6,
+        "filename": "doodle_06.png",
+        "filename_border": "doodle_06_border.png",
+        "path": "stickers/red-pixel/doodle_06.png",
+        "path_border": "stickers/red-pixel/doodle_06_border.png",
+        "width": 91,
+        "height": 92,
+        "box": [
+          157,
+          135,
+          75,
+          76
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_7",
+        "number": 7,
+        "filename": "doodle_07.png",
+        "filename_border": "doodle_07_border.png",
+        "path": "stickers/red-pixel/doodle_07.png",
+        "path_border": "stickers/red-pixel/doodle_07_border.png",
+        "width": 187,
+        "height": 73,
+        "box": [
+          535,
+          134,
+          171,
+          57
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_8",
+        "number": 8,
+        "filename": "doodle_08.png",
+        "filename_border": "doodle_08_border.png",
+        "path": "stickers/red-pixel/doodle_08.png",
+        "path_border": "stickers/red-pixel/doodle_08_border.png",
+        "width": 71,
+        "height": 72,
+        "box": [
+          51,
+          219,
+          55,
+          56
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_9",
+        "number": 9,
+        "filename": "doodle_09.png",
+        "filename_border": "doodle_09_border.png",
+        "path": "stickers/red-pixel/doodle_09.png",
+        "path_border": "stickers/red-pixel/doodle_09_border.png",
+        "width": 81,
+        "height": 81,
+        "box": [
+          157,
+          230,
+          65,
+          65
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_10",
+        "number": 10,
+        "filename": "doodle_10.png",
+        "filename_border": "doodle_10_border.png",
+        "path": "stickers/red-pixel/doodle_10.png",
+        "path_border": "stickers/red-pixel/doodle_10_border.png",
+        "width": 123,
+        "height": 82,
+        "box": [
+          556,
+          220,
+          107,
+          66
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_11",
+        "number": 11,
+        "filename": "doodle_11.png",
+        "filename_border": "doodle_11_border.png",
+        "path": "stickers/red-pixel/doodle_11.png",
+        "path_border": "stickers/red-pixel/doodle_11_border.png",
+        "width": 178,
+        "height": 177,
+        "box": [
+          19,
+          324,
+          162,
+          161
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_12",
+        "number": 12,
+        "filename": "doodle_12.png",
+        "filename_border": "doodle_12_border.png",
+        "path": "stickers/red-pixel/doodle_12.png",
+        "path_border": "stickers/red-pixel/doodle_12_border.png",
+        "width": 155,
+        "height": 94,
+        "box": [
+          219,
+          323,
+          139,
+          78
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_13",
+        "number": 13,
+        "filename": "doodle_13.png",
+        "filename_border": "doodle_13_border.png",
+        "path": "stickers/red-pixel/doodle_13.png",
+        "path_border": "stickers/red-pixel/doodle_13_border.png",
+        "width": 134,
+        "height": 63,
+        "box": [
+          230,
+          419,
+          118,
+          47
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_14",
+        "number": 14,
+        "filename": "doodle_14.png",
+        "filename_border": "doodle_14_border.png",
+        "path": "stickers/red-pixel/doodle_14.png",
+        "path_border": "stickers/red-pixel/doodle_14_border.png",
+        "width": 220,
+        "height": 207,
+        "box": [
+          419,
+          346,
+          204,
+          191
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_15",
+        "number": 15,
+        "filename": "doodle_15.png",
+        "filename_border": "doodle_15_border.png",
+        "path": "stickers/red-pixel/doodle_15.png",
+        "path_border": "stickers/red-pixel/doodle_15_border.png",
+        "width": 238,
+        "height": 324,
+        "box": [
+          31,
+          513,
+          222,
+          308
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_16",
+        "number": 16,
+        "filename": "doodle_16.png",
+        "filename_border": "doodle_16_border.png",
+        "path": "stickers/red-pixel/doodle_16.png",
+        "path_border": "stickers/red-pixel/doodle_16_border.png",
+        "width": 123,
+        "height": 104,
+        "box": [
+          293,
+          535,
+          107,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_17",
+        "number": 17,
+        "filename": "doodle_17.png",
+        "filename_border": "doodle_17_border.png",
+        "path": "stickers/red-pixel/doodle_17.png",
+        "path_border": "stickers/red-pixel/doodle_17_border.png",
+        "width": 154,
+        "height": 105,
+        "box": [
+          462,
+          576,
+          138,
+          89
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_18",
+        "number": 18,
+        "filename": "doodle_18.png",
+        "filename_border": "doodle_18_border.png",
+        "path": "stickers/red-pixel/doodle_18.png",
+        "path_border": "stickers/red-pixel/doodle_18_border.png",
+        "width": 83,
+        "height": 104,
+        "box": [
+          628,
+          555,
+          67,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_19",
+        "number": 19,
+        "filename": "doodle_19.png",
+        "filename_border": "doodle_19_border.png",
+        "path": "stickers/red-pixel/doodle_19.png",
+        "path_border": "stickers/red-pixel/doodle_19_border.png",
+        "width": 136,
+        "height": 88,
+        "box": [
+          271,
+          701,
+          120,
+          72
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_20",
+        "number": 20,
+        "filename": "doodle_20.png",
+        "filename_border": "doodle_20_border.png",
+        "path": "stickers/red-pixel/doodle_20.png",
+        "path_border": "stickers/red-pixel/doodle_20_border.png",
+        "width": 322,
+        "height": 323,
+        "box": [
+          409,
+          703,
+          306,
+          307
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_21",
+        "number": 21,
+        "filename": "doodle_21.png",
+        "filename_border": "doodle_21_border.png",
+        "path": "stickers/red-pixel/doodle_21.png",
+        "path_border": "stickers/red-pixel/doodle_21_border.png",
+        "width": 94,
+        "height": 85,
+        "box": [
+          19,
+          910,
+          78,
+          69
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_22",
+        "number": 22,
+        "filename": "doodle_22.png",
+        "filename_border": "doodle_22_border.png",
+        "path": "stickers/red-pixel/doodle_22.png",
+        "path_border": "stickers/red-pixel/doodle_22_border.png",
+        "width": 167,
+        "height": 104,
+        "box": [
+          114,
+          870,
+          151,
+          88
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      },
+      {
+        "id": "red-pixel_23",
+        "number": 23,
+        "filename": "doodle_23.png",
+        "filename_border": "doodle_23_border.png",
+        "path": "stickers/red-pixel/doodle_23.png",
+        "path_border": "stickers/red-pixel/doodle_23_border.png",
+        "width": 66,
+        "height": 70,
+        "box": [
+          309,
+          914,
+          50,
+          54
+        ],
+        "is_suspicious": false,
+        "suspicious_reason": ""
+      }
+    ]
+  }
+]
