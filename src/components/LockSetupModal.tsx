@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import { Lock, ShieldAlert, Sparkles, KeyRound, Eye, EyeOff, Copy, Download, Check, AlertCircle } from 'lucide-react';
 import { setupVaultLock } from '../utils/crypto';
 import type { VaultSecurityConfig } from '../utils/crypto';
+import { FooterLinks } from './FooterLinks';
+import type { LegalTabType } from './LegalModal';
 
 interface LockSetupModalProps {
   isOpen: boolean;
   onCompleteSetup: (config: VaultSecurityConfig, key: CryptoKey) => void;
+  onOpenLegal: (tab: LegalTabType) => void;
 }
 
 export const LockSetupModal: React.FC<LockSetupModalProps> = ({
   isOpen,
-  onCompleteSetup
+  onCompleteSetup,
+  onOpenLegal
 }) => {
   const [passphrase, setPassphrase] = useState('');
   const [confirmPassphrase, setConfirmPassphrase] = useState('');
@@ -85,8 +89,8 @@ IMPORTANT: Keep this key in a safe place. If you ever forget your passphrase, yo
   };
 
   return (
-    <div className="modal-backdrop-blur">
-      <div className="lock-modal-card">
+    <div className="modal-backdrop-blur flex flex-col justify-between items-center py-6 overflow-y-auto z-[100]">
+      <div className="lock-modal-card my-auto">
         <div className="modal-header-center">
           <div className="lock-icon-badge">
             <Lock className="w-6 h-6 text-pink-500" />
@@ -235,6 +239,8 @@ IMPORTANT: Keep this key in a safe place. If you ever forget your passphrase, yo
           </div>
         )}
       </div>
+
+      <FooterLinks onOpenLegal={onOpenLegal} isLocalOnly={true} />
     </div>
   );
 };

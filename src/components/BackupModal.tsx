@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { X, Upload, ShieldCheck, Lock, AlertTriangle, FileText, Trash2 } from 'lucide-react';
 import type { JournalEntry, GoalItem } from '../types/journal';
+import type { ThemeId } from '../config/themes';
 import { encryptText, decryptText } from '../utils/crypto';
 
 interface BackupModalProps {
@@ -11,6 +12,8 @@ interface BackupModalProps {
   encryptionKey: CryptoKey | null;
   onImportBackup: (importedEntries: JournalEntry[], importedGoals: GoalItem[]) => void;
   onDeleteAllData: () => void;
+  activeTheme?: ThemeId;
+  onSelectTheme?: (theme: ThemeId) => void;
 }
 
 export const BackupModal: React.FC<BackupModalProps> = ({
@@ -20,7 +23,9 @@ export const BackupModal: React.FC<BackupModalProps> = ({
   goals,
   encryptionKey,
   onImportBackup,
-  onDeleteAllData
+  onDeleteAllData,
+  activeTheme,
+  onSelectTheme
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUnencryptedWarning, setShowUnencryptedWarning] = useState(false);
@@ -40,6 +45,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
       const dataToEncrypt = JSON.stringify({
         version: 2,
         exportedAt: new Date().toISOString(),
+        theme: activeTheme,
         entries,
         goals
       });
@@ -50,6 +56,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
         version: 2,
         encrypted: true,
         exportedAt: new Date().toISOString(),
+        theme: activeTheme,
         ciphertext,
         iv
       };
@@ -74,6 +81,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
     const backupPayload = {
       version: 1,
       exportedAt: new Date().toISOString(),
+      theme: activeTheme,
       entries,
       goals
     };
@@ -113,6 +121,9 @@ export const BackupModal: React.FC<BackupModalProps> = ({
 
             const importedEntries = Array.isArray(decryptedPayload.entries) ? decryptedPayload.entries : [];
             const importedGoals = Array.isArray(decryptedPayload.goals) ? decryptedPayload.goals : [];
+            if (decryptedPayload.theme && onSelectTheme) {
+              onSelectTheme(decryptedPayload.theme);
+            }
 
             onImportBackup(importedEntries, importedGoals);
             alert(`Successfully restored ${importedEntries.length} journal pages and ${importedGoals.length} goals from encrypted backup! 🔐✨`);
@@ -129,6 +140,9 @@ export const BackupModal: React.FC<BackupModalProps> = ({
         } else if (parsed && typeof parsed === 'object' && Array.isArray(parsed.entries)) {
           const importedEntries = parsed.entries || [];
           const importedGoals = Array.isArray(parsed.goals) ? parsed.goals : [];
+          if (parsed.theme && onSelectTheme) {
+            onSelectTheme(parsed.theme);
+          }
           onImportBackup(importedEntries, importedGoals);
           alert(`Successfully imported ${importedEntries.length} journal pages and ${importedGoals.length} goals! ✨`);
           onClose();

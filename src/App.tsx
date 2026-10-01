@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalSubItem, GoalType } from './types/journal';
 import type { VaultSecurityConfig } from './utils/crypto';
+import type { ThemeId } from './config/themes';
 import {
   getVaultConfig,
   saveVaultConfig,
@@ -18,10 +19,9 @@ import {
 import { calculateStreak } from './utils/streakUtils';
 import {
   auth,
-  googleProvider,
-  signInWithPopup,
   signOut,
   onAuthStateChanged,
+  updateProfile,
   db,
   collection,
   doc,
@@ -40,6 +40,11 @@ import { BackupModal } from './components/BackupModal';
 import { LockSetupModal } from './components/LockSetupModal';
 import { LockScreen } from './components/LockScreen';
 import { GoalsModal } from './components/GoalsModal';
+import type { LegalTabType } from './components/LegalModal';
+import { ThemeModal } from './components/ThemeModal';
+import { LegalModal } from './components/LegalModal';
+import { FooterLinks } from './components/FooterLinks';
+import { AuthModal } from './components/AuthModal';
 
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes idle timeout
 
@@ -68,6 +73,18 @@ export function App() {
     selectedTag: 'all',
     sortBy: 'newest'
   });
+
+  // Theme & Modal States
+  const [activeTheme, setActiveTheme] = useState<ThemeId>(() => (localStorage.getItem('little_pages_theme') as ThemeId) || 'strawberry');
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
+  const [legalModalTab, setLegalModalTab] = useState<LegalTabType>('protection');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', activeTheme);
+    localStorage.setItem('little_pages_theme', activeTheme);
+  }, [activeTheme]);
 
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -249,6 +266,11 @@ export function App() {
       setUser(currentUser);
 
       if (currentUser) {
+        // Clear personal profile metadata from Firebase Auth for privacy minimization
+        if (currentUser.displayName || currentUser.photoURL) {
+          updateProfile(currentUser, { displayName: '', photoURL: '' }).catch(() => {});
+        }
+
         // 1. Sync Vault Config from Firestore
         const configDocRef = doc(db, 'users', currentUser.uid, 'vault_config', 'config');
         const unsubscribeConfig = onSnapshot(
@@ -337,25 +359,6 @@ export function App() {
   }, [encryptionKey, loadAndDecryptEntries, loadAndDecryptGoals]);
 
   const { currentStreak } = calculateStreak(decryptedEntries);
-
-  // Google Sign-In
-  const handleSignIn = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (err: unknown) {
-      const authError = err as { code?: string; message?: string };
-      console.error('Sign-in error:', authError);
-
-      if (authError?.code === 'auth/unauthorized-domain') {
-        const currentHost = window.location.hostname;
-        alert(
-          `Firebase Authorization Action Required:\n\nTo allow Google sign-in on "${currentHost}", please add it to Authorized Domains in Firebase Console:\n\n1. Go to Firebase Console\n2. Navigate to Authentication -> Settings -> Authorized domains\n3. Click "Add domain" and enter "${currentHost}"`
-        );
-      } else {
-        alert(`Sign-in status: ${authError?.message || 'Sign-in cancelled'}`);
-      }
-    }
-  };
 
   // Sign-Out
   const handleSignOut = async () => {
@@ -694,6 +697,10 @@ export function App() {
         <LockSetupModal
           isOpen={true}
           onCompleteSetup={handleCompleteSetup}
+          onOpenLegal={(tab) => {
+            setLegalModalTab(tab);
+            setIsLegalModalOpen(true);
+          }}
         />
       )}
 
@@ -701,6 +708,10 @@ export function App() {
         <LockScreen
           vaultConfig={vaultConfig}
           onUnlockSuccess={handleUnlockSuccess}
+          onOpenLegal={(tab) => {
+            setLegalModalTab(tab);
+            setIsLegalModalOpen(true);
+          }}
         />
       )}
 
@@ -713,11 +724,12 @@ export function App() {
         onNewEntry={() => handleNewEntry()}
         currentStreak={currentStreak}
         user={user}
-        onSignIn={handleSignIn}
+        onSignIn={() => setIsAuthModalOpen(true)}
         onSignOut={handleSignOut}
         onOpenBackup={() => setIsBackupOpen(true)}
         isUnlocked={isUnlocked}
         onLockNow={handleLockNow}
+        onOpenThemeModal={() => setIsThemeModalOpen(true)}
       />
 
       <main className="diary-app-body">
@@ -757,6 +769,13 @@ export function App() {
         )}
       </main>
 
+      <footer className="diary-footer" style={{ textAlign: 'center', padding: '1.5rem 0', marginTop: '2rem' }}>
+        <FooterLinks onOpenLegal={(tab) => {
+          setLegalModalTab(tab);
+          setIsLegalModalOpen(true);
+        }} />
+      </footer>
+
       <BackupModal
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}
@@ -765,6 +784,8 @@ export function App() {
         encryptionKey={encryptionKey}
         onImportBackup={handleImportBackup}
         onDeleteAllData={handleDeleteAllData}
+        activeTheme={activeTheme}
+        onSelectTheme={(t) => setActiveTheme(t)}
       />
 
       {activeGoalsPanel && (
@@ -780,6 +801,28 @@ export function App() {
           onDeleteGoal={handleDeleteGoal}
         />
       )}
+
+      <ThemeModal
+        isOpen={isThemeModalOpen}
+        onClose={() => setIsThemeModalOpen(false)}
+        activeTheme={activeTheme}
+        onSelectTheme={(t) => setActiveTheme(t)}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onOpenLegal={(tab) => {
+          setLegalModalTab(tab);
+          setIsLegalModalOpen(true);
+        }}
+      />
+
+      <LegalModal
+        isOpen={isLegalModalOpen}
+        onClose={() => setIsLegalModalOpen(false)}
+        initialTab={legalModalTab}
+      />
     </div>
   );
 }

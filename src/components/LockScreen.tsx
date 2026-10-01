@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import { Lock, KeyRound, Eye, EyeOff, HelpCircle, Sparkles, Key } from 'lucide-react';
 import { unlockVault, unlockVaultWithRecoveryKey } from '../utils/crypto';
 import type { VaultSecurityConfig } from '../utils/crypto';
+import { FooterLinks } from './FooterLinks';
+import type { LegalTabType } from './LegalModal';
 
 interface LockScreenProps {
   vaultConfig: VaultSecurityConfig;
   onUnlockSuccess: (key: CryptoKey) => void;
+  onOpenLegal: (tab: LegalTabType) => void;
 }
 
 export const LockScreen: React.FC<LockScreenProps> = ({
   vaultConfig,
-  onUnlockSuccess
+  onUnlockSuccess,
+  onOpenLegal
 }) => {
   const [passphrase, setPassphrase] = useState('');
   const [useRecoveryKeyMode, setUseRecoveryKeyMode] = useState(false);
@@ -55,8 +59,8 @@ export const LockScreen: React.FC<LockScreenProps> = ({
   };
 
   return (
-    <div className="lock-screen-overlay">
-      <div className="lock-screen-card">
+    <div className="lock-screen-overlay flex flex-col justify-between items-center py-6 overflow-y-auto">
+      <div className="lock-screen-card my-auto">
         <div className="lock-hero-illustration">
           <div className="lock-circle-graphic">
             <Lock className="w-8 h-8 text-pink-500" />
@@ -143,6 +147,8 @@ export const LockScreen: React.FC<LockScreenProps> = ({
           </button>
         </form>
       </div>
+
+      <FooterLinks onOpenLegal={onOpenLegal} isLocalOnly={true} />
     </div>
   );
 };

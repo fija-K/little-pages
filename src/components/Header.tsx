@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck } from 'lucide-react';
+import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck, Palette, UserCheck } from 'lucide-react';
 import type { User } from '../firebase';
 import { StreakBadge } from './StreakBadge';
 
@@ -12,6 +12,7 @@ interface HeaderProps {
   onSignIn: () => void;
   onSignOut: () => void;
   onOpenBackup: () => void;
+  onOpenThemeModal: () => void;
   isUnlocked: boolean;
   onLockNow: () => void;
 }
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSignIn,
   onSignOut,
   onOpenBackup,
+  onOpenThemeModal,
   isUnlocked,
   onLockNow
 }) => {
@@ -66,6 +68,16 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button
             type="button"
+            className="theme-btn-pill"
+            onClick={onOpenThemeModal}
+            title="Choose application theme (Strawberry 🍓 / Chocolate 🍫)"
+          >
+            <Palette className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Theme</span>
+          </button>
+
+          <button
+            type="button"
             className="backup-btn-pill"
             onClick={onOpenBackup}
             title="Backup & Restore entries as JSON"
@@ -79,12 +91,10 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="cloud-indicator" title="Connected to Cloud Firestore (Encrypted E2EE at rest)">
                 <Cloud className="w-3.5 h-3.5 text-emerald-600 inline" />
               </span>
-              <img
-                src={user.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.uid}`}
-                alt={user.displayName || 'User'}
-                className="user-avatar"
-              />
-              <span className="user-name hidden md:inline">{user.displayName?.split(' ')[0]}</span>
+              <UserCheck className="w-3.5 h-3.5 text-pink-600" />
+              <span className="user-name hidden md:inline">
+                {user.email ? user.email.split('@')[0] : 'Cloud Sync'}
+              </span>
               <button
                 type="button"
                 className="logout-btn"
@@ -99,7 +109,7 @@ export const Header: React.FC<HeaderProps> = ({
               type="button"
               className="cloud-sync-btn"
               onClick={onSignIn}
-              title="Sign in with Google to sync encrypted entries with Firebase"
+              title="Sign in or create cloud sync account"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span>Sync Cloud</span>
