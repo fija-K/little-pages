@@ -25,14 +25,16 @@ export interface EncryptedGoalItem {
   id: string;
   encryptedText: string; // Base64 ciphertext
   textIv: string; // Base64 IV
-  type: GoalType;
+  type: GoalType; // Kept for legacy compatibility
   completed: boolean;
   deadline?: string;
   encryptedSubItems?: string; // Base64 ciphertext of JSON.stringify(subItems)
   subItemsIv?: string; // Base64 IV
   subItems?: GoalSubItem[]; // Legacy fallback
-  createdAt: number;
-  updatedAt: number;
+  encryptedGoalMeta?: string; // Base64 ciphertext of JSON.stringify({ type, completed, deadline, createdAt, updatedAt })
+  goalMetaIv?: string; // Base64 IV
+  createdAt?: number;
+  updatedAt?: number;
 }
 
 export interface PlacedSticker {
@@ -75,7 +77,7 @@ export interface JournalEntry {
 // Encrypted entry stored on disk (localStorage or Firestore)
 export interface EncryptedJournalEntry {
   id: string;
-  date: string;
+  date: string; // Kept for legacy compatibility
   encryptedTitle: string; // Base64 ciphertext
   titleIv: string; // Base64 IV
   encryptedContent: string; // Base64 ciphertext
@@ -85,10 +87,12 @@ export interface EncryptedJournalEntry {
   tags?: string[]; // Legacy optional fallback
   encryptedStickers?: string; // Base64 ciphertext of JSON.stringify(stickers)
   stickersIv?: string; // Base64 IV
-  mood: MoodType;
-  pageColor: PageColor;
-  createdAt: number;
-  updatedAt: number;
+  encryptedMetadata?: string; // Base64 ciphertext of JSON.stringify({ mood, pageColor, isFavorite, date, createdAt, updatedAt })
+  metadataIv?: string; // Base64 IV for metadata
+  mood?: MoodType; // Legacy fallback
+  pageColor?: PageColor; // Legacy fallback
+  createdAt?: number;
+  updatedAt?: number;
   isFavorite?: boolean;
 }
 

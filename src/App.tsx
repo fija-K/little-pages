@@ -4,6 +4,8 @@ import type { VaultSecurityConfig } from './utils/crypto';
 import {
   getVaultConfig,
   saveVaultConfig,
+  clearLocalVaultConfig,
+  clearLocalEntries,
   getStoredEncryptedEntries,
   saveStoredEncryptedEntries,
   getStoredEncryptedGoals,
@@ -25,6 +27,7 @@ import {
   doc,
   setDoc,
   deleteDoc,
+  getDocs,
   onSnapshot,
   query
 } from './firebase';
@@ -146,15 +149,75 @@ export function App() {
     setDecryptedGoals(decryptedList);
   }, []);
 
-  // Unlock callback
+  // Unlock callback + Automated Metadata Migration
   const handleUnlockSuccess = async (key: CryptoKey) => {
     setEncryptionKey(key);
     const storedEntries = getStoredEncryptedEntries();
     const storedGoals = getStoredEncryptedGoals();
-    setEncryptedEntries(storedEntries);
-    setEncryptedGoals(storedGoals);
-    await loadAndDecryptEntries(key, storedEntries);
-    await loadAndDecryptGoals(key, storedGoals);
+
+    const decryptedEntriesList: JournalEntry[] = [];
+    let entryNeedsMigration = false;
+    for (const encryptedItem of storedEntries) {
+      if (encryptedItem.id.startsWith('sample-entry-')) continue;
+      try {
+        const decrypted = await decryptJournalEntry(encryptedItem, key);
+        decryptedEntriesList.push(decrypted);
+        if (!encryptedItem.encryptedMetadata) entryNeedsMigration = true;
+      } catch (err) {
+        console.error('Failed to decrypt entry:', err);
+      }
+    }
+    setDecryptedEntries(decryptedEntriesList);
+
+    const decryptedGoalsList: GoalItem[] = [];
+    let goalNeedsMigration = false;
+    for (const encryptedItem of storedGoals) {
+      try {
+        const decrypted = await decryptGoalItem(encryptedItem, key);
+        decryptedGoalsList.push(decrypted);
+        if (!encryptedItem.encryptedGoalMeta) goalNeedsMigration = true;
+      } catch (err) {
+        console.error('Failed to decrypt goal:', err);
+      }
+    }
+    setDecryptedGoals(decryptedGoalsList);
+
+    // Re-encrypt & Migrate legacy unencrypted metadata
+    if (entryNeedsMigration) {
+      const migratedEncryptedEntries: EncryptedJournalEntry[] = [];
+      for (const entry of decryptedEntriesList) {
+        const enc = await encryptJournalEntry(entry, key);
+        migratedEncryptedEntries.push(enc);
+        if (user) {
+          try {
+            const docRef = doc(db, 'users', user.uid, 'journal_entries', enc.id);
+            await setDoc(docRef, enc, { merge: true });
+          } catch (e) {}
+        }
+      }
+      setEncryptedEntries(migratedEncryptedEntries);
+      saveStoredEncryptedEntries(migratedEncryptedEntries);
+    } else {
+      setEncryptedEntries(storedEntries);
+    }
+
+    if (goalNeedsMigration) {
+      const migratedEncryptedGoals: EncryptedGoalItem[] = [];
+      for (const goal of decryptedGoalsList) {
+        const enc = await encryptGoalItem(goal, key);
+        migratedEncryptedGoals.push(enc);
+        if (user) {
+          try {
+            const docRef = doc(db, 'users', user.uid, 'goals', enc.id);
+            await setDoc(docRef, enc, { merge: true });
+          } catch (e) {}
+        }
+      }
+      setEncryptedGoals(migratedEncryptedGoals);
+      saveStoredEncryptedGoals(migratedEncryptedGoals);
+    } else {
+      setEncryptedGoals(storedGoals);
+    }
   };
 
   // Complete initial vault setup callback
@@ -580,6 +643,49 @@ export function App() {
     saveStoredEncryptedGoals(reEncryptedGoals);
   };
 
+  // Delete All Data (Purge local storage & cloud Firestore documents)
+  const handleDeleteAllData = async () => {
+    if (user) {
+      try {
+        const userEntriesRef = collection(db, 'users', user.uid, 'journal_entries');
+        const snapshotEntries = await getDocs(query(userEntriesRef));
+        for (const docSnap of snapshotEntries.docs) {
+          await deleteDoc(doc(db, 'users', user.uid, 'journal_entries', docSnap.id));
+        }
+
+        const userGoalsRef = collection(db, 'users', user.uid, 'goals');
+        const snapshotGoals = await getDocs(query(userGoalsRef));
+        for (const docSnap of snapshotGoals.docs) {
+          await deleteDoc(doc(db, 'users', user.uid, 'goals', docSnap.id));
+        }
+
+        await deleteDoc(doc(db, 'users', user.uid, 'vault_config', 'config'));
+      } catch (err) {
+        console.warn('Error purging Firestore documents:', err);
+      }
+    }
+
+    clearLocalVaultConfig();
+    clearLocalEntries();
+    localStorage.clear();
+
+    setVaultConfig(null);
+    setEncryptionKey(null);
+    setDecryptedEntries([]);
+    setEncryptedEntries([]);
+    setDecryptedGoals([]);
+    setEncryptedGoals([]);
+    setEditingEntry(null);
+    setActiveGoalsPanel(null);
+
+    if (user) {
+      await signOut(auth);
+      setUser(null);
+    }
+
+    alert('All your local and cloud data has been permanently deleted.');
+  };
+
   const isUnlocked = encryptionKey !== null;
 
   return (
@@ -656,7 +762,9 @@ export function App() {
         onClose={() => setIsBackupOpen(false)}
         entries={decryptedEntries}
         goals={decryptedGoals}
+        encryptionKey={encryptionKey}
         onImportBackup={handleImportBackup}
+        onDeleteAllData={handleDeleteAllData}
       />
 
       {activeGoalsPanel && (

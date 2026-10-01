@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Lock, KeyRound, Eye, EyeOff, HelpCircle, Sparkles } from 'lucide-react';
-import { unlockVault } from '../utils/crypto';
+import { Lock, KeyRound, Eye, EyeOff, HelpCircle, Sparkles, Key } from 'lucide-react';
+import { unlockVault, unlockVaultWithRecoveryKey } from '../utils/crypto';
 import type { VaultSecurityConfig } from '../utils/crypto';
 
 interface LockScreenProps {
@@ -13,6 +13,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({
   onUnlockSuccess
 }) => {
   const [passphrase, setPassphrase] = useState('');
+  const [useRecoveryKeyMode, setUseRecoveryKeyMode] = useState(false);
   const [showPassphrase, setShowPassphrase] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,22 +23,32 @@ export const LockScreen: React.FC<LockScreenProps> = ({
     e.preventDefault();
     setError(null);
 
-    if (!passphrase) {
-      setError('Please enter your passphrase.');
+    if (!passphrase.trim()) {
+      setError(useRecoveryKeyMode ? 'Please enter your recovery key.' : 'Please enter your passphrase.');
       return;
     }
 
     setIsDecrypting(true);
 
     try {
-      const key = await unlockVault(passphrase, vaultConfig);
+      let key: CryptoKey | null = null;
+      if (useRecoveryKeyMode) {
+        key = await unlockVaultWithRecoveryKey(passphrase, vaultConfig);
+      } else {
+        key = await unlockVault(passphrase, vaultConfig);
+      }
+
       if (key) {
         onUnlockSuccess(key);
       } else {
-        setError('Incorrect passphrase. Please try again.');
+        setError(
+          useRecoveryKeyMode
+            ? 'Invalid recovery key. Please check your key and try again.'
+            : 'Incorrect passphrase. Please try again.'
+        );
       }
     } catch (err) {
-      setError('Failed to verify passphrase.');
+      setError('Failed to verify encryption credentials.');
     } finally {
       setIsDecrypting(false);
     }
@@ -55,7 +66,9 @@ export const LockScreen: React.FC<LockScreenProps> = ({
 
         <h2 className="lock-screen-title">Unlock your Little Pages 🔐✨</h2>
         <p className="lock-screen-subtitle">
-          Your diary is encrypted. Enter your passphrase to decrypt your entries.
+          {useRecoveryKeyMode
+            ? 'Enter your 24-character Emergency Recovery Key to restore access.'
+            : 'Your diary is encrypted. Enter your passphrase to decrypt your entries.'}
         </p>
 
         <form onSubmit={handleUnlock} className="lock-screen-form">
@@ -63,43 +76,62 @@ export const LockScreen: React.FC<LockScreenProps> = ({
             <div className="passphrase-input-wrapper">
               <KeyRound className="w-4 h-4 text-stone-400 ml-3" />
               <input
-                type={showPassphrase ? 'text' : 'password'}
-                className="lock-text-input-large"
-                placeholder="Enter journal passphrase..."
+                type={showPassphrase || useRecoveryKeyMode ? 'text' : 'password'}
+                className="lock-text-input-large font-mono"
+                placeholder={useRecoveryKeyMode ? 'e.g. LP-A8F3-9B7C-1D2E-4F5A' : 'Enter journal passphrase...'}
                 value={passphrase}
                 onChange={(e) => setPassphrase(e.target.value)}
                 autoFocus
               />
-              <button
-                type="button"
-                className="toggle-eye-btn mr-2"
-                onClick={() => setShowPassphrase(!showPassphrase)}
-              >
-                {showPassphrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+              {!useRecoveryKeyMode && (
+                <button
+                  type="button"
+                  className="toggle-eye-btn mr-2"
+                  onClick={() => setShowPassphrase(!showPassphrase)}
+                >
+                  {showPassphrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              )}
             </div>
           </div>
 
           {error && <div className="lock-error-msg">{error}</div>}
 
-          {vaultConfig.hint && (
-            <div className="hint-toggle-row">
+          <div className="flex flex-col gap-2 items-center text-xs text-stone-500">
+            {!useRecoveryKeyMode && vaultConfig.hint && (
+              <div className="hint-toggle-row">
+                <button
+                  type="button"
+                  className="show-hint-btn"
+                  onClick={() => setShowHint(!showHint)}
+                >
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>{showHint ? 'Hide hint' : 'Show passphrase hint'}</span>
+                </button>
+
+                {showHint && (
+                  <div className="hint-box-popover">
+                    💡 Hint: <em>{vaultConfig.hint}</em>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {vaultConfig.recoverySalt && (
               <button
                 type="button"
-                className="show-hint-btn"
-                onClick={() => setShowHint(!showHint)}
+                className="text-pink-600 hover:text-pink-700 underline font-medium flex items-center gap-1 mt-1"
+                onClick={() => {
+                  setUseRecoveryKeyMode(!useRecoveryKeyMode);
+                  setError(null);
+                  setPassphrase('');
+                }}
               >
-                <HelpCircle className="w-3.5 h-3.5" />
-                <span>{showHint ? 'Hide hint' : 'Show passphrase hint'}</span>
+                <Key className="w-3.5 h-3.5" />
+                <span>{useRecoveryKeyMode ? 'Switch back to Passphrase' : 'Forgot passphrase? Unlock with Recovery Key'}</span>
               </button>
-
-              {showHint && (
-                <div className="hint-box-popover">
-                  💡 Hint: <em>{vaultConfig.hint}</em>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
 
           <button
             type="submit"
@@ -107,7 +139,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({
             disabled={isDecrypting}
           >
             <Lock className="w-4 h-4" />
-            <span>{isDecrypting ? 'Decrypting Vault...' : 'Unlock Journal 📖'}</span>
+            <span>{isDecrypting ? 'Decrypting Vault...' : useRecoveryKeyMode ? 'Unlock with Recovery Key 🔑' : 'Unlock Journal 📖'}</span>
           </button>
         </form>
       </div>

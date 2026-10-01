@@ -5,9 +5,12 @@
 
 export interface VaultSecurityConfig {
   version: number;
-  salt: string; // Base64 encoded PBKDF2 salt
+  salt: string; // Base64 encoded PBKDF2 salt for passphrase
   verifyCiphertext: string; // Base64 encoded test ciphertext to verify key correctness
   verifyIv: string; // Base64 encoded test IV
+  recoverySalt?: string; // Base64 salt for recovery key
+  recoveryMasterKeyCiphertext?: string; // Base64 wrapped raw master key
+  recoveryMasterKeyIv?: string; // Base64 IV for wrapped master key
   hint?: string; // Optional user self-hint
   createdAt: number;
 }
@@ -22,7 +25,7 @@ const KEY_LENGTH_BITS = 256;
 const VERIFY_MAGIC_WORD = 'LITTLE_PAGES_VAULT_OK';
 
 // Utility helper to convert ArrayBuffer to Base64
-function arrayBufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
+export function arrayBufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
   const bytes = new Uint8Array(buffer);
   let binary = '';
   for (let i = 0; i < bytes.byteLength; i++) {
@@ -32,7 +35,7 @@ function arrayBufferToBase64(buffer: ArrayBuffer | Uint8Array): string {
 }
 
 // Utility helper to convert Base64 to Uint8Array
-function base64ToUint8Array(base64: string): Uint8Array {
+export function base64ToUint8Array(base64: string): Uint8Array {
   const binary = atob(base64);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -42,9 +45,21 @@ function base64ToUint8Array(base64: string): Uint8Array {
 }
 
 /**
- * Derive a 256-bit AES-GCM CryptoKey from a user passphrase and salt via PBKDF2
+ * Generate a secure 24-character Recovery Key (e.g. LP-A8F3-9B7C-1D2E-4F5A-6B7C)
  */
-export async function deriveKey(passphrase: string, salt: Uint8Array): Promise<CryptoKey> {
+export function generateRecoveryKey(): string {
+  const bytes = window.crypto.getRandomValues(new Uint8Array(12));
+  const hex = Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0').toUpperCase())
+    .join('');
+  const formatted = hex.match(/.{1,4}/g)?.join('-') || hex;
+  return `LP-${formatted}`;
+}
+
+/**
+ * Derive a 256-bit AES-GCM CryptoKey from a user passphrase or recovery key via PBKDF2
+ */
+export async function deriveKey(passphrase: string, salt: Uint8Array, extractable = true): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const passphraseBytes = encoder.encode(passphrase);
 
@@ -67,7 +82,7 @@ export async function deriveKey(passphrase: string, salt: Uint8Array): Promise<C
     },
     baseKey,
     { name: 'AES-GCM', length: KEY_LENGTH_BITS },
-    false, // Non-extractable for security
+    extractable,
     ['encrypt', 'decrypt']
   );
 }
@@ -118,38 +133,58 @@ export async function decryptText(ciphertext: string, ivBase64: string, key: Cry
 }
 
 /**
- * Initialize a new vault lock config using a user passphrase
+ * Initialize a new vault lock config using a user passphrase and generated Recovery Key
  */
-export async function setupVaultLock(passphrase: string, hint?: string): Promise<{ config: VaultSecurityConfig; key: CryptoKey }> {
-  // Generate random 16-byte salt
+export async function setupVaultLock(
+  passphrase: string,
+  hint?: string
+): Promise<{ config: VaultSecurityConfig; key: CryptoKey; recoveryKey: string }> {
+  // Generate random 16-byte salt for passphrase
   const salt = window.crypto.getRandomValues(new Uint8Array(16));
-  const key = await deriveKey(passphrase, salt);
+  const key = await deriveKey(passphrase, salt, true);
+
+  // Export raw key bytes to allow wrapping with recovery key
+  const rawKeyBuffer = await window.crypto.subtle.exportKey('raw', key);
+
+  // Generate Recovery Key and its PBKDF2 salt
+  const recoveryKey = generateRecoveryKey();
+  const recoverySalt = window.crypto.getRandomValues(new Uint8Array(16));
+  const recoveryDerivedKey = await deriveKey(recoveryKey.replace(/-/g, '').trim(), recoverySalt, false);
+
+  // Encrypt raw master key using recovery derived key
+  const recoveryIv = window.crypto.getRandomValues(new Uint8Array(12));
+  const encryptedRawKeyBuffer = await window.crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv: recoveryIv },
+    recoveryDerivedKey,
+    rawKeyBuffer
+  );
 
   // Encrypt verification magic word to allow validating passphrase later
   const { ciphertext, iv } = await encryptText(VERIFY_MAGIC_WORD, key);
 
   const config: VaultSecurityConfig = {
-    version: 1,
+    version: 2,
     salt: arrayBufferToBase64(salt),
     verifyCiphertext: ciphertext,
     verifyIv: iv,
+    recoverySalt: arrayBufferToBase64(recoverySalt),
+    recoveryMasterKeyCiphertext: arrayBufferToBase64(encryptedRawKeyBuffer),
+    recoveryMasterKeyIv: arrayBufferToBase64(recoveryIv),
     hint: hint?.trim() || undefined,
     createdAt: Date.now()
   };
 
-  return { config, key };
+  return { config, key, recoveryKey };
 }
 
 /**
  * Validate a user passphrase against stored VaultSecurityConfig
- * Returns the derived CryptoKey if valid, or null if invalid passphrase
  */
 export async function unlockVault(passphrase: string, config: VaultSecurityConfig): Promise<CryptoKey | null> {
   try {
     const salt = base64ToUint8Array(config.salt);
-    const key = await deriveKey(passphrase, salt);
+    const key = await deriveKey(passphrase, salt, true);
 
-    // Try decrypting the magic word
     const decrypted = await decryptText(config.verifyCiphertext, config.verifyIv, key);
 
     if (decrypted === VERIFY_MAGIC_WORD) {
@@ -157,7 +192,50 @@ export async function unlockVault(passphrase: string, config: VaultSecurityConfi
     }
     return null;
   } catch (err) {
-    // Decryption failure indicates wrong passphrase
+    return null;
+  }
+}
+
+/**
+ * Unlock vault using stored Recovery Key
+ */
+export async function unlockVaultWithRecoveryKey(
+  recoveryKeyInput: string,
+  config: VaultSecurityConfig
+): Promise<CryptoKey | null> {
+  if (!config.recoverySalt || !config.recoveryMasterKeyCiphertext || !config.recoveryMasterKeyIv) {
+    return null;
+  }
+
+  try {
+    const sanitizedKey = recoveryKeyInput.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+    const recoverySalt = base64ToUint8Array(config.recoverySalt);
+    const recoveryDerivedKey = await deriveKey(sanitizedKey, recoverySalt, false);
+
+    const ciphertext = base64ToUint8Array(config.recoveryMasterKeyCiphertext);
+    const iv = base64ToUint8Array(config.recoveryMasterKeyIv);
+
+    const rawKeyBuffer = await window.crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: iv as BufferSource },
+      recoveryDerivedKey,
+      ciphertext as BufferSource
+    );
+
+    const importedKey = await window.crypto.subtle.importKey(
+      'raw',
+      rawKeyBuffer,
+      { name: 'AES-GCM', length: KEY_LENGTH_BITS },
+      true,
+      ['encrypt', 'decrypt']
+    );
+
+    const verifyCheck = await decryptText(config.verifyCiphertext, config.verifyIv, importedKey);
+    if (verifyCheck === VERIFY_MAGIC_WORD) {
+      return importedKey;
+    }
+    return null;
+  } catch (err) {
+    console.error('Recovery key unlock failed:', err);
     return null;
   }
 }

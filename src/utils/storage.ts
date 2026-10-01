@@ -31,7 +31,7 @@ export function clearLocalVaultConfig(): void {
   localStorage.removeItem(VAULT_CONFIG_KEY);
 }
 
-// Encrypt a single entry (title, content, tags, AND stickers)
+// Encrypt a single entry (title, content, tags, stickers AND metadata)
 export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): Promise<EncryptedJournalEntry> {
   const titleEnc = await encryptText(entry.title || '', key);
   const contentEnc = await encryptText(entry.content || '', key);
@@ -44,6 +44,17 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
   const stickersJson = JSON.stringify(entry.stickers || []);
   const stickersEnc = await encryptText(stickersJson, key);
 
+  // Encrypt JSON-serialized metadata object
+  const metadataJson = JSON.stringify({
+    mood: entry.mood,
+    pageColor: entry.pageColor,
+    isFavorite: !!entry.isFavorite,
+    date: entry.date,
+    createdAt: entry.createdAt,
+    updatedAt: entry.updatedAt
+  });
+  const metadataEnc = await encryptText(metadataJson, key);
+
   return {
     id: entry.id,
     date: entry.date,
@@ -55,6 +66,8 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
     tagsIv: tagsEnc.iv,
     encryptedStickers: stickersEnc.ciphertext,
     stickersIv: stickersEnc.iv,
+    encryptedMetadata: metadataEnc.ciphertext,
+    metadataIv: metadataEnc.iv,
     mood: entry.mood,
     pageColor: entry.pageColor,
     createdAt: entry.createdAt,
@@ -63,12 +76,37 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
   };
 }
 
-// Decrypt a single entry (title, content, tags, AND stickers)
+// Decrypt a single entry (title, content, tags, stickers AND metadata)
 export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key: CryptoKey): Promise<JournalEntry> {
   let title = 'Untitled Page';
   let content = '';
   let tags: string[] = [];
   let stickers: PlacedSticker[] = [];
+
+  let mood = encrypted.mood || 'happy';
+  let pageColor = encrypted.pageColor || 'blush';
+  let isFavorite = !!encrypted.isFavorite;
+  let date = encrypted.date || new Date().toISOString().split('T')[0];
+  let createdAt = encrypted.createdAt || Date.now();
+  let updatedAt = encrypted.updatedAt || Date.now();
+
+  // Decrypt metadata payload if available
+  if (encrypted.encryptedMetadata && encrypted.metadataIv) {
+    try {
+      const rawMeta = await decryptText(encrypted.encryptedMetadata, encrypted.metadataIv, key);
+      const parsedMeta = JSON.parse(rawMeta);
+      if (parsedMeta && typeof parsedMeta === 'object') {
+        if (parsedMeta.mood) mood = parsedMeta.mood;
+        if (parsedMeta.pageColor) pageColor = parsedMeta.pageColor;
+        if (typeof parsedMeta.isFavorite === 'boolean') isFavorite = parsedMeta.isFavorite;
+        if (parsedMeta.date) date = parsedMeta.date;
+        if (parsedMeta.createdAt) createdAt = parsedMeta.createdAt;
+        if (parsedMeta.updatedAt) updatedAt = parsedMeta.updatedAt;
+      }
+    } catch (e) {
+      console.error('Failed to decrypt entry metadata:', e);
+    }
+  }
 
   try {
     title = await decryptText(encrypted.encryptedTitle, encrypted.titleIv, key);
@@ -110,16 +148,16 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
 
   return {
     id: encrypted.id,
-    date: encrypted.date,
+    date,
     title,
     content,
-    mood: encrypted.mood,
-    pageColor: encrypted.pageColor,
+    mood,
+    pageColor,
     tags,
     stickers,
-    createdAt: encrypted.createdAt,
-    updatedAt: encrypted.updatedAt,
-    isFavorite: encrypted.isFavorite
+    createdAt,
+    updatedAt,
+    isFavorite
   };
 }
 
@@ -153,6 +191,16 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
   const subItemsJson = JSON.stringify(goal.subItems || []);
   const subItemsEnc = await encryptText(subItemsJson, key);
 
+  // Encrypt JSON-serialized goal metadata object
+  const goalMetaJson = JSON.stringify({
+    type: goal.type,
+    completed: goal.completed,
+    deadline: goal.deadline,
+    createdAt: goal.createdAt,
+    updatedAt: goal.updatedAt
+  });
+  const goalMetaEnc = await encryptText(goalMetaJson, key);
+
   return {
     id: goal.id,
     encryptedText: textEnc.ciphertext,
@@ -162,6 +210,8 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
     deadline: goal.deadline,
     encryptedSubItems: subItemsEnc.ciphertext,
     subItemsIv: subItemsEnc.iv,
+    encryptedGoalMeta: goalMetaEnc.ciphertext,
+    goalMetaIv: goalMetaEnc.iv,
     createdAt: goal.createdAt,
     updatedAt: goal.updatedAt
   };
@@ -170,6 +220,28 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
 export async function decryptGoalItem(encrypted: EncryptedGoalItem, key: CryptoKey): Promise<GoalItem> {
   let text = '';
   let subItems: GoalSubItem[] = [];
+
+  let type = encrypted.type || 'short-term';
+  let completed = !!encrypted.completed;
+  let deadline = encrypted.deadline;
+  let createdAt = encrypted.createdAt || Date.now();
+  let updatedAt = encrypted.updatedAt || Date.now();
+
+  if (encrypted.encryptedGoalMeta && encrypted.goalMetaIv) {
+    try {
+      const rawMeta = await decryptText(encrypted.encryptedGoalMeta, encrypted.goalMetaIv, key);
+      const parsedMeta = JSON.parse(rawMeta);
+      if (parsedMeta && typeof parsedMeta === 'object') {
+        if (parsedMeta.type) type = parsedMeta.type;
+        if (typeof parsedMeta.completed === 'boolean') completed = parsedMeta.completed;
+        if (parsedMeta.deadline !== undefined) deadline = parsedMeta.deadline;
+        if (parsedMeta.createdAt) createdAt = parsedMeta.createdAt;
+        if (parsedMeta.updatedAt) updatedAt = parsedMeta.updatedAt;
+      }
+    } catch (e) {
+      console.error('Failed to decrypt goal metadata:', e);
+    }
+  }
 
   try {
     text = await decryptText(encrypted.encryptedText, encrypted.textIv, key);
@@ -194,12 +266,12 @@ export async function decryptGoalItem(encrypted: EncryptedGoalItem, key: CryptoK
   return {
     id: encrypted.id,
     text,
-    type: encrypted.type,
-    completed: encrypted.completed,
-    deadline: encrypted.deadline,
+    type,
+    completed,
+    deadline,
     subItems,
-    createdAt: encrypted.createdAt,
-    updatedAt: encrypted.updatedAt
+    createdAt,
+    updatedAt
   };
 }
 
