@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onNewEntry}
         >
           <Plus className="w-4 h-4" />
-          <span>+ New Page</span>
+          <span>New Page</span>
         </button>
       </nav>
     </header>

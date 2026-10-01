@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { PenTool, Sparkles, Feather } from 'lucide-react';
-import type { JournalEntry, FilterState } from '../types/journal';
+import type { JournalEntry, FilterState, GoalType } from '../types/journal';
 import { EntryCard } from './EntryCard';
 import { SearchFilter } from './SearchFilter';
 
@@ -12,6 +12,8 @@ interface EntryListProps {
   onNewEntry: () => void;
   filter: FilterState;
   onFilterChange: (newFilter: FilterState) => void;
+  activeGoalsPanel?: GoalType | null;
+  onOpenGoals: (type: GoalType) => void;
 }
 
 export const EntryList: React.FC<EntryListProps> = ({
@@ -21,7 +23,9 @@ export const EntryList: React.FC<EntryListProps> = ({
   onToggleFavorite,
   onNewEntry,
   filter,
-  onFilterChange
+  onFilterChange,
+  activeGoalsPanel,
+  onOpenGoals
 }) => {
   const availableTags = useMemo(() => {
     const set = new Set<string>();
@@ -64,6 +68,8 @@ export const EntryList: React.FC<EntryListProps> = ({
         filter={filter}
         onFilterChange={onFilterChange}
         availableTags={availableTags}
+        activeGoalsPanel={activeGoalsPanel}
+        onOpenGoals={onOpenGoals}
       />
 
       {filteredEntries.length === 0 ? (

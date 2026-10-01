@@ -1,26 +1,34 @@
 import React, { useRef } from 'react';
 import { X, Download, Upload, ShieldCheck } from 'lucide-react';
-import type { JournalEntry } from '../types/journal';
+import type { JournalEntry, GoalItem } from '../types/journal';
 
 interface BackupModalProps {
   isOpen: boolean;
   onClose: () => void;
   entries: JournalEntry[];
-  onImportEntries: (importedEntries: JournalEntry[]) => void;
+  goals: GoalItem[];
+  onImportBackup: (importedEntries: JournalEntry[], importedGoals: GoalItem[]) => void;
 }
 
 export const BackupModal: React.FC<BackupModalProps> = ({
   isOpen,
   onClose,
   entries,
-  onImportEntries
+  goals,
+  onImportBackup
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isOpen) return null;
 
   const handleExportJSON = () => {
-    const dataStr = JSON.stringify(entries, null, 2);
+    const backupPayload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      entries,
+      goals
+    };
+    const dataStr = JSON.stringify(backupPayload, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -41,11 +49,17 @@ export const BackupModal: React.FC<BackupModalProps> = ({
       try {
         const parsed = JSON.parse(event.target?.result as string);
         if (Array.isArray(parsed)) {
-          onImportEntries(parsed);
+          onImportBackup(parsed, []);
           alert(`Successfully imported ${parsed.length} journal pages! ✨`);
           onClose();
+        } else if (parsed && typeof parsed === 'object' && Array.isArray(parsed.entries)) {
+          const importedEntries = parsed.entries || [];
+          const importedGoals = Array.isArray(parsed.goals) ? parsed.goals : [];
+          onImportBackup(importedEntries, importedGoals);
+          alert(`Successfully imported ${importedEntries.length} journal pages and ${importedGoals.length} goals! ✨`);
+          onClose();
         } else {
-          alert('Invalid backup file format. Expected a JSON array of journal entries.');
+          alert('Invalid backup file format. Expected a JSON file created by Little Pages.');
         }
       } catch (err) {
         alert('Could not parse JSON file. Please ensure it is a valid backup file.');
@@ -62,7 +76,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             <h3 className="modal-title font-handwritten text-2xl">
               Backup & Restore 📦
             </h3>
-            <p className="modal-subtitle">Keep your diary entries safe & portable</p>
+            <p className="modal-subtitle">Keep your diary entries & goals safe & portable</p>
           </div>
           <button
             type="button"
@@ -81,7 +95,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             <div className="option-text flex-1">
               <h4 className="option-title">Export to JSON</h4>
               <p className="option-desc">
-                Download all your {entries.length} journal entries as a single JSON file.
+                Download all your {entries.length} pages and {goals.length} goals as a single backup file.
               </p>
             </div>
             <button
@@ -100,7 +114,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             <div className="option-text flex-1">
               <h4 className="option-title">Import JSON Backup</h4>
               <p className="option-desc">
-                Restore or merge entries from a previously exported backup file.
+                Restore or merge entries & goals from a previously exported backup file.
               </p>
             </div>
             <input
@@ -122,7 +136,7 @@ export const BackupModal: React.FC<BackupModalProps> = ({
           <div className="privacy-note">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>
-              Your journal entries are stored locally on your device and never sold or shared.
+              Your journal entries & goals are stored locally on your device and encrypted.
             </span>
           </div>
         </div>

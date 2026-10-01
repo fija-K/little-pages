@@ -1,13 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { JournalEntry, EncryptedJournalEntry, FilterState } from './types/journal';
+import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalType } from './types/journal';
 import type { VaultSecurityConfig } from './utils/crypto';
 import {
   getVaultConfig,
   saveVaultConfig,
   getStoredEncryptedEntries,
   saveStoredEncryptedEntries,
+  getStoredEncryptedGoals,
+  saveStoredEncryptedGoals,
   encryptJournalEntry,
-  decryptJournalEntry
+  decryptJournalEntry,
+  encryptGoalItem,
+  decryptGoalItem
 } from './utils/storage';
 import { calculateStreak } from './utils/streakUtils';
 import {
@@ -32,15 +36,23 @@ import { EntryEditor } from './components/EntryEditor';
 import { BackupModal } from './components/BackupModal';
 import { LockSetupModal } from './components/LockSetupModal';
 import { LockScreen } from './components/LockScreen';
+import { GoalsModal } from './components/GoalsModal';
 
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes idle timeout
 
 export function App() {
   const [vaultConfig, setVaultConfig] = useState<VaultSecurityConfig | null>(() => getVaultConfig());
   const [encryptionKey, setEncryptionKey] = useState<CryptoKey | null>(null);
+  
+  // Entries state
   const [decryptedEntries, setDecryptedEntries] = useState<JournalEntry[]>([]);
   const [encryptedEntries, setEncryptedEntries] = useState<EncryptedJournalEntry[]>([]);
-  
+
+  // Goals state
+  const [decryptedGoals, setDecryptedGoals] = useState<GoalItem[]>([]);
+  const [encryptedGoals, setEncryptedGoals] = useState<EncryptedGoalItem[]>([]);
+  const [activeGoalsPanel, setActiveGoalsPanel] = useState<GoalType | null>(null);
+
   const [currentView, setCurrentView] = useState<'list' | 'calendar' | 'editor'>('list');
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [editorInitialDate, setEditorInitialDate] = useState<string | undefined>(undefined);
@@ -70,7 +82,9 @@ export function App() {
   const handleLockNow = useCallback(() => {
     setEncryptionKey(null);
     setDecryptedEntries([]);
+    setDecryptedGoals([]);
     setEditingEntry(null);
+    setActiveGoalsPanel(null);
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
   }, []);
 
@@ -118,12 +132,29 @@ export function App() {
     setDecryptedEntries(decryptedList);
   }, []);
 
+  // Decrypt encrypted goals when key is unlocked
+  const loadAndDecryptGoals = useCallback(async (key: CryptoKey, storedList: EncryptedGoalItem[]) => {
+    const decryptedList: GoalItem[] = [];
+    for (const encryptedItem of storedList) {
+      try {
+        const decrypted = await decryptGoalItem(encryptedItem, key);
+        decryptedList.push(decrypted);
+      } catch (err) {
+        console.error('Failed to decrypt goal:', err);
+      }
+    }
+    setDecryptedGoals(decryptedList);
+  }, []);
+
   // Unlock callback
   const handleUnlockSuccess = async (key: CryptoKey) => {
     setEncryptionKey(key);
-    const stored = getStoredEncryptedEntries();
-    setEncryptedEntries(stored);
-    await loadAndDecryptEntries(key, stored);
+    const storedEntries = getStoredEncryptedEntries();
+    const storedGoals = getStoredEncryptedGoals();
+    setEncryptedEntries(storedEntries);
+    setEncryptedGoals(storedGoals);
+    await loadAndDecryptEntries(key, storedEntries);
+    await loadAndDecryptGoals(key, storedGoals);
   };
 
   // Complete initial vault setup callback
@@ -143,16 +174,19 @@ export function App() {
 
     setEncryptedEntries([]);
     setDecryptedEntries([]);
+    setEncryptedGoals([]);
+    setDecryptedGoals([]);
     saveStoredEncryptedEntries([]);
+    saveStoredEncryptedGoals([]);
   };
 
-  // Firebase Auth listener & cross-device Firestore sync with graceful permission handling
+  // Firebase Auth listener & cross-device Firestore sync
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
 
       if (currentUser) {
-        // 1. Sync Vault Config from Firestore for cross-device passphrase verification
+        // 1. Sync Vault Config from Firestore
         const configDocRef = doc(db, 'users', currentUser.uid, 'vault_config', 'config');
         const unsubscribeConfig = onSnapshot(
           configDocRef,
@@ -169,16 +203,16 @@ export function App() {
             }
           },
           (err) => {
-            console.warn('Firestore vault_config sync info: Add Firestore Security Rules for Little Pages if Cloud sync is needed.', err.message);
+            console.warn('Firestore vault_config sync info:', err.message);
           }
         );
 
         // 2. Sync Encrypted Journal Entries from Firestore across devices
         const userEntriesRef = collection(db, 'users', currentUser.uid, 'journal_entries');
-        const q = query(userEntriesRef);
+        const qEntries = query(userEntriesRef);
 
         const unsubscribeEntries = onSnapshot(
-          q,
+          qEntries,
           async (snapshot) => {
             const remoteEncrypted: EncryptedJournalEntry[] = [];
             snapshot.forEach((docSnap) => {
@@ -198,23 +232,50 @@ export function App() {
             }
           },
           (err) => {
-            console.warn('Firestore journal_entries sync info: Add Firestore Security Rules for Little Pages if Cloud sync is needed.', err.message);
+            console.warn('Firestore journal_entries sync info:', err.message);
+          }
+        );
+
+        // 3. Sync Encrypted Goals from Firestore across devices
+        const userGoalsRef = collection(db, 'users', currentUser.uid, 'goals');
+        const qGoals = query(userGoalsRef);
+
+        const unsubscribeGoals = onSnapshot(
+          qGoals,
+          async (snapshot) => {
+            const remoteEncryptedGoals: EncryptedGoalItem[] = [];
+            snapshot.forEach((docSnap) => {
+              remoteEncryptedGoals.push(docSnap.data() as EncryptedGoalItem);
+            });
+
+            if (remoteEncryptedGoals.length > 0) {
+              setEncryptedGoals(remoteEncryptedGoals);
+              saveStoredEncryptedGoals(remoteEncryptedGoals);
+
+              if (encryptionKey) {
+                await loadAndDecryptGoals(encryptionKey, remoteEncryptedGoals);
+              }
+            }
+          },
+          (err) => {
+            console.warn('Firestore goals sync info:', err.message);
           }
         );
 
         return () => {
           unsubscribeConfig();
           unsubscribeEntries();
+          unsubscribeGoals();
         };
       }
     });
 
     return () => unsubscribeAuth();
-  }, [encryptionKey, loadAndDecryptEntries]);
+  }, [encryptionKey, loadAndDecryptEntries, loadAndDecryptGoals]);
 
   const { currentStreak } = calculateStreak(decryptedEntries);
 
-  // Google Sign-In with friendly unauthorized-domain error handling
+  // Google Sign-In
   const handleSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -225,7 +286,7 @@ export function App() {
       if (authError?.code === 'auth/unauthorized-domain') {
         const currentHost = window.location.hostname;
         alert(
-          `Firebase Authorization Action Required:\n\nTo allow Google sign-in on "${currentHost}", please add it to Authorized Domains in Firebase Console:\n\n1. Go to Firebase Console (skulk-45c23)\n2. Navigate to Authentication -> Settings -> Authorized domains\n3. Click "Add domain" and enter "${currentHost}"`
+          `Firebase Authorization Action Required:\n\nTo allow Google sign-in on "${currentHost}", please add it to Authorized Domains in Firebase Console:\n\n1. Go to Firebase Console\n2. Navigate to Authentication -> Settings -> Authorized domains\n3. Click "Add domain" and enter "${currentHost}"`
         );
       } else {
         alert(`Sign-in status: ${authError?.message || 'Sign-in cancelled'}`);
@@ -296,12 +357,7 @@ export function App() {
           await setDoc(configDocRef, vaultConfig, { merge: true });
         }
       } catch (err: unknown) {
-        const firebaseErr = err as { code?: string; message?: string };
-        if (firebaseErr?.code === 'permission-denied') {
-          console.warn('Cloud sync requires Firestore Rules update. Saved locally to browser!');
-        } else {
-          console.error('Failed to sync encrypted entry to Firestore:', err);
-        }
+        console.warn('Failed to sync encrypted entry to Firestore:', err);
       }
     }
 
@@ -342,17 +398,146 @@ export function App() {
     await handleSaveEntry(updated);
   };
 
-  // Import JSON backup
-  const handleImportEntries = async (imported: JournalEntry[]) => {
+  // Goal handlers
+  const handleAddGoal = async (text: string, type: GoalType, deadline?: string) => {
     if (!encryptionKey) return;
-    const reEncrypted: EncryptedJournalEntry[] = [];
-    for (const item of imported) {
-      const enc = await encryptJournalEntry(item, encryptionKey);
-      reEncrypted.push(enc);
+    const newGoal: GoalItem = {
+      id: `goal-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      text,
+      type,
+      completed: false,
+      deadline,
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    const encrypted = await encryptGoalItem(newGoal, encryptionKey);
+    const updatedDecrypted = [newGoal, ...decryptedGoals];
+    const updatedEncrypted = [encrypted, ...encryptedGoals];
+
+    setDecryptedGoals(updatedDecrypted);
+    setEncryptedGoals(updatedEncrypted);
+    saveStoredEncryptedGoals(updatedEncrypted);
+
+    if (user) {
+      try {
+        const docRef = doc(db, 'users', user.uid, 'goals', encrypted.id);
+        await setDoc(docRef, encrypted, { merge: true });
+      } catch (err) {
+        console.warn('Failed to sync goal to Firestore:', err);
+      }
     }
-    setDecryptedEntries(imported);
-    setEncryptedEntries(reEncrypted);
-    saveStoredEncryptedEntries(reEncrypted);
+  };
+
+  const handleToggleGoal = async (id: string) => {
+    if (!encryptionKey) return;
+    const target = decryptedGoals.find((g) => g.id === id);
+    if (!target) return;
+
+    const updatedGoal: GoalItem = {
+      ...target,
+      completed: !target.completed,
+      updatedAt: Date.now()
+    };
+
+    const encrypted = await encryptGoalItem(updatedGoal, encryptionKey);
+    const updatedDecrypted = decryptedGoals.map((g) => (g.id === id ? updatedGoal : g));
+    const updatedEncrypted = encryptedGoals.map((g) => (g.id === id ? encrypted : g));
+
+    setDecryptedGoals(updatedDecrypted);
+    setEncryptedGoals(updatedEncrypted);
+    saveStoredEncryptedGoals(updatedEncrypted);
+
+    if (user) {
+      try {
+        const docRef = doc(db, 'users', user.uid, 'goals', encrypted.id);
+        await setDoc(docRef, encrypted, { merge: true });
+      } catch (err) {
+        console.warn('Failed to sync updated goal to Firestore:', err);
+      }
+    }
+  };
+
+  const handleEditGoal = async (id: string, newText: string, newDeadline?: string) => {
+    if (!encryptionKey) return;
+    const target = decryptedGoals.find((g) => g.id === id);
+    if (!target) return;
+
+    const updatedGoal: GoalItem = {
+      ...target,
+      text: newText,
+      deadline: newDeadline,
+      updatedAt: Date.now()
+    };
+
+    const encrypted = await encryptGoalItem(updatedGoal, encryptionKey);
+    const updatedDecrypted = decryptedGoals.map((g) => (g.id === id ? updatedGoal : g));
+    const updatedEncrypted = encryptedGoals.map((g) => (g.id === id ? encrypted : g));
+
+    setDecryptedGoals(updatedDecrypted);
+    setEncryptedGoals(updatedEncrypted);
+    saveStoredEncryptedGoals(updatedEncrypted);
+
+    if (user) {
+      try {
+        const docRef = doc(db, 'users', user.uid, 'goals', encrypted.id);
+        await setDoc(docRef, encrypted, { merge: true });
+      } catch (err) {
+        console.warn('Failed to sync edited goal to Firestore:', err);
+      }
+    }
+  };
+
+  const handleDeleteGoal = async (id: string) => {
+    const updatedDecrypted = decryptedGoals.filter((g) => g.id !== id);
+    const updatedEncrypted = encryptedGoals.filter((g) => g.id !== id);
+
+    setDecryptedGoals(updatedDecrypted);
+    setEncryptedGoals(updatedEncrypted);
+    saveStoredEncryptedGoals(updatedEncrypted);
+
+    if (user) {
+      try {
+        const docRef = doc(db, 'users', user.uid, 'goals', id);
+        await deleteDoc(docRef);
+      } catch (err) {
+        console.warn('Failed to delete goal from Firestore:', err);
+      }
+    }
+  };
+
+  // Toggle goals panel modal
+  const handleOpenGoals = (type: GoalType) => {
+    if (activeGoalsPanel === type) {
+      setActiveGoalsPanel(null);
+    } else {
+      setActiveGoalsPanel(type);
+    }
+  };
+
+  // Import JSON backup (entries + goals)
+  const handleImportBackup = async (importedEntries: JournalEntry[], importedGoals: GoalItem[]) => {
+    if (!encryptionKey) return;
+
+    const reEncryptedEntries: EncryptedJournalEntry[] = [];
+    for (const item of importedEntries) {
+      const enc = await encryptJournalEntry(item, encryptionKey);
+      reEncryptedEntries.push(enc);
+    }
+
+    const reEncryptedGoals: EncryptedGoalItem[] = [];
+    for (const goal of importedGoals) {
+      const enc = await encryptGoalItem(goal, encryptionKey);
+      reEncryptedGoals.push(enc);
+    }
+
+    setDecryptedEntries(importedEntries);
+    setEncryptedEntries(reEncryptedEntries);
+    saveStoredEncryptedEntries(reEncryptedEntries);
+
+    setDecryptedGoals(importedGoals);
+    setEncryptedGoals(reEncryptedGoals);
+    saveStoredEncryptedGoals(reEncryptedGoals);
   };
 
   const isUnlocked = encryptionKey !== null;
@@ -399,6 +584,8 @@ export function App() {
             onNewEntry={() => handleNewEntry()}
             filter={filter}
             onFilterChange={setFilter}
+            activeGoalsPanel={activeGoalsPanel}
+            onOpenGoals={handleOpenGoals}
           />
         )}
 
@@ -428,8 +615,22 @@ export function App() {
         isOpen={isBackupOpen}
         onClose={() => setIsBackupOpen(false)}
         entries={decryptedEntries}
-        onImportEntries={handleImportEntries}
+        goals={decryptedGoals}
+        onImportBackup={handleImportBackup}
       />
+
+      {activeGoalsPanel && (
+        <GoalsModal
+          isOpen={!!activeGoalsPanel}
+          onClose={() => setActiveGoalsPanel(null)}
+          type={activeGoalsPanel}
+          goals={decryptedGoals}
+          onAddGoal={handleAddGoal}
+          onToggleGoal={handleToggleGoal}
+          onEditGoal={handleEditGoal}
+          onDeleteGoal={handleDeleteGoal}
+        />
+      )}
     </div>
   );
 }

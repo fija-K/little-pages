@@ -1,9 +1,10 @@
-import type { JournalEntry, EncryptedJournalEntry } from '../types/journal';
+import type { JournalEntry, EncryptedJournalEntry, GoalItem, EncryptedGoalItem } from '../types/journal';
 import type { VaultSecurityConfig } from './crypto';
 import { encryptText, decryptText } from './crypto';
 
 const VAULT_CONFIG_KEY = 'little_pages_vault_config';
 const ENCRYPTED_STORAGE_KEY = 'little_pages_encrypted_entries_v1';
+const ENCRYPTED_GOALS_KEY = 'little_pages_encrypted_goals_v1';
 
 export const INITIAL_SAMPLE_ENTRIES: JournalEntry[] = [];
 
@@ -126,7 +127,61 @@ export function saveStoredEncryptedEntries(entries: EncryptedJournalEntry[]): vo
   }
 }
 
+// Goal Encryption & Decryption
+export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<EncryptedGoalItem> {
+  const textEnc = await encryptText(goal.text || '', key);
+  return {
+    id: goal.id,
+    encryptedText: textEnc.ciphertext,
+    textIv: textEnc.iv,
+    type: goal.type,
+    completed: goal.completed,
+    deadline: goal.deadline,
+    createdAt: goal.createdAt,
+    updatedAt: goal.updatedAt
+  };
+}
+
+export async function decryptGoalItem(encrypted: EncryptedGoalItem, key: CryptoKey): Promise<GoalItem> {
+  let text = '';
+  try {
+    text = await decryptText(encrypted.encryptedText, encrypted.textIv, key);
+  } catch (e) {
+    console.error('Failed to decrypt goal text:', e);
+  }
+  return {
+    id: encrypted.id,
+    text,
+    type: encrypted.type,
+    completed: encrypted.completed,
+    deadline: encrypted.deadline,
+    createdAt: encrypted.createdAt,
+    updatedAt: encrypted.updatedAt
+  };
+}
+
+export function getStoredEncryptedGoals(): EncryptedGoalItem[] {
+  try {
+    const raw = localStorage.getItem(ENCRYPTED_GOALS_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    console.error('Failed to load encrypted goals:', err);
+    return [];
+  }
+}
+
+export function saveStoredEncryptedGoals(goals: EncryptedGoalItem[]): void {
+  try {
+    localStorage.setItem(ENCRYPTED_GOALS_KEY, JSON.stringify(goals));
+  } catch (err) {
+    console.error('Failed to save encrypted goals to localStorage:', err);
+  }
+}
+
 export function clearLocalEntries(): void {
   localStorage.removeItem(ENCRYPTED_STORAGE_KEY);
+  localStorage.removeItem(ENCRYPTED_GOALS_KEY);
   localStorage.removeItem('little_pages_entries_v1');
 }

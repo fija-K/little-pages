@@ -2,6 +2,29 @@ export type MoodType = 'happy' | 'cozy' | 'tired' | 'anxious' | 'excited' | 'bla
 
 export type PageColor = 'blush' | 'lavender' | 'sage' | 'butter' | 'peach' | 'sky';
 
+export type GoalType = 'short-term' | 'long-term';
+
+export interface GoalItem {
+  id: string;
+  text: string;
+  type: GoalType;
+  completed: boolean;
+  deadline?: string; // ISO format YYYY-MM-DD
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface EncryptedGoalItem {
+  id: string;
+  encryptedText: string; // Base64 ciphertext
+  textIv: string; // Base64 IV
+  type: GoalType;
+  completed: boolean;
+  deadline?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface MoodConfig {
   id: MoodType;
   label: string;

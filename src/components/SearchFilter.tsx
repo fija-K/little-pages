@@ -1,18 +1,22 @@
 import React from 'react';
 import { Search, X, RotateCcw } from 'lucide-react';
 import { MOODS } from '../types/journal';
-import type { FilterState, MoodType } from '../types/journal';
+import type { FilterState, MoodType, GoalType } from '../types/journal';
 
 interface SearchFilterProps {
   filter: FilterState;
   onFilterChange: (newFilter: FilterState) => void;
   availableTags: string[];
+  activeGoalsPanel?: GoalType | null;
+  onOpenGoals: (type: GoalType) => void;
 }
 
 export const SearchFilter: React.FC<SearchFilterProps> = ({
   filter,
   onFilterChange,
-  availableTags
+  availableTags,
+  activeGoalsPanel,
+  onOpenGoals
 }) => {
   const moodKeys = Object.keys(MOODS) as MoodType[];
 
@@ -55,35 +59,48 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
       </div>
 
       <div className="filter-chips-row">
-        <div className="filter-group">
-          <span className="filter-group-label">Mood:</span>
-          <div className="filter-pills-scroll">
-            <button
-              type="button"
-              className={`filter-pill ${filter.selectedMood === 'all' ? 'active' : ''}`}
-              onClick={() => onFilterChange({ ...filter, selectedMood: 'all' })}
-            >
-              All Moods
-            </button>
-            {moodKeys.map((moodKey) => {
-              const cfg = MOODS[moodKey];
-              return (
-                <button
-                  key={moodKey}
-                  type="button"
-                  className={`filter-pill ${filter.selectedMood === moodKey ? 'active' : ''}`}
-                  onClick={() => onFilterChange({ ...filter, selectedMood: moodKey })}
-                >
-                  <span>{cfg.emoji}</span>
-                  <span>{cfg.label}</span>
-                </button>
-              );
-            })}
+        {/* Mood Row */}
+        <div className="filter-row-container">
+          <div className="filter-group">
+            <span className="filter-group-label">Mood:</span>
+            <div className="filter-pills-scroll">
+              <button
+                type="button"
+                className={`filter-pill ${filter.selectedMood === 'all' ? 'active' : ''}`}
+                onClick={() => onFilterChange({ ...filter, selectedMood: 'all' })}
+              >
+                All Moods
+              </button>
+              {moodKeys.map((moodKey) => {
+                const cfg = MOODS[moodKey];
+                return (
+                  <button
+                    key={moodKey}
+                    type="button"
+                    className={`filter-pill ${filter.selectedMood === moodKey ? 'active' : ''}`}
+                    onClick={() => onFilterChange({ ...filter, selectedMood: moodKey })}
+                  >
+                    <span>{cfg.emoji}</span>
+                    <span>{cfg.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
+
+          <button
+            type="button"
+            className={`filter-pill goal-pill-btn ${activeGoalsPanel === 'short-term' ? 'active' : ''}`}
+            onClick={() => onOpenGoals('short-term')}
+            title="Open short-term goals"
+          >
+            🌱 Short-term goals
+          </button>
         </div>
 
-        {availableTags.length > 0 && (
-          <div className="filter-group mt-2">
+        {/* Tag Row */}
+        <div className="filter-row-container mt-2">
+          <div className="filter-group">
             <span className="filter-group-label">Tag:</span>
             <div className="filter-pills-scroll">
               <button
@@ -105,7 +122,16 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
               ))}
             </div>
           </div>
-        )}
+
+          <button
+            type="button"
+            className={`filter-pill goal-pill-btn ${activeGoalsPanel === 'long-term' ? 'active' : ''}`}
+            onClick={() => onOpenGoals('long-term')}
+            title="Open long-term goals"
+          >
+            🌳 Long-term goals
+          </button>
+        </div>
       </div>
 
       {isFiltered && (

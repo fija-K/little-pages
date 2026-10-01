@@ -1602,3 +1602,260 @@
   padding: 1rem;
   z-index: 100;
 }
+
+
+/* Goals Feature Styling */
+.filter-row-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.goal-pill-btn {
+  font-family: inherit;
+  white-space: nowrap;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.goals-modal-card {
+  background: white;
+  border: 2px solid #F4A6BA;
+  border-radius: 24px;
+  padding: 1.5rem;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(74, 63, 59, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.goals-progress-badge {
+  background: #EBF3E8;
+  border: 1px solid #B8CFAE;
+  color: #264A1F;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.add-goal-form {
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  border-radius: 16px;
+  padding: 0.75rem;
+}
+
+.add-goal-inputs-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.goal-text-input {
+  flex: 1;
+  min-width: 160px;
+  background: white;
+  border: 1px solid #E8D7C8;
+  border-radius: 10px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-ink);
+  outline: none;
+}
+
+.goal-text-input:focus {
+  border-color: #F4A6BA;
+}
+
+.deadline-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #E8D7C8;
+  border-radius: 10px;
+  padding: 0.2rem 0.4rem;
+}
+
+.goal-date-input, .edit-goal-date-input {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--text-charcoal);
+  outline: none;
+  padding: 0.2rem;
+  font-family: inherit;
+}
+
+.add-goal-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #F4A6BA;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.add-goal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.goals-list-container {
+  min-height: 120px;
+}
+
+.goals-empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+}
+
+.empty-goals-text {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.goals-items-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.goal-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: #FFF6EE;
+  border: 1px solid #F0E2D6;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.goal-item-row.completed {
+  background: #FAFAFA;
+  border-color: #EFEFEF;
+}
+
+.goal-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.custom-goal-checkbox {
+  accent-color: #F4A6BA;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.goal-text-display {
+  font-size: 0.95rem;
+  color: var(--text-ink);
+  word-break: break-word;
+}
+
+.deadline-chip {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  border-width: 1px;
+  border-style: solid;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.deadline-chip.normal-deadline {
+  background: #FFF9E6;
+  border-color: #F6D186;
+  color: #5C4813;
+}
+
+.deadline-chip.passed-deadline {
+  background: #FDEFF3;
+  border-color: #F4A6BA;
+  color: #D93856;
+}
+
+.goal-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.goal-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 6px;
+}
+.goal-action-btn.edit:hover {
+  color: var(--text-ink);
+  background: rgba(0, 0, 0, 0.05);
+}
+.goal-action-btn.delete:hover {
+  color: #D93856;
+  background: #FDEFF3;
+}
+
+.goal-item-row.editing {
+  background: white;
+  border: 1.5px solid #F4A6BA;
+}
+
+.edit-goal-text-input {
+  flex: 1;
+  border: 1px solid #E8D7C8;
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.edit-actions-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.save-edit-btn {
+  background: #EBF3E8;
+  border: 1px solid #B8CFAE;
+  color: #264A1F;
+  padding: 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.cancel-edit-btn {
+  background: #FDEFF3;
+  border: 1px solid #F4A6BA;
+  color: #D93856;
+  padding: 0.3rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
