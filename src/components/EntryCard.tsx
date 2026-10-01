@@ -3,6 +3,7 @@ import { Edit3, Trash2, Heart, Calendar as CalendarIcon } from 'lucide-react';
 import { MOODS, PAGE_COLORS } from '../types/journal';
 import type { JournalEntry } from '../types/journal';
 import { formatShortDate } from '../utils/dateUtils';
+import { StickerLayer } from './StickerLayer';
 
 interface EntryCardProps {
   entry: JournalEntry;
@@ -35,6 +36,22 @@ export const EntryCard: React.FC<EntryCardProps> = ({
       } as React.CSSProperties}
     >
       <div className="washi-tape-strip" />
+
+      {/* Render placed stickers in read-only mode on card */}
+      {entry.stickers && entry.stickers.length > 0 && (
+        <StickerLayer
+          stickers={entry.stickers}
+          selectedStickerId={null}
+          isReadOnly={true}
+          onSelectSticker={() => {}}
+          onUpdateSticker={() => {}}
+          onDeleteSticker={() => {}}
+          onDuplicateSticker={() => {}}
+          onBringForward={() => {}}
+          onSendBackward={() => {}}
+          containerRef={{ current: null }}
+        />
+      )}
 
       <div className="card-header">
         <div className="card-date-badge">

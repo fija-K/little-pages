@@ -1,4 +1,4 @@
-import type { JournalEntry, EncryptedJournalEntry, GoalItem, EncryptedGoalItem } from '../types/journal';
+import type { JournalEntry, EncryptedJournalEntry, GoalItem, EncryptedGoalItem, PlacedSticker } from '../types/journal';
 import type { VaultSecurityConfig } from './crypto';
 import { encryptText, decryptText } from './crypto';
 
@@ -31,7 +31,7 @@ export function clearLocalVaultConfig(): void {
   localStorage.removeItem(VAULT_CONFIG_KEY);
 }
 
-// Encrypt a single entry (title, content, AND tags)
+// Encrypt a single entry (title, content, tags, AND stickers)
 export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): Promise<EncryptedJournalEntry> {
   const titleEnc = await encryptText(entry.title || '', key);
   const contentEnc = await encryptText(entry.content || '', key);
@@ -39,6 +39,10 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
   // Encrypt JSON-serialized tags array
   const tagsJson = JSON.stringify(entry.tags || []);
   const tagsEnc = await encryptText(tagsJson, key);
+
+  // Encrypt JSON-serialized stickers array
+  const stickersJson = JSON.stringify(entry.stickers || []);
+  const stickersEnc = await encryptText(stickersJson, key);
 
   return {
     id: entry.id,
@@ -49,6 +53,8 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
     contentIv: contentEnc.iv,
     encryptedTags: tagsEnc.ciphertext,
     tagsIv: tagsEnc.iv,
+    encryptedStickers: stickersEnc.ciphertext,
+    stickersIv: stickersEnc.iv,
     mood: entry.mood,
     pageColor: entry.pageColor,
     createdAt: entry.createdAt,
@@ -57,11 +63,12 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
   };
 }
 
-// Decrypt a single entry (title, content, AND tags)
+// Decrypt a single entry (title, content, tags, AND stickers)
 export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key: CryptoKey): Promise<JournalEntry> {
   let title = 'Untitled Page';
   let content = '';
   let tags: string[] = [];
+  let stickers: PlacedSticker[] = [];
 
   try {
     title = await decryptText(encrypted.encryptedTitle, encrypted.titleIv, key);
@@ -86,8 +93,19 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
       console.error('Failed to decrypt tags:', e);
     }
   } else if (Array.isArray(encrypted.tags)) {
-    // Backward-compatible fallback for legacy unencrypted tags
     tags = encrypted.tags;
+  }
+
+  if (encrypted.encryptedStickers && encrypted.stickersIv) {
+    try {
+      const stickersRaw = await decryptText(encrypted.encryptedStickers, encrypted.stickersIv, key);
+      const parsed = JSON.parse(stickersRaw);
+      if (Array.isArray(parsed)) {
+        stickers = parsed;
+      }
+    } catch (e) {
+      console.error('Failed to decrypt stickers:', e);
+    }
   }
 
   return {
@@ -98,6 +116,7 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
     mood: encrypted.mood,
     pageColor: encrypted.pageColor,
     tags,
+    stickers,
     createdAt: encrypted.createdAt,
     updatedAt: encrypted.updatedAt,
     isFavorite: encrypted.isFavorite

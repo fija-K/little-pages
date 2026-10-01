@@ -25,6 +25,18 @@ export interface EncryptedGoalItem {
   updatedAt: number;
 }
 
+export interface PlacedSticker {
+  id: string; // Unique instance ID
+  packId: string; // e.g. 'cute-doodles'
+  stickerId: string; // e.g. 'sticker_01'
+  x: number; // percentage (0 to 100)
+  y: number; // percentage (0 to 100)
+  scale: number; // default 1.0
+  rotation: number; // degrees
+  zIndex: number; // layer order
+  flipped: boolean; // horizontal flip
+}
+
 export interface MoodConfig {
   id: MoodType;
   label: string;
@@ -44,6 +56,7 @@ export interface JournalEntry {
   mood: MoodType;
   pageColor: PageColor;
   tags: string[];
+  stickers?: PlacedSticker[];
   createdAt: number;
   updatedAt: number;
   isFavorite?: boolean;
@@ -60,6 +73,8 @@ export interface EncryptedJournalEntry {
   encryptedTags?: string; // Base64 ciphertext of JSON.stringify(tags)
   tagsIv?: string; // Base64 IV
   tags?: string[]; // Legacy optional fallback
+  encryptedStickers?: string; // Base64 ciphertext of JSON.stringify(stickers)
+  stickersIv?: string; // Base64 IV
   mood: MoodType;
   pageColor: PageColor;
   createdAt: number;

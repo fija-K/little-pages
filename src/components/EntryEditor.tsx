@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Save, ArrowLeft, Trash2, Heart, Palette, Sparkles, Check } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Save, ArrowLeft, Trash2, Heart, Palette, Sparkles, Check, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PAGE_COLORS } from '../types/journal';
-import type { JournalEntry, MoodType, PageColor } from '../types/journal';
+import type { JournalEntry, MoodType, PageColor, PlacedSticker } from '../types/journal';
 import { formatHandwrittenDate, getTodayIsoString } from '../utils/dateUtils';
 import { MoodPicker } from './MoodPicker';
 import { TagInput } from './TagInput';
+import { StickerTray } from './StickerTray';
+import { StickerLayer } from './StickerLayer';
 
 interface EntryEditorProps {
   entry: JournalEntry | null;
@@ -22,6 +24,8 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   onCancel,
   onDelete
 }) => {
+  const cardRef = useRef<HTMLFormElement>(null);
+
   const [date, setDate] = useState<string>(
     entry?.date || initialDateIso || getTodayIsoString()
   );
@@ -34,6 +38,12 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showSavedStamp, setShowSavedStamp] = useState<boolean>(false);
 
+  // Sticker state
+  const [stickers, setStickers] = useState<PlacedSticker[]>(entry?.stickers || []);
+  const [selectedStickerId, setSelectedStickerId] = useState<string | null>(null);
+  const [isTrayOpen, setIsTrayOpen] = useState<boolean>(false);
+  const [history, setHistory] = useState<PlacedSticker[][]>([]);
+
   useEffect(() => {
     if (entry) {
       setDate(entry.date);
@@ -42,6 +52,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       setMood(entry.mood);
       setPageColor(entry.pageColor);
       setTags(entry.tags || []);
+      setStickers(entry.stickers || []);
       setIsFavorite(entry.isFavorite || false);
     }
   }, [entry]);
@@ -51,6 +62,81 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   const charCount = content.length;
   const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 200));
+
+  // Push state to history before mutation for Undo
+  const pushHistory = (currentStickers: PlacedSticker[]) => {
+    setHistory((prev) => [...prev.slice(-15), currentStickers]);
+  };
+
+  const handleUndo = () => {
+    if (history.length === 0) return;
+    const previous = history[history.length - 1];
+    setHistory((prev) => prev.slice(0, -1));
+    setStickers(previous);
+    setSelectedStickerId(null);
+  };
+
+  const handleAddStickerFromTray = (packId: string, stickerId: string) => {
+    pushHistory(stickers);
+
+    const newSticker: PlacedSticker = {
+      id: `ps-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      packId,
+      stickerId,
+      x: 50,
+      y: 40,
+      scale: 1.0,
+      rotation: 0,
+      zIndex: stickers.length + 1,
+      flipped: false
+    };
+
+    const updated = [...stickers, newSticker];
+    setStickers(updated);
+    setSelectedStickerId(newSticker.id);
+  };
+
+  const handleUpdateSticker = (updated: PlacedSticker) => {
+    setStickers((prev) => prev.map((s) => (s.id === updated.id ? updated : s)));
+  };
+
+  const handleDeleteSticker = (id: string) => {
+    pushHistory(stickers);
+    setStickers((prev) => prev.filter((s) => s.id !== id));
+    if (selectedStickerId === id) setSelectedStickerId(null);
+  };
+
+  const handleDuplicateSticker = (id: string) => {
+    const target = stickers.find((s) => s.id === id);
+    if (!target) return;
+    pushHistory(stickers);
+
+    const duplicated: PlacedSticker = {
+      ...target,
+      id: `ps-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      x: Math.min(90, target.x + 4),
+      y: Math.min(90, target.y + 4),
+      zIndex: stickers.length + 1
+    };
+
+    const updated = [...stickers, duplicated];
+    setStickers(updated);
+    setSelectedStickerId(duplicated.id);
+  };
+
+  const handleBringForward = (id: string) => {
+    pushHistory(stickers);
+    setStickers((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, zIndex: (s.zIndex || 1) + 1 } : s))
+    );
+  };
+
+  const handleSendBackward = (id: string) => {
+    pushHistory(stickers);
+    setStickers((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, zIndex: Math.max(1, (s.zIndex || 1) - 1) } : s))
+    );
+  };
 
   const handleSave = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -77,6 +163,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       mood,
       pageColor,
       tags,
+      stickers,
       createdAt: entry?.createdAt || Date.now(),
       updatedAt: Date.now(),
       isFavorite
@@ -101,6 +188,28 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
         </button>
 
         <div className="top-right-actions">
+          {history.length > 0 && (
+            <button
+              type="button"
+              className="undo-pill-btn"
+              onClick={handleUndo}
+              title="Undo last sticker action"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Undo</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            className="decorate-pill-btn"
+            onClick={() => setIsTrayOpen(true)}
+            title="Open sticker tray to decorate page"
+          >
+            <Sparkles className="w-4 h-4 text-pink-500" />
+            <span>Decorate</span>
+          </button>
+
           <button
             type="button"
             className={`fav-toggle-btn ${isFavorite ? 'active' : ''}`}
@@ -138,14 +247,29 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       </div>
 
       <form
+        ref={cardRef}
         onSubmit={handleSave}
-        className="ruled-diary-page-card"
+        className="ruled-diary-page-card relative"
         style={{
           backgroundColor: pageTheme.bg,
           borderColor: pageTheme.border,
           '--accent-color': pageTheme.accent
         } as React.CSSProperties}
+        onClick={() => setSelectedStickerId(null)}
       >
+        {/* Render interactive placed stickers overlay */}
+        <StickerLayer
+          stickers={stickers}
+          selectedStickerId={selectedStickerId}
+          onSelectSticker={setSelectedStickerId}
+          onUpdateSticker={handleUpdateSticker}
+          onDeleteSticker={handleDeleteSticker}
+          onDuplicateSticker={handleDuplicateSticker}
+          onBringForward={handleBringForward}
+          onSendBackward={handleSendBackward}
+          containerRef={cardRef}
+        />
+
         <div className="binder-holes-strip">
           <div className="hole" />
           <div className="hole" />
@@ -243,6 +367,12 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
           </button>
         </div>
       </form>
+
+      <StickerTray
+        isOpen={isTrayOpen}
+        onClose={() => setIsTrayOpen(false)}
+        onSelectSticker={handleAddStickerFromTray}
+      />
     </div>
   );
 };

@@ -1859,3 +1859,233 @@
   border-radius: 6px;
   cursor: pointer;
 }
+
+
+/* STAGE 2: Sticker Decoration Feature Styling */
+.decorate-pill-btn, .undo-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: white;
+  border: 1.5px solid #F4A6BA;
+  color: #D93856;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(244, 166, 186, 0.25);
+}
+.decorate-pill-btn:hover, .undo-pill-btn:hover {
+  background: #FDEFF3;
+  transform: translateY(-1px);
+}
+.undo-pill-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #E8D7C8;
+  color: #7A6B65;
+}
+
+/* Sticker Layer Overlay */
+.sticker-layer-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* Allows text area typing when not directly clicking a sticker */
+  z-index: 10;
+  overflow: hidden;
+}
+
+.placed-sticker-wrapper {
+  position: absolute;
+  pointer-events: auto;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow 0.15s ease;
+}
+
+.placed-sticker-wrapper.selected {
+  outline: 2px dashed #F4A6BA;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.placed-sticker-img {
+  display: block;
+  width: 80px;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+}
+
+/* Action Toolbar Floating Above Selected Sticker */
+.sticker-action-toolbar {
+  position: absolute;
+  top: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: white;
+  border: 1.5px solid #F4A6BA;
+  padding: 0.2rem 0.35rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(74, 63, 59, 0.15);
+  white-space: nowrap;
+  z-index: 50;
+}
+
+.sticker-tool-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-charcoal);
+  padding: 0.25rem 0.35rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sticker-tool-btn:hover {
+  background: #FDEFF3;
+  color: #D93856;
+}
+.sticker-tool-btn.danger:hover {
+  background: #FDEFF3;
+  color: #D93856;
+}
+
+/* Corner Scale & Rotate Handles */
+.sticker-handle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border: 1.5px solid #F4A6BA;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  z-index: 50;
+}
+
+.scale-handle {
+  bottom: -10px;
+  right: -10px;
+  cursor: nwse-resize;
+}
+
+.rotate-handle {
+  top: -10px;
+  right: -10px;
+  cursor: grab;
+}
+
+/* Sticker Tray Modal / Bottom Sheet */
+.sticker-tray-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 34, 30, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .sticker-tray-overlay {
+    align-items: center;
+    padding: 1.5rem;
+  }
+}
+
+.sticker-tray-sheet {
+  background: white;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 80vh;
+  padding: 1.25rem;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .sticker-tray-sheet {
+    border-radius: 24px;
+    max-height: 85vh;
+  }
+}
+
+.sticker-tray-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sticker-pack-tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px dashed #E8D7C8;
+  padding-bottom: 0.5rem;
+}
+
+.pack-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #FFF6EE;
+  border: 1px solid #E8D7C8;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.pack-tab-btn.active {
+  background: #FDEFF3;
+  border-color: #F4A6BA;
+  color: #D93856;
+}
+
+.sticker-grid-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 380px;
+  padding: 0.5rem;
+}
+
+.sticker-grid-item-btn {
+  background: #FFF9E6;
+  border: 1.5px solid #F6D186;
+  border-radius: 14px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sticker-grid-item-btn:hover {
+  background: #FDEFF3;
+  border-color: #F4A6BA;
+  transform: scale(1.08);
+}
+
+.sticker-grid-img {
+  max-width: 100%;
+  max-height: 64px;
+  object-fit: contain;
+}
