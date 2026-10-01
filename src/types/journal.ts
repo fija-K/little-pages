@@ -4,12 +4,19 @@ export type PageColor = 'blush' | 'lavender' | 'sage' | 'butter' | 'peach' | 'sk
 
 export type GoalType = 'short-term' | 'long-term';
 
+export interface GoalSubItem {
+  id: string;
+  text: string;
+  completed: boolean;
+}
+
 export interface GoalItem {
   id: string;
   text: string;
   type: GoalType;
   completed: boolean;
   deadline?: string; // ISO format YYYY-MM-DD
+  subItems?: GoalSubItem[];
   createdAt: number;
   updatedAt: number;
 }
@@ -21,6 +28,9 @@ export interface EncryptedGoalItem {
   type: GoalType;
   completed: boolean;
   deadline?: string;
+  encryptedSubItems?: string; // Base64 ciphertext of JSON.stringify(subItems)
+  subItemsIv?: string; // Base64 IV
+  subItems?: GoalSubItem[]; // Legacy fallback
   createdAt: number;
   updatedAt: number;
 }

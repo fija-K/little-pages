@@ -116,18 +116,29 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
     };
   }, [isDragging, containerRef, onChange, sticker]);
 
-  // Resize Handle
+  // Improved Resize Handle using distance from center
   const handleResizeStart = (e: React.MouseEvent | React.TouchEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setIsResizing(true);
+    if (!itemRef.current) return;
+
+    const rect = itemRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+    const initialDistance = Math.hypot(clientX - centerX, clientY - centerY) || 1;
+
+    setIsResizing(true);
     resizeStartRef.current = {
-      startX: clientX,
-      startY: clientY,
+      startX: centerX, // store center position
+      startY: centerY,
       initialScale: sticker.scale
     };
+    // store initial distance in a ref
+    (resizeStartRef.current as any).initialDistance = initialDistance;
   };
 
   useEffect(() => {
@@ -135,10 +146,15 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
 
     const handleMove = (e: MouseEvent | TouchEvent) => {
       const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const deltaX = clientX - resizeStartRef.current.startX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
 
-      const scaleChange = deltaX / 100;
-      const newScale = Math.min(2.5, Math.max(0.4, resizeStartRef.current.initialScale + scaleChange));
+      const centerX = resizeStartRef.current.startX;
+      const centerY = resizeStartRef.current.startY;
+      const initialDistance = (resizeStartRef.current as any).initialDistance || 1;
+
+      const currentDistance = Math.hypot(clientX - centerX, clientY - centerY);
+      const scaleRatio = currentDistance / initialDistance;
+      const newScale = Math.min(3.0, Math.max(0.3, resizeStartRef.current.initialScale * scaleRatio));
 
       onChange({
         ...sticker,
@@ -245,6 +261,7 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
       className={`placed-sticker-wrapper ${isSelected ? 'selected' : ''}`}
       onMouseDown={handlePointerDown}
       onTouchStart={handlePointerDown}
+      onClick={(e) => e.stopPropagation()}
     >
       <img
         src={imgUrl}
@@ -265,7 +282,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             <button
               type="button"
               className="sticker-tool-btn"
-              onClick={onDuplicate}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDuplicate();
+              }}
               title="Duplicate sticker"
             >
               <Copy className="w-3.5 h-3.5" />
@@ -274,7 +294,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             <button
               type="button"
               className="sticker-tool-btn"
-              onClick={() => onChange({ ...sticker, flipped: !sticker.flipped })}
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange({ ...sticker, flipped: !sticker.flipped });
+              }}
               title="Flip horizontally"
             >
               <FlipHorizontal className="w-3.5 h-3.5" />
@@ -283,7 +306,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             <button
               type="button"
               className="sticker-tool-btn"
-              onClick={onBringForward}
+              onClick={(e) => {
+                e.stopPropagation();
+                onBringForward();
+              }}
               title="Bring forward"
             >
               <ArrowUp className="w-3.5 h-3.5" />
@@ -292,7 +318,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             <button
               type="button"
               className="sticker-tool-btn"
-              onClick={onSendBackward}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSendBackward();
+              }}
               title="Send backward"
             >
               <ArrowDown className="w-3.5 h-3.5" />
@@ -301,7 +330,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             <button
               type="button"
               className="sticker-tool-btn danger"
-              onClick={onDelete}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
               title="Delete sticker"
             >
               <X className="w-3.5 h-3.5" />
@@ -313,9 +345,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             className="sticker-handle scale-handle"
             onMouseDown={handleResizeStart}
             onTouchStart={handleResizeStart}
+            onClick={(e) => e.stopPropagation()}
             title="Drag to resize"
           >
-            <Maximize2 className="w-3 h-3 text-pink-600" />
+            <Maximize2 className="w-3.5 h-3.5 text-pink-600" />
           </div>
 
           {/* Rotate Handle */}
@@ -323,9 +356,10 @@ export const StickerCanvasItem: React.FC<StickerCanvasItemProps> = ({
             className="sticker-handle rotate-handle"
             onMouseDown={handleRotateStart}
             onTouchStart={handleRotateStart}
+            onClick={(e) => e.stopPropagation()}
             title="Drag to rotate"
           >
-            <RotateCw className="w-3 h-3 text-pink-600" />
+            <RotateCw className="w-3.5 h-3.5 text-pink-600" />
           </div>
         </>
       )}

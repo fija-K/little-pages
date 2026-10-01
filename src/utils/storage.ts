@@ -1,4 +1,4 @@
-import type { JournalEntry, EncryptedJournalEntry, GoalItem, EncryptedGoalItem, PlacedSticker } from '../types/journal';
+import type { JournalEntry, EncryptedJournalEntry, GoalItem, EncryptedGoalItem, GoalSubItem, PlacedSticker } from '../types/journal';
 import type { VaultSecurityConfig } from './crypto';
 import { encryptText, decryptText } from './crypto';
 
@@ -149,6 +149,10 @@ export function saveStoredEncryptedEntries(entries: EncryptedJournalEntry[]): vo
 // Goal Encryption & Decryption
 export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<EncryptedGoalItem> {
   const textEnc = await encryptText(goal.text || '', key);
+  
+  const subItemsJson = JSON.stringify(goal.subItems || []);
+  const subItemsEnc = await encryptText(subItemsJson, key);
+
   return {
     id: goal.id,
     encryptedText: textEnc.ciphertext,
@@ -156,6 +160,8 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
     type: goal.type,
     completed: goal.completed,
     deadline: goal.deadline,
+    encryptedSubItems: subItemsEnc.ciphertext,
+    subItemsIv: subItemsEnc.iv,
     createdAt: goal.createdAt,
     updatedAt: goal.updatedAt
   };
@@ -163,17 +169,35 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
 
 export async function decryptGoalItem(encrypted: EncryptedGoalItem, key: CryptoKey): Promise<GoalItem> {
   let text = '';
+  let subItems: GoalSubItem[] = [];
+
   try {
     text = await decryptText(encrypted.encryptedText, encrypted.textIv, key);
   } catch (e) {
     console.error('Failed to decrypt goal text:', e);
   }
+
+  if (encrypted.encryptedSubItems && encrypted.subItemsIv) {
+    try {
+      const raw = await decryptText(encrypted.encryptedSubItems, encrypted.subItemsIv, key);
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        subItems = parsed;
+      }
+    } catch (e) {
+      console.error('Failed to decrypt subItems:', e);
+    }
+  } else if (Array.isArray(encrypted.subItems)) {
+    subItems = encrypted.subItems;
+  }
+
   return {
     id: encrypted.id,
     text,
     type: encrypted.type,
     completed: encrypted.completed,
     deadline: encrypted.deadline,
+    subItems,
     createdAt: encrypted.createdAt,
     updatedAt: encrypted.updatedAt
   };

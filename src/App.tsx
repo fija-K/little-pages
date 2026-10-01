@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalType } from './types/journal';
+import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalSubItem, GoalType } from './types/journal';
 import type { VaultSecurityConfig } from './utils/crypto';
 import {
   getVaultConfig,
@@ -317,7 +317,7 @@ export function App() {
     setCurrentView('editor');
   };
 
-  // Save entry (Encrypt plaintext before storing & syncing to Firestore!)
+  // Save entry
   const handleSaveEntry = async (savedPlaintext: JournalEntry) => {
     if (!encryptionKey) {
       alert('Vault is locked. Please unlock to save entries.');
@@ -399,7 +399,7 @@ export function App() {
   };
 
   // Goal handlers
-  const handleAddGoal = async (text: string, type: GoalType, deadline?: string) => {
+  const handleAddGoal = async (text: string, type: GoalType, deadline?: string, subItems?: GoalSubItem[]) => {
     if (!encryptionKey) return;
     const newGoal: GoalItem = {
       id: `goal-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -407,6 +407,7 @@ export function App() {
       type,
       completed: false,
       deadline,
+      subItems,
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
@@ -427,6 +428,44 @@ export function App() {
         console.warn('Failed to sync goal to Firestore:', err);
       }
     }
+  };
+
+  const handleAddMultipleGoals = async (newGoalsList: { text: string; type: GoalType; deadline?: string; subItems?: GoalSubItem[] }[]) => {
+    if (!encryptionKey) return;
+    const createdGoals: GoalItem[] = [];
+    const createdEncrypted: EncryptedGoalItem[] = [];
+
+    for (const item of newGoalsList) {
+      const goal: GoalItem = {
+        id: `goal-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        text: item.text,
+        type: item.type,
+        completed: false,
+        deadline: item.deadline,
+        subItems: item.subItems,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      };
+      const enc = await encryptGoalItem(goal, encryptionKey);
+      createdGoals.push(goal);
+      createdEncrypted.push(enc);
+
+      if (user) {
+        try {
+          const docRef = doc(db, 'users', user.uid, 'goals', enc.id);
+          await setDoc(docRef, enc, { merge: true });
+        } catch (err) {
+          console.warn('Failed to sync batch goal to Firestore:', err);
+        }
+      }
+    }
+
+    const updatedDecrypted = [...createdGoals, ...decryptedGoals];
+    const updatedEncrypted = [...createdEncrypted, ...encryptedGoals];
+
+    setDecryptedGoals(updatedDecrypted);
+    setEncryptedGoals(updatedEncrypted);
+    saveStoredEncryptedGoals(updatedEncrypted);
   };
 
   const handleToggleGoal = async (id: string) => {
@@ -458,7 +497,7 @@ export function App() {
     }
   };
 
-  const handleEditGoal = async (id: string, newText: string, newDeadline?: string) => {
+  const handleEditGoal = async (id: string, newText: string, newDeadline?: string, subItems?: GoalSubItem[]) => {
     if (!encryptionKey) return;
     const target = decryptedGoals.find((g) => g.id === id);
     if (!target) return;
@@ -467,6 +506,7 @@ export function App() {
       ...target,
       text: newText,
       deadline: newDeadline,
+      subItems: subItems !== undefined ? subItems : target.subItems,
       updatedAt: Date.now()
     };
 
@@ -626,6 +666,7 @@ export function App() {
           type={activeGoalsPanel}
           goals={decryptedGoals}
           onAddGoal={handleAddGoal}
+          onAddMultipleGoals={handleAddMultipleGoals}
           onToggleGoal={handleToggleGoal}
           onEditGoal={handleEditGoal}
           onDeleteGoal={handleDeleteGoal}
