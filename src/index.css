@@ -55,13 +55,13 @@
   }
 
   [data-theme="chocolate"] {
-    --bg-app: #EAD8C8;
-    --bg-pattern: radial-gradient(#B8967D 1.2px, transparent 1.2px);
-    --card-bg-main: #F7EFE8;
-    --card-border-main: #C8A488;
-    --text-charcoal: #382417;
-    --text-muted: #6E503C;
-    --text-ink: #24140A;
+    --bg-app: #DFCCB9;
+    --bg-pattern: radial-gradient(#AC8B71 1.2px, transparent 1.2px);
+    --card-bg-main: #F2E7DC;
+    --card-border-main: #BD997D;
+    --text-charcoal: #321E12;
+    --text-muted: #634734;
+    --text-ink: #1F1007;
 
     --card-blush: #F7EAE1;
     --card-lavender: #EFE3DA;
