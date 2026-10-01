@@ -1,6 +1,6 @@
 export const LAST_UPDATED = "October 2026";
 export const PUBLIC_SOURCE_LINK = "https://github.com/fija-K/little-pages";
-export const CONTACT_EMAIL = "privacy@littlepages.app";
+export const CONTACT_EMAIL = "000fijakhan123@gmail.com";
 
 export interface SummaryPoint {
   icon: string;
@@ -116,6 +116,6 @@ export const TERMS_DATA = {
     "Provided as-is: Little Pages is provided 'as is', with no guarantee or warranty. Keep your own backups.",
     "Acceptable Use: Don't use the application to break the law or disrupt cloud service controls.",
     "Service Modifications: We may change or stop the service, with notice where possible.",
-    "Contact: For any terms questions, contact us at privacy@littlepages.app."
+    "Contact: For any terms questions, contact us at 000fijakhan123@gmail.com."
   ]
 };
