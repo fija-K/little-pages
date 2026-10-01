@@ -2,41 +2,41 @@
 
 @layer base {
   :root, [data-theme="strawberry"] {
-    --bg-app: #FFF6EE;
-    --bg-pattern: radial-gradient(#E8D7C8 1px, transparent 1px);
-    --card-bg-main: #FDEFF3;
-    --card-border-main: #F4A6BA;
+    --bg-app: #FFF0F5;
+    --bg-pattern: radial-gradient(#F5C2D6 1px, transparent 1px);
+    --card-bg-main: #FCE4EC;
+    --card-border-main: #F48FB1;
     --text-charcoal: #4A3F3B;
     --text-muted: #7A6B65;
     --text-ink: #2C221E;
 
-    --card-blush: #FDEFF3;
+    --card-blush: #FCE4EC;
     --card-lavender: #F3EEFF;
     --card-sage: #EBF3E8;
     --card-butter: #FFF9E6;
     --card-peach: #FDF0E6;
     --card-sky: #E8F4F8;
 
-    --accent-pink: #F4A6BA;
-    --accent-lavender: #C9B6E4;
+    --accent-pink: #F48FB1;
+    --accent-lavender: #CE93D8;
     --accent-sage: #B8CFAE;
     --accent-butter: #F6D186;
 
-    --btn-cta-bg: linear-gradient(135deg, #F4A6BA 0%, #C9B6E4 100%);
+    --btn-cta-bg: linear-gradient(135deg, #F48FB1 0%, #CE93D8 100%);
     --btn-cta-text: #FFFFFF;
-    --washi-spine-1: #F4A6BA;
-    --washi-spine-2: #C9B6E4;
+    --washi-spine-1: #F48FB1;
+    --washi-spine-2: #CE93D8;
 
     --badge-e2ee-bg: #EBF3E8;
     --badge-e2ee-border: #B8CFAE;
     --badge-e2ee-text: #264A1F;
 
-    --lock-btn-bg: #FDEFF3;
-    --lock-btn-border: #F4A6BA;
-    --lock-btn-text: #E87A90;
+    --lock-btn-bg: #FCE4EC;
+    --lock-btn-border: #F48FB1;
+    --lock-btn-text: #D81B60;
 
     --pillar-btn-bg: #FFFFFF;
-    --pillar-btn-border: #E8D7C8;
+    --pillar-btn-border: #F8BBD0;
 
     --mood-happy-bg: #FFF9E6;
     --mood-happy-text: #B38600;
@@ -46,7 +46,7 @@
     --mood-tired-text: #6B5299;
     --mood-anxious-bg: #E8F4F8;
     --mood-anxious-text: #357B88;
-    --mood-excited-bg: #FDEFF3;
+    --mood-excited-bg: #FCE4EC;
     --mood-excited-text: #C44569;
     --mood-blah-bg: #EBF3E8;
     --mood-blah-text: #456938;
@@ -55,56 +55,56 @@
   }
 
   [data-theme="chocolate"] {
-    --bg-app: #F3E6DA;
-    --bg-pattern: radial-gradient(#C6AC97 1.2px, transparent 1.2px);
-    --card-bg-main: #FAF3EC;
-    --card-border-main: #D4B8A0;
-    --text-charcoal: #3D2B1F;
-    --text-muted: #7A6252;
-    --text-ink: #2B1A0E;
+    --bg-app: #EAD8C8;
+    --bg-pattern: radial-gradient(#B8967D 1.2px, transparent 1.2px);
+    --card-bg-main: #F7EFE8;
+    --card-border-main: #C8A488;
+    --text-charcoal: #382417;
+    --text-muted: #6E503C;
+    --text-ink: #24140A;
 
-    --card-blush: #FAF0E6;
-    --card-lavender: #F2E8E1;
-    --card-sage: #E8F0E5;
-    --card-butter: #FCF4E3;
-    --card-peach: #FAF0E6;
-    --card-sky: #E7EBF0;
+    --card-blush: #F7EAE1;
+    --card-lavender: #EFE3DA;
+    --card-sage: #E4ECE0;
+    --card-butter: #F7EEDC;
+    --card-peach: #F7EAE1;
+    --card-sky: #E2E7ED;
 
-    --accent-pink: #A06535;
-    --accent-lavender: #8C6D58;
-    --accent-sage: #7A8F70;
-    --accent-butter: #C8963E;
+    --accent-pink: #8C4E28;
+    --accent-lavender: #7D5C47;
+    --accent-sage: #6B8062;
+    --accent-butter: #B88530;
 
-    --btn-cta-bg: linear-gradient(135deg, #A06535 0%, #784822 100%);
+    --btn-cta-bg: linear-gradient(135deg, #8C4E28 0%, #5E3114 100%);
     --btn-cta-text: #FFFFFF;
-    --washi-spine-1: #A06535;
-    --washi-spine-2: #C8963E;
+    --washi-spine-1: #8C4E28;
+    --washi-spine-2: #B88530;
 
-    --badge-e2ee-bg: #E4ECE0;
-    --badge-e2ee-border: #9CB293;
-    --badge-e2ee-text: #2B4520;
+    --badge-e2ee-bg: #DBE4D7;
+    --badge-e2ee-border: #8BA282;
+    --badge-e2ee-text: #22381A;
 
-    --lock-btn-bg: #FAF3EC;
-    --lock-btn-border: #A06535;
-    --lock-btn-text: #8C4A1E;
+    --lock-btn-bg: #F7EFE8;
+    --lock-btn-border: #8C4E28;
+    --lock-btn-text: #7A3E1B;
 
-    --pillar-btn-bg: #FAF3EC;
-    --pillar-btn-border: #D4B8A0;
+    --pillar-btn-bg: #F7EFE8;
+    --pillar-btn-border: #C8A488;
 
-    --mood-happy-bg: #FCF4E3;
-    --mood-happy-text: #8A5E12;
-    --mood-cozy-bg: #F8ECE1;
-    --mood-cozy-text: #7C451B;
-    --mood-tired-bg: #EFE8E3;
-    --mood-tired-text: #594459;
-    --mood-anxious-bg: #E6ECF0;
-    --mood-anxious-text: #2A5463;
-    --mood-excited-bg: #FAF0E6;
-    --mood-excited-text: #8C3B2B;
-    --mood-blah-bg: #E8F0E5;
-    --mood-blah-text: #3B5433;
+    --mood-happy-bg: #F7EEDC;
+    --mood-happy-text: #7A520E;
+    --mood-cozy-bg: #F5E5D7;
+    --mood-cozy-text: #6B3A16;
+    --mood-tired-bg: #EAE1DB;
+    --mood-tired-text: #4C394C;
+    --mood-anxious-bg: #E0E7EC;
+    --mood-anxious-text: #224754;
+    --mood-excited-bg: #F7EAE1;
+    --mood-excited-text: #7A3123;
+    --mood-blah-bg: #E4ECE0;
+    --mood-blah-text: #324A2B;
 
-    --placed-sticker-shadow: drop-shadow(0 0 3px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+    --placed-sticker-shadow: drop-shadow(0 0 3px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.28));
   }
 
   body {
@@ -258,8 +258,8 @@
   color: white;
 }
 
-/* User & Backup Buttons */
-.backup-btn-pill, .cloud-sync-btn {
+/* User & Backup & Theme Buttons */
+.backup-btn-pill, .cloud-sync-btn, .theme-btn-pill {
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -274,7 +274,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 }
 
-.backup-btn-pill:hover, .cloud-sync-btn:hover {
+.backup-btn-pill:hover, .cloud-sync-btn:hover, .theme-btn-pill:hover {
   background: var(--card-butter);
   border-color: var(--accent-butter);
   transform: translateY(-1px);

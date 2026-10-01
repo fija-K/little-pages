@@ -79,7 +79,7 @@ export function App() {
   const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
-  const [legalModalTab, setLegalModalTab] = useState<LegalTabType>('protection');
+  const [legalModalTab, setLegalModalTab] = useState<LegalTabType>('summary');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', activeTheme);
@@ -729,7 +729,12 @@ export function App() {
         onOpenBackup={() => setIsBackupOpen(true)}
         isUnlocked={isUnlocked}
         onLockNow={handleLockNow}
-        onOpenThemeModal={() => setIsThemeModalOpen(true)}
+        activeTheme={activeTheme}
+        onToggleTheme={() => setActiveTheme(prev => prev === 'strawberry' ? 'chocolate' : 'strawberry')}
+        onOpenLegal={(tab) => {
+          setLegalModalTab(tab);
+          setIsLegalModalOpen(true);
+        }}
       />
 
       <main className="diary-app-body">
@@ -786,6 +791,10 @@ export function App() {
         onDeleteAllData={handleDeleteAllData}
         activeTheme={activeTheme}
         onSelectTheme={(t) => setActiveTheme(t)}
+        onOpenLegal={(tab) => {
+          setLegalModalTab(tab);
+          setIsLegalModalOpen(true);
+        }}
       />
 
       {activeGoalsPanel && (

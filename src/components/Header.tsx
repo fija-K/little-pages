@@ -1,6 +1,8 @@
 import React from 'react';
-import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck, Palette, UserCheck } from 'lucide-react';
+import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck, UserCheck } from 'lucide-react';
 import type { User } from '../firebase';
+import type { ThemeId } from '../config/themes';
+import type { LegalTabType } from './LegalModal';
 import { StreakBadge } from './StreakBadge';
 
 interface HeaderProps {
@@ -12,7 +14,9 @@ interface HeaderProps {
   onSignIn: () => void;
   onSignOut: () => void;
   onOpenBackup: () => void;
-  onOpenThemeModal: () => void;
+  activeTheme: ThemeId;
+  onToggleTheme: () => void;
+  onOpenLegal: (tab: LegalTabType) => void;
   isUnlocked: boolean;
   onLockNow: () => void;
 }
@@ -26,7 +30,9 @@ export const Header: React.FC<HeaderProps> = ({
   onSignIn,
   onSignOut,
   onOpenBackup,
-  onOpenThemeModal,
+  activeTheme,
+  onToggleTheme,
+  onOpenLegal,
   isUnlocked,
   onLockNow
 }) => {
@@ -66,14 +72,28 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
+          {/* Theme Quick Toggle (Light Strawberry 🍓 / Cozy Chocolate 🍫) */}
           <button
             type="button"
-            className="theme-btn-pill"
-            onClick={onOpenThemeModal}
-            title="Choose application theme (Strawberry 🍓 / Chocolate 🍫)"
+            className="theme-btn-pill cursor-pointer hover:scale-105 active:scale-95 transition-all"
+            onClick={onToggleTheme}
+            title={`Current: ${activeTheme === 'strawberry' ? 'Strawberry 🍓' : 'Chocolate 🍫'}. Click to switch theme!`}
           >
-            <Palette className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Theme</span>
+            <span className="text-sm">{activeTheme === 'strawberry' ? '🍓' : '🍫'}</span>
+            <span className="font-bold text-xs">
+              {activeTheme === 'strawberry' ? 'Strawberry' : 'Chocolate'}
+            </span>
+          </button>
+
+          {/* Privacy & Trust Direct Access Button */}
+          <button
+            type="button"
+            className="privacy-btn-pill backup-btn-pill cursor-pointer hover:scale-105 active:scale-95 transition-all font-bold text-xs"
+            onClick={() => onOpenLegal('summary')}
+            title="Read Privacy Policy, Security Guarantees & Terms"
+          >
+            <span>🔒</span>
+            <span>Privacy & Trust</span>
           </button>
 
           <button

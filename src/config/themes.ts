@@ -25,8 +25,8 @@ export const THEMES: Record<ThemeId, ThemeConfig> = {
     name: 'Chocolate 🍫',
     emoji: '🍫',
     description: 'Warm cocoa, creamy mocha & caramel',
-    previewBg: '#F3E6DA',
-    previewCard: '#FAF3EC',
-    previewAccent: '#A06535'
+    previewBg: '#EAD8C8',
+    previewCard: '#F7EFE8',
+    previewAccent: '#8C4E28'
   }
 };

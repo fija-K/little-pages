@@ -1,5 +1,6 @@
 import React from 'react';
 import type { LegalTabType } from './LegalModal';
+import { CONTACT_EMAIL } from '../config/legalText';
 
 interface FooterLinksProps {
   onOpenLegal: (tab: LegalTabType) => void;
@@ -21,27 +22,26 @@ export const FooterLinks: React.FC<FooterLinksProps> = ({
       <div className="flex items-center justify-center gap-2 flex-wrap">
         <button
           type="button"
-          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer"
+          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer font-semibold"
           onClick={() => onOpenLegal('privacy')}
         >
-          Privacy Policy
+          Privacy
         </button>
         <span className="text-stone-300">•</span>
         <button
           type="button"
-          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer"
-          onClick={() => onOpenLegal('protection')}
-        >
-          Data Protection & Security
-        </button>
-        <span className="text-stone-300">•</span>
-        <button
-          type="button"
-          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer"
+          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer font-semibold"
           onClick={() => onOpenLegal('terms')}
         >
-          Terms of Use
+          Terms
         </button>
+        <span className="text-stone-300">•</span>
+        <a
+          href={`mailto:${CONTACT_EMAIL}`}
+          className="hover:text-pink-600 hover:underline transition-colors cursor-pointer font-semibold"
+        >
+          Contact
+        </a>
       </div>
     </footer>
   );

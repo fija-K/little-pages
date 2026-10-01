@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { X, Upload, ShieldCheck, Lock, AlertTriangle, FileText, Trash2 } from 'lucide-react';
+import { X, Upload, ShieldCheck, Lock, AlertTriangle, FileText, Trash2, Shield } from 'lucide-react';
 import type { JournalEntry, GoalItem } from '../types/journal';
 import type { ThemeId } from '../config/themes';
+import type { LegalTabType } from './LegalModal';
 import { encryptText, decryptText } from '../utils/crypto';
 
 interface BackupModalProps {
@@ -14,6 +15,7 @@ interface BackupModalProps {
   onDeleteAllData: () => void;
   activeTheme?: ThemeId;
   onSelectTheme?: (theme: ThemeId) => void;
+  onOpenLegal?: (tab: LegalTabType) => void;
 }
 
 export const BackupModal: React.FC<BackupModalProps> = ({
@@ -25,7 +27,8 @@ export const BackupModal: React.FC<BackupModalProps> = ({
   onImportBackup,
   onDeleteAllData,
   activeTheme,
-  onSelectTheme
+  onSelectTheme,
+  onOpenLegal
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showUnencryptedWarning, setShowUnencryptedWarning] = useState(false);
@@ -245,6 +248,31 @@ export const BackupModal: React.FC<BackupModalProps> = ({
               Select File
             </button>
           </div>
+
+          {/* Privacy & Terms Direct Button */}
+          {onOpenLegal && (
+            <div className="backup-card-option border-blue-200 bg-blue-50/40">
+              <div className="option-icon-box bg-blue-100 text-blue-600">
+                <Shield className="w-5 h-5" />
+              </div>
+              <div className="option-text flex-1">
+                <h4 className="option-title">Privacy Policy & Guarantees</h4>
+                <p className="option-desc">
+                  Read how your local & cloud data is protected under zero-knowledge encryption.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="px-3 py-1.5 text-xs rounded-xl border border-blue-300 text-blue-700 hover:bg-blue-100 font-semibold transition-colors"
+                onClick={() => {
+                  onClose();
+                  onOpenLegal('privacy');
+                }}
+              >
+                Read Policy
+              </button>
+            </div>
+          )}
 
           <div className="privacy-note">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
