@@ -74,8 +74,9 @@ export function App() {
     sortBy: 'newest'
   });
 
-  // Theme & Modal States
+  // Theme & Background Sticker States
   const [activeTheme, setActiveTheme] = useState<ThemeId>(() => (localStorage.getItem('little_pages_theme') as ThemeId) || 'strawberry');
+  const [bgStickersEnabled, setBgStickersEnabled] = useState<boolean>(() => localStorage.getItem('little_pages_bg_stickers') !== 'false');
   const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
@@ -85,6 +86,23 @@ export function App() {
     document.documentElement.setAttribute('data-theme', activeTheme);
     localStorage.setItem('little_pages_theme', activeTheme);
   }, [activeTheme]);
+
+  const handleToggleBgStickers = useCallback(() => {
+    setBgStickersEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('little_pages_bg_stickers', String(next));
+      if (vaultConfig) {
+        const updated = { ...vaultConfig, bgStickersEnabled: next };
+        setVaultConfig(updated);
+        saveVaultConfig(updated);
+        if (user) {
+          const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
+          setDoc(configDocRef, updated, { merge: true }).catch(() => {});
+        }
+      }
+      return next;
+    });
+  }, [vaultConfig, user]);
 
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -693,6 +711,8 @@ export function App() {
 
   return (
     <div className="diary-app-root">
+      <div className={`bg-sticker-overlay ${!bgStickersEnabled ? 'stickers-disabled' : ''}`} />
+
       {!vaultConfig && (
         <LockSetupModal
           isOpen={true}
@@ -816,6 +836,8 @@ export function App() {
         onClose={() => setIsThemeModalOpen(false)}
         activeTheme={activeTheme}
         onSelectTheme={(t) => setActiveTheme(t)}
+        bgStickersEnabled={bgStickersEnabled}
+        onToggleBgStickers={handleToggleBgStickers}
       />
 
       <AuthModal

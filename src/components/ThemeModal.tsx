@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Check, Palette } from 'lucide-react';
+import { X, Check, Palette, Sparkles } from 'lucide-react';
 import { THEMES } from '../config/themes';
 import type { ThemeId } from '../config/themes';
 
@@ -8,18 +8,22 @@ interface ThemeModalProps {
   onClose: () => void;
   activeTheme: ThemeId;
   onSelectTheme: (themeId: ThemeId) => void;
+  bgStickersEnabled: boolean;
+  onToggleBgStickers: () => void;
 }
 
 export const ThemeModal: React.FC<ThemeModalProps> = ({
   isOpen,
   onClose,
   activeTheme,
-  onSelectTheme
+  onSelectTheme,
+  bgStickersEnabled,
+  onToggleBgStickers
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop-blur">
+    <div className="modal-backdrop-blur z-[100]">
       <div className="bg-white rounded-3xl p-6 max-w-md w-full border-2 border-pink-200 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -57,7 +61,6 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
                 }`}
                 onClick={() => {
                   onSelectTheme(id);
-                  onClose();
                 }}
               >
                 <div className="flex items-center gap-3">
@@ -88,6 +91,26 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
               </button>
             );
           })}
+        </div>
+
+        {/* Background Stickers On/Off Toggle */}
+        <div className="pt-3 border-t border-stone-200 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <div>
+              <h4 className="text-xs font-bold text-stone-800">Background Stickers</h4>
+              <p className="text-[11px] text-stone-500">Scatter subtle theme doodles on background</p>
+            </div>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={bgStickersEnabled}
+              onChange={onToggleBgStickers}
+            />
+            <div className="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
+          </label>
         </div>
       </div>
     </div>

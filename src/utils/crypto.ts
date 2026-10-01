@@ -12,6 +12,7 @@ export interface VaultSecurityConfig {
   recoveryMasterKeyCiphertext?: string; // Base64 wrapped raw master key
   recoveryMasterKeyIv?: string; // Base64 IV for wrapped master key
   hint?: string; // Optional user self-hint
+  bgStickersEnabled?: boolean; // Toggle background scattered doodle pattern
   createdAt: number;
 }
 
