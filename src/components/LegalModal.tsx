@@ -25,7 +25,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
 
   return (
     <div className="modal-backdrop-blur z-[100]">
-      <div className="bg-white rounded-3xl p-6 max-w-2xl w-full border-2 border-pink-200 shadow-2xl space-y-4 max-h-[88vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
+      <div className="legal-modal-card bg-white rounded-3xl p-6 max-w-2xl w-full border-2 border-pink-200 shadow-2xl space-y-4 max-h-[88vh] flex flex-col animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header Bar */}
         <div className="flex items-center justify-between border-b border-stone-200 pb-3 shrink-0">
@@ -50,7 +50,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         </div>
 
         {/* 3 Main Tabs */}
-        <div className="flex gap-2 border-b border-stone-200 pb-2 shrink-0">
+        <div className="flex gap-2 border-b border-stone-200 pb-2 shrink-0 overflow-x-auto">
           <button
             type="button"
             className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${

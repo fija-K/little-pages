@@ -87,15 +87,6 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
               })}
             </div>
           </div>
-
-          <button
-            type="button"
-            className={`filter-pill goal-pill-btn ${activeGoalsPanel === 'short-term' ? 'active' : ''}`}
-            onClick={() => onOpenGoals('short-term')}
-            title="Open short-term goals"
-          >
-            🌱 Short-term goals
-          </button>
         </div>
 
         {/* Tag Row */}
@@ -122,7 +113,18 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
               ))}
             </div>
           </div>
+        </div>
 
+        {/* Dedicated Goals Row */}
+        <div className="goals-quick-row">
+          <button
+            type="button"
+            className={`filter-pill goal-pill-btn ${activeGoalsPanel === 'short-term' ? 'active' : ''}`}
+            onClick={() => onOpenGoals('short-term')}
+            title="Open short-term goals"
+          >
+            🌱 Short-term goals
+          </button>
           <button
             type="button"
             className={`filter-pill goal-pill-btn ${activeGoalsPanel === 'long-term' ? 'active' : ''}`}

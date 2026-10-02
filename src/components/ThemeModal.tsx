@@ -24,7 +24,7 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
 
   return (
     <div className="modal-backdrop-blur z-[100]">
-      <div className="bg-white rounded-3xl p-6 max-w-md w-full border-2 border-pink-200 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
+      <div className="theme-modal-card bg-white rounded-3xl p-6 max-w-md w-full border-2 border-pink-200 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-2 bg-pink-100 rounded-2xl text-pink-600">

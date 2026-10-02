@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Lock journal & clear decrypted entries from memory"
             >
               <Lock className="w-3.5 h-3.5 text-pink-600" />
-              <span>Lock Now</span>
+              <span className="hidden sm:inline">Lock Now</span>
             </button>
           )}
 
@@ -80,7 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
             title={`Current: ${activeTheme === 'strawberry' ? 'Strawberry 🍓' : 'Chocolate 🍫'}. Click to switch theme!`}
           >
             <span className="text-sm">{activeTheme === 'strawberry' ? '🍓' : '🍫'}</span>
-            <span className="font-bold text-xs">
+            <span className="hidden sm:inline font-bold text-xs">
               {activeTheme === 'strawberry' ? 'Strawberry' : 'Chocolate'}
             </span>
           </button>
@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({
             title="Read Privacy Policy, Security Guarantees & Terms"
           >
             <span>🔒</span>
-            <span>Privacy & Trust</span>
+            <span className="hidden sm:inline">Privacy & Trust</span>
           </button>
 
           <button
@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
               title="Sign in or create cloud sync account"
             >
               <LogIn className="w-3.5 h-3.5" />
-              <span>Sync Cloud</span>
+              <span className="hidden sm:inline">Sync Cloud</span>
             </button>
           )}
         </div>
@@ -163,9 +163,19 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onNewEntry}
         >
           <Plus className="w-4 h-4" />
-          <span>New Page</span>
+          <span className="whitespace-nowrap">New Page</span>
         </button>
       </nav>
+
+      {/* Floating Action Button (FAB) for New Page on Mobile */}
+      <button
+        type="button"
+        className="mobile-fab-new-page sm:hidden"
+        onClick={onNewEntry}
+        title="Open a new journal page"
+      >
+        <Plus className="w-6 h-6 text-white" />
+      </button>
     </header>
   );
 };

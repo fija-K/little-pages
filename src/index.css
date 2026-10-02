@@ -113,6 +113,10 @@
   .bg-sticker-overlay {
     position: fixed;
     inset: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     pointer-events: none;
     z-index: 0;
     background-image: var(--bg-sticker-pattern);
@@ -133,6 +137,16 @@
     }
   }
 
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body, #root, .diary-app-root {
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
   body {
     background-color: var(--bg-app);
     background-image: var(--bg-pattern);
@@ -140,6 +154,7 @@
     color: var(--text-charcoal);
     font-family: 'Nunito', 'Quicksand', sans-serif;
     min-height: 100vh;
+    min-height: 100dvh;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
@@ -2608,4 +2623,126 @@
   font-size: 0.85rem;
   color: var(--text-charcoal);
   cursor: pointer;
+}
+
+/* Floating Action Button (FAB) for New Page on Mobile */
+.mobile-fab-new-page {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 90;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--btn-cta-bg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.mobile-fab-new-page:active {
+  transform: scale(0.92);
+}
+
+/* Dedicated 2-Column Row for Goals Quick Buttons */
+.goals-quick-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.goals-quick-row .goal-pill-btn {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+}
+
+/* Text Wrapping Safeguards */
+.card-title,
+.card-snippet,
+.goal-text-display,
+.subitem-text,
+.entry-card-title,
+.diary-main-title,
+.diary-subtitle {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Prevent iOS Safari auto-zoom on text field focus */
+@media (max-width: 640px) {
+  input[type="text"],
+  input[type="search"],
+  input[type="date"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  .diary-header {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  .diary-app-body {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  /* Responsive bottom sheets for mobile modals */
+  .modal-backdrop-blur {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .goals-modal-card-wide,
+  .goals-modal-card,
+  .backup-modal-card,
+  .lock-modal-card,
+  .lock-screen-card,
+  .legal-modal-card,
+  .theme-modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 90dvh !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
+    padding: 1.25rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px)) 1rem !important;
+  }
+
+  .sticker-tray-sheet {
+    max-height: 80dvh !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .header-actions-right {
+    gap: 0.35rem;
+  }
+
+  .nav-tab-btn {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .new-page-cta-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .search-filter-card {
+    padding: 0.85rem;
+  }
 }
