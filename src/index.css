@@ -980,6 +980,9 @@
   padding: 1.25rem;
   box-shadow: 0 6px 20px rgba(74, 63, 59, 0.06);
   position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .calendar-header-bar {
@@ -1031,18 +1034,20 @@
 
 .calendar-weekdays-row {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   text-align: center;
   font-weight: 700;
   font-size: 0.85rem;
   color: var(--text-muted);
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .calendar-days-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.35rem;
+  width: 100%;
 }
 
 .calendar-day-cell {
@@ -1057,6 +1062,8 @@
   cursor: pointer;
   position: relative;
   transition: transform 0.15s ease;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .calendar-day-cell:hover {
@@ -2779,5 +2786,38 @@
 
   .search-filter-card {
     padding: 0.85rem;
+  }
+
+  /* Mobile Calendar view fixes */
+  .calendar-view-card {
+    padding: 0.75rem 0.5rem;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .calendar-month-name {
+    font-size: 1.5rem;
+  }
+
+  .calendar-days-grid {
+    gap: 0.2rem;
+  }
+
+  .calendar-day-cell {
+    padding: 0.15rem 0.1rem;
+    border-radius: 8px;
+    min-width: 0;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+  }
+
+  .calendar-mood-emoji {
+    font-size: 0.75rem;
+  }
+
+  .weekday-header {
+    font-size: 0.75rem;
   }
 }
