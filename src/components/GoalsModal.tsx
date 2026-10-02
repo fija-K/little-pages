@@ -396,15 +396,24 @@ export const GoalsModal: React.FC<GoalsModalProps> = ({
             className="toggle-mobile-form-btn"
             onClick={() => setShowMobileForm(!showMobileForm)}
           >
-            <Plus className="w-4 h-4" />
-            <span>{showMobileForm ? 'Hide Add Goal Form' : 'Add New Goal'}</span>
+            {showMobileForm ? (
+              <>
+                <ChevronUp className="w-4 h-4 text-pink-500" />
+                <span>Hide Add Goal Form</span>
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4 text-pink-500" />
+                <span>Add New Goal</span>
+              </>
+            )}
           </button>
         </div>
 
         {/* Two-Column Layout Container */}
         <div className="goals-two-column-layout">
           {/* LEFT COLUMN: Add Goal Form (Sticky) */}
-          <div className={`goals-left-form-col ${showMobileForm ? '' : 'hidden md:block'}`}>
+          <div className={`goals-left-form-col ${showMobileForm ? '' : 'is-mobile-hidden'}`}>
             <div className="add-goal-box-card">
               <h4 className="column-section-title font-handwritten text-xl">
                 ➕ Add a New Goal

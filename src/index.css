@@ -2292,6 +2292,12 @@
   gap: 1rem;
 }
 
+@media (max-width: 767px) {
+  .goals-left-form-col.is-mobile-hidden {
+    display: none !important;
+  }
+}
+
 .add-goal-box-card {
   background: #FFF6EE;
   border: 1.5px solid #F0E2D6;
