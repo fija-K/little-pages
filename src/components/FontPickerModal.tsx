@@ -32,6 +32,7 @@ export const FontPickerModal: React.FC<FontPickerModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'body' | 'title'>('body');
   const [defaultSavedToast, setDefaultSavedToast] = useState<boolean>(false);
+  const [appliedToast, setAppliedToast] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -41,6 +42,16 @@ export const FontPickerModal: React.FC<FontPickerModalProps> = ({
       setDefaultSavedToast(true);
       setTimeout(() => setDefaultSavedToast(false), 2000);
     }
+  };
+
+  const handleFontClick = (fontId: string, fontName: string, isTitleOption: boolean = false) => {
+    if (isTitleOption) {
+      onSelectTitleFont(selectedTitleFont === fontId ? undefined : fontId);
+    } else {
+      onSelectFont(fontId);
+    }
+    setAppliedToast(fontName);
+    setTimeout(() => setAppliedToast(null), 1600);
   };
 
   const renderFontItem = (font: FontOption, isTitleOption: boolean = false) => {
@@ -53,13 +64,7 @@ export const FontPickerModal: React.FC<FontPickerModalProps> = ({
         key={font.id}
         type="button"
         className={`font-option-card ${isSelected ? 'selected' : ''}`}
-        onClick={() => {
-          if (isTitleOption) {
-            onSelectTitleFont(selectedTitleFont === font.id ? undefined : font.id);
-          } else {
-            onSelectFont(font.id);
-          }
-        }}
+        onClick={() => handleFontClick(font.id, font.name, isTitleOption)}
         style={{ fontFamily: font.family }}
       >
         <div className="font-card-header">
@@ -84,9 +89,14 @@ export const FontPickerModal: React.FC<FontPickerModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
-          <div className="modal-header-title">
-            <Type className="w-5 h-5 text-pink-500 inline mr-2" />
+          <div className="modal-header-title flex items-center gap-2">
+            <Type className="w-5 h-5 text-pink-500 inline mr-1" />
             <span className="font-bold text-lg">Typography & Font Choice</span>
+            {appliedToast && (
+              <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full animate-bounce transition-all">
+                Applied {appliedToast}! ✨
+              </span>
+            )}
           </div>
           <button
             type="button"

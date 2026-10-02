@@ -695,7 +695,8 @@
   font-weight: 700;
   color: var(--text-ink);
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.55;
+  padding: 0.25rem 0;
 }
 
 .card-ruled-content {
@@ -1379,11 +1380,12 @@
   border: none;
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
   font-family: 'Patrick Hand', cursive;
-  font-size: 1.75rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--text-ink);
   outline: none;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0.25rem;
+  line-height: 1.5;
 }
 
 .diary-title-input:focus {
@@ -2831,19 +2833,33 @@
    ========================================== */
 .font-picker-backdrop {
   z-index: 1000;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(2px);
 }
 
 .font-picker-sheet {
-  max-width: 580px;
+  max-width: 600px;
   width: 92%;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
   padding: 1.25rem;
-  border-radius: 20px;
+  border-radius: 24px;
   background: var(--bg-card);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
   border: 2px solid var(--border-soft);
+  animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .font-controls-bar {
