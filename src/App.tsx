@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalSubItem, GoalType } from './types/journal';
-import { DEFAULT_PBKDF2_ITERATIONS, upgradeVaultConfigIterations } from './utils/crypto';
+import { DEFAULT_PBKDF2_ITERATIONS, upgradeVaultConfigIterations, generateRandomUUID } from './utils/crypto';
 import type { VaultSecurityConfig } from './utils/crypto';
 import type { ThemeId } from './config/themes';
 import {
@@ -21,6 +21,7 @@ import { calculateStreak } from './utils/streakUtils';
 import {
   auth,
   signOut,
+  deleteUser,
   onAuthStateChanged,
   updateProfile,
   db,
@@ -185,94 +186,170 @@ export function App() {
     setDecryptedGoals(decryptedList);
   }, []);
 
-  // Unlock callback + Automated Metadata Migration + Safe Iteration Upgrade (250,000 -> 600,000)
+  // Unlock callback + Automated Metadata Migration + Atomic Iteration Upgrade (250,000 -> 600,000)
   const handleUnlockSuccess = async (unlockedKey: CryptoKey, passphrase?: string) => {
     let keyToUse = unlockedKey;
+    const isUUID = (id: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-    // Upgrade vault PBKDF2 iterations to 600,000 if unlocked with passphrase
-    if (passphrase && vaultConfig && (!vaultConfig.iterations || vaultConfig.iterations < DEFAULT_PBKDF2_ITERATIONS)) {
+    // 1. Decrypt existing entries & goals with initial unlocked key
+    const storedEntries = getStoredEncryptedEntries();
+    const storedGoals = getStoredEncryptedGoals();
+
+    const decryptedEntriesList: JournalEntry[] = [];
+    for (const encryptedItem of storedEntries) {
+      if (encryptedItem.id.startsWith('sample-entry-')) continue;
       try {
-        const upgradeResult = await upgradeVaultConfigIterations(passphrase, vaultConfig);
+        const decrypted = await decryptJournalEntry(encryptedItem, unlockedKey);
+        decryptedEntriesList.push(decrypted);
+      } catch (err) {
+        console.error('Failed to decrypt entry on unlock:', err);
+      }
+    }
+
+    const decryptedGoalsList: GoalItem[] = [];
+    for (const encryptedItem of storedGoals) {
+      try {
+        const decrypted = await decryptGoalItem(encryptedItem, unlockedKey);
+        decryptedGoalsList.push(decrypted);
+      } catch (err) {
+        console.error('Failed to decrypt goal on unlock:', err);
+      }
+    }
+
+    // 2. Atomic Vault PBKDF2 Iteration Upgrade (250,000 -> 600,000) with Rollback
+    let currentConfig = vaultConfig;
+    if (passphrase && currentConfig && (!currentConfig.iterations || currentConfig.iterations < DEFAULT_PBKDF2_ITERATIONS)) {
+      const configSnapshot = { ...currentConfig };
+      const entriesSnapshot = [...storedEntries];
+      const goalsSnapshot = [...storedGoals];
+
+      try {
+        const upgradeResult = await upgradeVaultConfigIterations(passphrase, currentConfig);
         if (upgradeResult) {
+          const upgradedKey = upgradeResult.key;
+          
+          // Verify re-encryption of all entries & goals with upgraded key
+          const reEncryptedEntries: EncryptedJournalEntry[] = [];
+          for (const entry of decryptedEntriesList) {
+            const reEnc = await encryptJournalEntry(entry, upgradedKey);
+            const verifyDec = await decryptJournalEntry(reEnc, upgradedKey);
+            if (!verifyDec) throw new Error(`Re-encryption verification failed for entry ${entry.id}`);
+            reEncryptedEntries.push(reEnc);
+          }
+
+          const reEncryptedGoals: EncryptedGoalItem[] = [];
+          for (const goal of decryptedGoalsList) {
+            const reEnc = await encryptGoalItem(goal, upgradedKey);
+            const verifyDec = await decryptGoalItem(reEnc, upgradedKey);
+            if (!verifyDec) throw new Error(`Re-encryption verification failed for goal ${goal.id}`);
+            reEncryptedGoals.push(reEnc);
+          }
+
+          // Upgrade succeed - persist atomically
           saveVaultConfig(upgradeResult.config);
           setVaultConfig(upgradeResult.config);
-          keyToUse = upgradeResult.key;
+          currentConfig = upgradeResult.config;
+          keyToUse = upgradedKey;
+
+          saveStoredEncryptedEntries(reEncryptedEntries);
+          saveStoredEncryptedGoals(reEncryptedGoals);
+
           if (user) {
             const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
             setDoc(configDocRef, upgradeResult.config, { merge: true }).catch(() => {});
           }
         }
       } catch (upgErr) {
-        console.error('Vault PBKDF2 iteration upgrade deferred:', upgErr);
+        console.error('Vault iteration upgrade failed, rolling back to pre-upgrade state:', upgErr);
+        saveVaultConfig(configSnapshot);
+        saveStoredEncryptedEntries(entriesSnapshot);
+        saveStoredEncryptedGoals(goalsSnapshot);
+        keyToUse = unlockedKey;
       }
     }
 
     setEncryptionKey(keyToUse);
-    const storedEntries = getStoredEncryptedEntries();
-    const storedGoals = getStoredEncryptedGoals();
 
-    const decryptedEntriesList: JournalEntry[] = [];
+    // 3. Automated Metadata Migration & Random UUID Migration
+    const activeStoredEntries = getStoredEncryptedEntries();
+    const activeStoredGoals = getStoredEncryptedGoals();
+
     let entryNeedsMigration = false;
-    for (const encryptedItem of storedEntries) {
-      if (encryptedItem.id.startsWith('sample-entry-')) continue;
-      try {
-        const decrypted = await decryptJournalEntry(encryptedItem, keyToUse);
-        decryptedEntriesList.push(decrypted);
-        if (!encryptedItem.encryptedMetadata) entryNeedsMigration = true;
-      } catch (err) {
-        console.error('Failed to decrypt entry:', err);
+    for (const item of activeStoredEntries) {
+      if (!item.encryptedMetadata || !isUUID(item.id) || (item as any).pageColor !== undefined || (item as any).mood !== undefined || (item as any).date !== undefined) {
+        entryNeedsMigration = true;
+        break;
       }
     }
-    setDecryptedEntries(decryptedEntriesList);
 
-    const decryptedGoalsList: GoalItem[] = [];
     let goalNeedsMigration = false;
-    for (const encryptedItem of storedGoals) {
-      try {
-        const decrypted = await decryptGoalItem(encryptedItem, keyToUse);
-        decryptedGoalsList.push(decrypted);
-        if (!encryptedItem.encryptedGoalMeta) goalNeedsMigration = true;
-      } catch (err) {
-        console.error('Failed to decrypt goal:', err);
+    for (const item of activeStoredGoals) {
+      if (!item.encryptedGoalMeta || !isUUID(item.id) || (item as any).type !== undefined || (item as any).completed !== undefined || (item as any).deadline !== undefined) {
+        goalNeedsMigration = true;
+        break;
       }
     }
-    setDecryptedGoals(decryptedGoalsList);
 
-    // Re-encrypt & Migrate legacy unencrypted metadata
-    if (entryNeedsMigration) {
-      const migratedEncryptedEntries: EncryptedJournalEntry[] = [];
-      for (const entry of decryptedEntriesList) {
-        const enc = await encryptJournalEntry(entry, keyToUse);
-        migratedEncryptedEntries.push(enc);
-        if (user) {
-          try {
-            const docRef = doc(db, 'users', user.uid, 'journal_entries', enc.id);
-            await setDoc(docRef, enc, { merge: true });
-          } catch (e) {}
-        }
+    const finalDecryptedEntries: JournalEntry[] = [];
+    const migratedEncryptedEntries: EncryptedJournalEntry[] = [];
+    for (let i = 0; i < decryptedEntriesList.length; i++) {
+      const entry = decryptedEntriesList[i];
+      const oldId = entry.id;
+      if (!isUUID(oldId)) {
+        entry.id = generateRandomUUID();
+        entryNeedsMigration = true;
       }
+      finalDecryptedEntries.push(entry);
+
+      const enc = await encryptJournalEntry(entry, keyToUse);
+      migratedEncryptedEntries.push(enc);
+
+      if (entryNeedsMigration && user) {
+        try {
+          if (oldId !== entry.id) {
+            await deleteDoc(doc(db, 'users', user.uid, 'journal_entries', oldId));
+          }
+          await setDoc(doc(db, 'users', user.uid, 'journal_entries', enc.id), enc);
+        } catch (e) {}
+      }
+    }
+    setDecryptedEntries(finalDecryptedEntries);
+    if (entryNeedsMigration) {
       setEncryptedEntries(migratedEncryptedEntries);
       saveStoredEncryptedEntries(migratedEncryptedEntries);
     } else {
-      setEncryptedEntries(storedEntries);
+      setEncryptedEntries(activeStoredEntries);
     }
 
-    if (goalNeedsMigration) {
-      const migratedEncryptedGoals: EncryptedGoalItem[] = [];
-      for (const goal of decryptedGoalsList) {
-        const enc = await encryptGoalItem(goal, keyToUse);
-        migratedEncryptedGoals.push(enc);
-        if (user) {
-          try {
-            const docRef = doc(db, 'users', user.uid, 'goals', enc.id);
-            await setDoc(docRef, enc, { merge: true });
-          } catch (e) {}
-        }
+    const finalDecryptedGoals: GoalItem[] = [];
+    const migratedEncryptedGoals: EncryptedGoalItem[] = [];
+    for (let i = 0; i < decryptedGoalsList.length; i++) {
+      const goal = decryptedGoalsList[i];
+      const oldId = goal.id;
+      if (!isUUID(oldId)) {
+        goal.id = generateRandomUUID();
+        goalNeedsMigration = true;
       }
+      finalDecryptedGoals.push(goal);
+
+      const enc = await encryptGoalItem(goal, keyToUse);
+      migratedEncryptedGoals.push(enc);
+
+      if (goalNeedsMigration && user) {
+        try {
+          if (oldId !== goal.id) {
+            await deleteDoc(doc(db, 'users', user.uid, 'goals', oldId));
+          }
+          await setDoc(doc(db, 'users', user.uid, 'goals', enc.id), enc);
+        } catch (e) {}
+      }
+    }
+    setDecryptedGoals(finalDecryptedGoals);
+    if (goalNeedsMigration) {
       setEncryptedGoals(migratedEncryptedGoals);
       saveStoredEncryptedGoals(migratedEncryptedGoals);
     } else {
-      setEncryptedGoals(storedGoals);
+      setEncryptedGoals(activeStoredGoals);
     }
   };
 
@@ -685,25 +762,42 @@ export function App() {
     saveStoredEncryptedGoals(reEncryptedGoals);
   };
 
-  // Delete All Data (Purge local storage & cloud Firestore documents)
+  // Delete All Data (Purge local storage, all cloud Firestore collections/user doc, & delete Firebase Auth account)
   const handleDeleteAllData = async () => {
     if (user) {
       try {
+        // 1. Delete all journal_entries documents
         const userEntriesRef = collection(db, 'users', user.uid, 'journal_entries');
         const snapshotEntries = await getDocs(query(userEntriesRef));
         for (const docSnap of snapshotEntries.docs) {
           await deleteDoc(doc(db, 'users', user.uid, 'journal_entries', docSnap.id));
         }
 
+        // 2. Delete all goals documents
         const userGoalsRef = collection(db, 'users', user.uid, 'goals');
         const snapshotGoals = await getDocs(query(userGoalsRef));
         for (const docSnap of snapshotGoals.docs) {
           await deleteDoc(doc(db, 'users', user.uid, 'goals', docSnap.id));
         }
 
-        await deleteDoc(doc(db, 'users', user.uid, 'vault_config', 'config'));
-      } catch (err) {
-        console.warn('Error purging Firestore documents:', err);
+        // 3. Delete all vault_config documents
+        const userConfigRef = collection(db, 'users', user.uid, 'vault_config');
+        const snapshotConfig = await getDocs(query(userConfigRef));
+        for (const docSnap of snapshotConfig.docs) {
+          await deleteDoc(doc(db, 'users', user.uid, 'vault_config', docSnap.id));
+        }
+
+        // 4. Delete the parent user document itself
+        await deleteDoc(doc(db, 'users', user.uid));
+
+        // 5. Delete Firebase Auth user account
+        await deleteUser(user);
+      } catch (err: any) {
+        console.warn('Error purging Firestore documents or deleting Auth user:', err);
+        if (err?.code === 'auth/requires-recent-login') {
+          alert('Deleting your Firebase account requires recent sign-in credentials. Please sign out, sign in again, and retry deleting your account.');
+          return;
+        }
       }
     }
 
@@ -720,13 +814,9 @@ export function App() {
     setEncryptedGoals([]);
     setEditingEntry(null);
     setActiveGoalsPanel(null);
+    setUser(null);
 
-    if (user) {
-      await signOut(auth);
-      setUser(null);
-    }
-
-    alert('All your local and cloud data has been permanently deleted.');
+    alert('All your local data and cloud Firestore documents, as well as your cloud account, have been permanently deleted.');
   };
 
   const isUnlocked = encryptionKey !== null;

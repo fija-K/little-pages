@@ -57,7 +57,6 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
 
   return {
     id: entry.id,
-    date: entry.date,
     encryptedTitle: titleEnc.ciphertext,
     titleIv: titleEnc.iv,
     encryptedContent: contentEnc.ciphertext,
@@ -67,12 +66,7 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
     encryptedStickers: stickersEnc.ciphertext,
     stickersIv: stickersEnc.iv,
     encryptedMetadata: metadataEnc.ciphertext,
-    metadataIv: metadataEnc.iv,
-    mood: entry.mood,
-    pageColor: entry.pageColor,
-    createdAt: entry.createdAt,
-    updatedAt: entry.updatedAt,
-    isFavorite: entry.isFavorite
+    metadataIv: metadataEnc.iv
   };
 }
 
@@ -205,15 +199,10 @@ export async function encryptGoalItem(goal: GoalItem, key: CryptoKey): Promise<E
     id: goal.id,
     encryptedText: textEnc.ciphertext,
     textIv: textEnc.iv,
-    type: goal.type,
-    completed: goal.completed,
-    deadline: goal.deadline,
     encryptedSubItems: subItemsEnc.ciphertext,
     subItemsIv: subItemsEnc.iv,
     encryptedGoalMeta: goalMetaEnc.ciphertext,
-    goalMetaIv: goalMetaEnc.iv,
-    createdAt: goal.createdAt,
-    updatedAt: goal.updatedAt
+    goalMetaIv: goalMetaEnc.iv
   };
 }
 

@@ -3,7 +3,7 @@ import { X, Upload, ShieldCheck, Lock, AlertTriangle, FileText, Trash2, Shield }
 import type { JournalEntry, GoalItem } from '../types/journal';
 import type { ThemeId } from '../config/themes';
 import type { LegalTabType } from './LegalModal';
-import { encryptText, decryptText } from '../utils/crypto';
+import { encryptText, decryptText, generateRandomUUID } from '../utils/crypto';
 
 interface BackupModalProps {
   isOpen: boolean;
@@ -106,7 +106,7 @@ const MAX_BACKUP_FILE_BYTES = 15 * 1024 * 1024; // 15 MB file size limit
 function sanitizeImportedEntry(raw: any): JournalEntry | null {
   if (!raw || typeof raw !== 'object') return null;
 
-  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : `entry-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : generateRandomUUID();
   const date = typeof raw.date === 'string' ? raw.date.substring(0, 10) : new Date().toISOString().split('T')[0];
   const title = typeof raw.title === 'string' ? raw.title : 'Untitled Page';
   const content = typeof raw.content === 'string' ? raw.content : '';
@@ -135,7 +135,7 @@ function sanitizeImportedEntry(raw: any): JournalEntry | null {
 function sanitizeImportedGoal(raw: any): GoalItem | null {
   if (!raw || typeof raw !== 'object') return null;
 
-  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : `goal-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : generateRandomUUID();
   const text = typeof raw.text === 'string' ? raw.text : '';
   const type = typeof raw.type === 'string' && ['short-term', 'long-term'].includes(raw.type) ? raw.type : 'short-term';
   const completed = !!raw.completed;

@@ -22,19 +22,19 @@ export interface GoalItem {
 }
 
 export interface EncryptedGoalItem {
-  id: string;
+  id: string; // Random UUID v4
   encryptedText: string; // Base64 ciphertext
   textIv: string; // Base64 IV
-  type: GoalType; // Kept for legacy compatibility
-  completed: boolean;
-  deadline?: string;
   encryptedSubItems?: string; // Base64 ciphertext of JSON.stringify(subItems)
   subItemsIv?: string; // Base64 IV
-  subItems?: GoalSubItem[]; // Legacy fallback
   encryptedGoalMeta?: string; // Base64 ciphertext of JSON.stringify({ type, completed, deadline, createdAt, updatedAt })
   goalMetaIv?: string; // Base64 IV
-  createdAt?: number;
-  updatedAt?: number;
+  type?: GoalType; // Migration-only legacy reading fallback
+  completed?: boolean; // Migration-only legacy reading fallback
+  deadline?: string; // Migration-only legacy reading fallback
+  subItems?: GoalSubItem[]; // Migration-only legacy reading fallback
+  createdAt?: number; // Migration-only legacy reading fallback
+  updatedAt?: number; // Migration-only legacy reading fallback
 }
 
 export interface PlacedSticker {
@@ -76,24 +76,24 @@ export interface JournalEntry {
 
 // Encrypted entry stored on disk (localStorage or Firestore)
 export interface EncryptedJournalEntry {
-  id: string;
-  date: string; // Kept for legacy compatibility
+  id: string; // Random UUID v4
   encryptedTitle: string; // Base64 ciphertext
   titleIv: string; // Base64 IV
   encryptedContent: string; // Base64 ciphertext
   contentIv: string; // Base64 IV
   encryptedTags?: string; // Base64 ciphertext of JSON.stringify(tags)
   tagsIv?: string; // Base64 IV
-  tags?: string[]; // Legacy optional fallback
   encryptedStickers?: string; // Base64 ciphertext of JSON.stringify(stickers)
   stickersIv?: string; // Base64 IV
   encryptedMetadata?: string; // Base64 ciphertext of JSON.stringify({ mood, pageColor, isFavorite, date, createdAt, updatedAt })
   metadataIv?: string; // Base64 IV for metadata
-  mood?: MoodType; // Legacy fallback
-  pageColor?: PageColor; // Legacy fallback
-  createdAt?: number;
-  updatedAt?: number;
-  isFavorite?: boolean;
+  date?: string; // Migration-only legacy reading fallback
+  tags?: string[]; // Migration-only legacy reading fallback
+  mood?: MoodType; // Migration-only legacy reading fallback
+  pageColor?: PageColor; // Migration-only legacy reading fallback
+  createdAt?: number; // Migration-only legacy reading fallback
+  updatedAt?: number; // Migration-only legacy reading fallback
+  isFavorite?: boolean; // Migration-only legacy reading fallback
 }
 
 export interface FilterState {

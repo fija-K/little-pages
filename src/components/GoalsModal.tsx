@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { X, Plus, Calendar, Edit3, Trash2, Check, Sparkles, ChevronDown, ChevronUp, Layers, ListChecks, SplitSquareVertical, FileText } from 'lucide-react';
 import type { GoalItem, GoalSubItem, GoalType } from '../types/journal';
 import { getTodayIsoString, formatShortDate } from '../utils/dateUtils';
+import { generateRandomUUID } from '../utils/crypto';
 
 interface GoalsModalProps {
   isOpen: boolean;
@@ -123,8 +124,8 @@ export const GoalsModal: React.FC<GoalsModalProps> = ({
     if (lines.length === 0) return;
 
     const title = cleanBullet(lines[0]);
-    const subItems: GoalSubItem[] = lines.slice(1).map((line, idx) => ({
-      id: `sub-${Date.now()}-${idx}`,
+    const subItems: GoalSubItem[] = lines.slice(1).map((line) => ({
+      id: generateRandomUUID(),
       text: cleanBullet(line),
       completed: false
     }));
@@ -162,7 +163,7 @@ export const GoalsModal: React.FC<GoalsModalProps> = ({
         currentGoal = { text: cleanBullet(line), subItems: [] };
       } else if (currentGoal) {
         currentGoal.subItems.push({
-          id: `sub-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+          id: generateRandomUUID(),
           text: cleanBullet(line),
           completed: false
         });
@@ -275,7 +276,7 @@ export const GoalsModal: React.FC<GoalsModalProps> = ({
     if (!txt) return;
 
     const newSub: GoalSubItem = {
-      id: `sub-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      id: generateRandomUUID(),
       text: txt,
       completed: false
     };

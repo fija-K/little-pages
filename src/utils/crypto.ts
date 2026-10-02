@@ -48,6 +48,20 @@ export function base64ToUint8Array(base64: string): Uint8Array {
 }
 
 /**
+ * Generate a cryptographically random UUID v4
+ */
+export function generateRandomUUID(): string {
+  if (typeof window !== 'undefined' && window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+/**
  * Generate a secure 128-bit Recovery Key (32 hex chars, e.g. LP-A8F3-9B7C-1D2E-4F5A-6B7C-8D9E-0F1A-2B3C)
  */
 export function generateRecoveryKey(): string {

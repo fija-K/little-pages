@@ -4,6 +4,7 @@ import confetti from 'canvas-confetti';
 import { PAGE_COLORS } from '../types/journal';
 import type { JournalEntry, MoodType, PageColor, PlacedSticker } from '../types/journal';
 import { formatHandwrittenDate, getTodayIsoString } from '../utils/dateUtils';
+import { generateRandomUUID } from '../utils/crypto';
 import { MoodPicker } from './MoodPicker';
 import { TagInput } from './TagInput';
 import { StickerTray } from './StickerTray';
@@ -33,7 +34,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   const [content, setContent] = useState<string>(entry?.content || '');
   const [mood, setMood] = useState<MoodType>(entry?.mood || 'happy');
   const [pageColor, setPageColor] = useState<PageColor>(entry?.pageColor || 'blush');
-  const [tags, setTags] = useState<string[]>(entry?.tags || ['thoughts']);
+  const [tags, setTags] = useState<string[]>(entry?.tags || []);
   const [isFavorite, setIsFavorite] = useState<boolean>(entry?.isFavorite || false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showSavedStamp, setShowSavedStamp] = useState<boolean>(false);
@@ -80,7 +81,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
     pushHistory(stickers);
 
     const newSticker: PlacedSticker = {
-      id: `ps-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      id: generateRandomUUID(),
       packId,
       stickerId,
       x: 50,
@@ -113,7 +114,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
 
     const duplicated: PlacedSticker = {
       ...target,
-      id: `ps-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      id: generateRandomUUID(),
       x: Math.min(90, target.x + 4),
       y: Math.min(90, target.y + 4),
       zIndex: stickers.length + 1
@@ -156,7 +157,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
     });
 
     const savedEntry: JournalEntry = {
-      id: entry?.id || `entry-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+      id: entry?.id || generateRandomUUID(),
       date,
       title: title.trim() || 'Untitled Page',
       content: content.trim(),
