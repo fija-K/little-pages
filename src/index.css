@@ -222,14 +222,19 @@
 .diary-main-title {
   font-size: 2.25rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
   color: var(--text-ink);
   margin: 0;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .sparkle-doodle {
   display: inline-block;
   color: var(--accent-butter);
+  font-size: 0.9em;
 }
 
 .subtitle-e2ee-row {
@@ -2711,7 +2716,6 @@
 .goal-text-display,
 .subitem-text,
 .entry-card-title,
-.diary-main-title,
 .diary-subtitle {
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -2819,5 +2823,258 @@
 
   .weekday-header {
     font-size: 0.75rem;
+  }
+}
+
+/* ==========================================
+   Typography & Font Choice Picker Styles
+   ========================================== */
+.font-picker-backdrop {
+  z-index: 1000;
+}
+
+.font-picker-sheet {
+  max-width: 580px;
+  width: 92%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 20px;
+  background: var(--bg-card);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  border: 2px solid var(--border-soft);
+}
+
+.font-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--border-soft);
+  flex-wrap: wrap;
+}
+
+.font-target-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-body);
+  padding: 0.25rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+}
+
+.font-target-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.font-target-tab.active {
+  background: var(--bg-card);
+  color: var(--text-ink);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.font-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.font-size-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--bg-body);
+  padding: 0.2rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+}
+
+.size-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.size-pill.active {
+  background: var(--accent-strawberry);
+  color: white;
+}
+
+.font-picker-scroll-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.font-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-ink);
+  margin-bottom: 0.5rem;
+}
+
+.font-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.6rem;
+}
+
+.font-option-card {
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--border-soft);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.font-option-card:hover {
+  border-color: var(--accent-strawberry);
+  transform: translateY(-1px);
+}
+
+.font-option-card.selected {
+  border-color: var(--accent-strawberry);
+  background: var(--btn-hover-bg);
+  box-shadow: 0 3px 10px rgba(232, 122, 144, 0.15);
+}
+
+.font-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.font-card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-ink);
+}
+
+.font-badge-hindi {
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: #EBF3E8;
+  color: #4A7A44;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #B8CFAE;
+  font-family: sans-serif;
+}
+
+.font-note-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #FFF5E6;
+  color: #D97762;
+  padding: 0.15rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid #F8A99B;
+  font-family: sans-serif;
+}
+
+.font-preview-line {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.font-picker-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-soft);
+  flex-wrap: wrap;
+}
+
+.save-default-font-btn {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-strawberry);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0.25rem 0;
+}
+
+.font-done-btn {
+  padding: 0.45rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 20px;
+  border: none;
+  background: var(--accent-strawberry);
+  color: white;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  margin-left: auto;
+}
+
+.font-done-btn:hover {
+  transform: scale(1.03);
+}
+
+/* Mobile Bottom Sheet styling */
+@media (max-width: 640px) {
+  .font-picker-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 24px 24px 0 0;
+    padding: 1.1rem;
+    animation: slideUpSheet 0.25s ease-out;
+  }
+
+  .font-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes slideUpSheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

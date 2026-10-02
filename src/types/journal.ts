@@ -72,6 +72,9 @@ export interface JournalEntry {
   createdAt: number;
   updatedAt: number;
   isFavorite?: boolean;
+  fontFamily?: string;
+  titleFontFamily?: string;
+  fontSize?: 'small' | 'medium' | 'large';
 }
 
 // Encrypted entry stored on disk (localStorage or Firestore)

@@ -51,7 +51,10 @@ export async function encryptJournalEntry(entry: JournalEntry, key: CryptoKey): 
     isFavorite: !!entry.isFavorite,
     date: entry.date,
     createdAt: entry.createdAt,
-    updatedAt: entry.updatedAt
+    updatedAt: entry.updatedAt,
+    fontFamily: entry.fontFamily,
+    titleFontFamily: entry.titleFontFamily,
+    fontSize: entry.fontSize
   });
   const metadataEnc = await encryptText(metadataJson, key);
 
@@ -83,6 +86,9 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
   let date = encrypted.date || new Date().toISOString().split('T')[0];
   let createdAt = encrypted.createdAt || Date.now();
   let updatedAt = encrypted.updatedAt || Date.now();
+  let fontFamily: string | undefined = undefined;
+  let titleFontFamily: string | undefined = undefined;
+  let fontSize: 'small' | 'medium' | 'large' | undefined = undefined;
 
   // Decrypt metadata payload if available
   if (encrypted.encryptedMetadata && encrypted.metadataIv) {
@@ -96,6 +102,9 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
         if (parsedMeta.date) date = parsedMeta.date;
         if (parsedMeta.createdAt) createdAt = parsedMeta.createdAt;
         if (parsedMeta.updatedAt) updatedAt = parsedMeta.updatedAt;
+        if (parsedMeta.fontFamily) fontFamily = parsedMeta.fontFamily;
+        if (parsedMeta.titleFontFamily) titleFontFamily = parsedMeta.titleFontFamily;
+        if (parsedMeta.fontSize) fontSize = parsedMeta.fontSize;
       }
     } catch (e) {
       console.error('Failed to decrypt entry metadata:', e);
@@ -151,7 +160,10 @@ export async function decryptJournalEntry(encrypted: EncryptedJournalEntry, key:
     stickers,
     createdAt,
     updatedAt,
-    isFavorite
+    isFavorite,
+    fontFamily,
+    titleFontFamily,
+    fontSize
   };
 }
 

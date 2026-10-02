@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Save, ArrowLeft, Trash2, Heart, Palette, Sparkles, Check, RotateCcw } from 'lucide-react';
+import { Save, ArrowLeft, Trash2, Heart, Palette, Sparkles, Check, RotateCcw, Type } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { PAGE_COLORS } from '../types/journal';
 import type { JournalEntry, MoodType, PageColor, PlacedSticker } from '../types/journal';
@@ -9,6 +9,9 @@ import { MoodPicker } from './MoodPicker';
 import { TagInput } from './TagInput';
 import { StickerTray } from './StickerTray';
 import { StickerLayer } from './StickerLayer';
+import { FontPickerModal } from './FontPickerModal';
+import type { FontSizeOption } from '../config/fonts';
+import { DEFAULT_FONT_ID, DEFAULT_FONT_SIZE, getFontFamilyCss, getFontSizeCss } from '../config/fonts';
 
 interface EntryEditorProps {
   entry: JournalEntry | null;
@@ -27,6 +30,10 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
 }) => {
   const cardRef = useRef<HTMLFormElement>(null);
 
+  const defaultFont = localStorage.getItem('little_pages_default_font') || DEFAULT_FONT_ID;
+  const defaultTitleFont = localStorage.getItem('little_pages_default_title_font') || undefined;
+  const defaultFontSize = (localStorage.getItem('little_pages_default_font_size') as FontSizeOption) || DEFAULT_FONT_SIZE;
+
   const [date, setDate] = useState<string>(
     entry?.date || initialDateIso || getTodayIsoString()
   );
@@ -38,6 +45,12 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   const [isFavorite, setIsFavorite] = useState<boolean>(entry?.isFavorite || false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [showSavedStamp, setShowSavedStamp] = useState<boolean>(false);
+
+  // Font state
+  const [fontFamily, setFontFamily] = useState<string>(entry?.fontFamily || defaultFont);
+  const [titleFontFamily, setTitleFontFamily] = useState<string | undefined>(entry?.titleFontFamily || defaultTitleFont);
+  const [fontSize, setFontSize] = useState<FontSizeOption>(entry?.fontSize || defaultFontSize);
+  const [isFontPickerOpen, setIsFontPickerOpen] = useState<boolean>(false);
 
   // Sticker state
   const [stickers, setStickers] = useState<PlacedSticker[]>(entry?.stickers || []);
@@ -55,6 +68,9 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       setTags(entry.tags || []);
       setStickers(entry.stickers || []);
       setIsFavorite(entry.isFavorite || false);
+      setFontFamily(entry.fontFamily || defaultFont);
+      setTitleFontFamily(entry.titleFontFamily || defaultTitleFont);
+      setFontSize(entry.fontSize || defaultFontSize);
     }
   }, [entry]);
 
@@ -167,7 +183,10 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       stickers,
       createdAt: entry?.createdAt || Date.now(),
       updatedAt: Date.now(),
-      isFavorite
+      isFavorite,
+      fontFamily,
+      titleFontFamily,
+      fontSize
     };
 
     setTimeout(() => {
@@ -175,6 +194,20 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       setIsSaving(false);
     }, 600);
   };
+
+  const handleSetAsDefaultFont = (newFont: string, newTitleFont: string | undefined, newSize: FontSizeOption) => {
+    localStorage.setItem('little_pages_default_font', newFont);
+    if (newTitleFont) {
+      localStorage.setItem('little_pages_default_title_font', newTitleFont);
+    } else {
+      localStorage.removeItem('little_pages_default_title_font');
+    }
+    localStorage.setItem('little_pages_default_font_size', newSize);
+  };
+
+  const currentTitleFontCss = getFontFamilyCss(titleFontFamily || fontFamily);
+  const currentBodyFontCss = getFontFamilyCss(fontFamily);
+  const currentFontSizeCss = getFontSizeCss(fontSize);
 
   return (
     <div className={`entry-editor-wrapper ${showSavedStamp ? 'stamp-animation' : ''}`}>
@@ -200,6 +233,16 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
               <span>Undo</span>
             </button>
           )}
+
+          <button
+            type="button"
+            className="decorate-pill-btn font-pill-btn"
+            onClick={() => setIsFontPickerOpen(true)}
+            title="Choose typography & font size"
+          >
+            <Type className="w-4 h-4 text-purple-500" />
+            <span>Aa Font</span>
+          </button>
 
           <button
             type="button"
@@ -329,6 +372,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
             placeholder="Give this page a title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            style={{ fontFamily: currentTitleFontCss }}
           />
         </div>
 
@@ -338,6 +382,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
             placeholder="Dear Diary, today was..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            style={{ fontFamily: currentBodyFontCss, fontSize: currentFontSizeCss }}
             rows={12}
           />
         </div>
@@ -373,6 +418,18 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
         isOpen={isTrayOpen}
         onClose={() => setIsTrayOpen(false)}
         onSelectSticker={handleAddStickerFromTray}
+      />
+
+      <FontPickerModal
+        isOpen={isFontPickerOpen}
+        onClose={() => setIsFontPickerOpen(false)}
+        selectedFont={fontFamily}
+        selectedTitleFont={titleFontFamily}
+        selectedFontSize={fontSize}
+        onSelectFont={setFontFamily}
+        onSelectTitleFont={setTitleFontFamily}
+        onSelectFontSize={setFontSize}
+        onSetAsDefault={handleSetAsDefaultFont}
       />
     </div>
   );

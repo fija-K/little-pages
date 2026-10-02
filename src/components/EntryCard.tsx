@@ -5,6 +5,8 @@ import type { JournalEntry } from '../types/journal';
 import { formatShortDate } from '../utils/dateUtils';
 import { StickerLayer } from './StickerLayer';
 
+import { getFontFamilyCss, getFontSizeCss } from '../config/fonts';
+
 interface EntryCardProps {
   entry: JournalEntry;
   onEdit: (entry: JournalEntry) => void;
@@ -20,6 +22,10 @@ export const EntryCard: React.FC<EntryCardProps> = ({
 }) => {
   const moodCfg = MOODS[entry.mood] || MOODS.happy;
   const pageTheme = PAGE_COLORS[entry.pageColor] || PAGE_COLORS.blush;
+
+  const titleFont = getFontFamilyCss(entry.titleFontFamily || entry.fontFamily);
+  const bodyFont = getFontFamilyCss(entry.fontFamily);
+  const bodyFontSize = getFontSizeCss(entry.fontSize);
 
   const snippet =
     entry.content.length > 160
@@ -65,10 +71,14 @@ export const EntryCard: React.FC<EntryCardProps> = ({
         </div>
       </div>
 
-      <h3 className="card-title">{entry.title || 'Untitled Entry'}</h3>
+      <h3 className="card-title" style={{ fontFamily: titleFont }}>
+        {entry.title || 'Untitled Entry'}
+      </h3>
 
       <div className="card-ruled-content">
-        <p className="card-snippet">{snippet}</p>
+        <p className="card-snippet" style={{ fontFamily: bodyFont, fontSize: bodyFontSize }}>
+          {snippet}
+        </p>
       </div>
 
       {entry.tags && entry.tags.length > 0 && (
