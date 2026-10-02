@@ -1384,8 +1384,9 @@
   font-weight: 700;
   color: var(--text-ink);
   outline: none;
-  padding: 0.5rem 0.25rem;
-  line-height: 1.5;
+  padding: 0.85rem 0.25rem 0.4rem;
+  line-height: 1.6;
+  margin-top: 0.25rem;
 }
 
 .diary-title-input:focus {
@@ -2838,16 +2839,18 @@
 }
 
 .font-picker-sheet {
-  max-width: 600px;
-  width: 92%;
+  max-width: 620px;
+  width: 95%;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
-  padding: 1.25rem;
+  padding: 1.35rem;
   border-radius: 24px;
   background: var(--bg-card);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
-  border: 2px solid var(--border-soft);
+  box-shadow: 0 20px 50px rgba(74, 63, 59, 0.25);
+  border: 2px solid var(--accent-strawberry, #F4A6BA);
+  position: relative;
+  overflow: hidden;
   animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 

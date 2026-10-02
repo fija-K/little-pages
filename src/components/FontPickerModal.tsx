@@ -83,9 +83,9 @@ export const FontPickerModal: React.FC<FontPickerModalProps> = ({
   };
 
   return (
-    <div className="modal-backdrop font-picker-backdrop" onClick={onClose}>
+    <div className="modal-backdrop-blur z-[100]" onClick={onClose}>
       <div
-        className="modal-card font-picker-sheet"
+        className="font-picker-sheet"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
