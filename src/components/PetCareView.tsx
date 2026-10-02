@@ -65,25 +65,55 @@ export const PetCareView: React.FC<PetCareViewProps> = ({
   const [playgroundFacingLeft, setPlaygroundFacingLeft] = useState<boolean>(false);
   const [playgroundBubble, setPlaygroundBubble] = useState<string | null>(null);
 
-  // Playground Hopping & Sound Loop (Pet Studio behavior)
+  // Playground Hopping & Calm Sequential Loop (Message -> 2s gap -> Sleep/Action -> 2s gap)
   useEffect(() => {
     let timeoutId: number;
+    let step = 0; // 0: message, 1: action/sleep
 
-    const runPlaygroundLoop = () => {
-      // No gap more than 1 sec (300ms - 800ms delay)
-      const delay = Math.floor(Math.random() * 500) + 300;
+    const executeNextMoment = () => {
+      const petConfig = getPetConfig(selectedPetId);
+      const ambientObj = (petAmbientData.pets as Record<string, { sounds: string[]; caring_lines?: string[] }>)[petConfig.jsonKey];
+      const sounds = ambientObj?.sounds || ["nyaa~"];
+      const caringLines = ambientObj?.caring_lines || ["You're doing great!"];
+      const sharedPhrases = petAmbientData.shared_phrases || ["waku waku!"];
 
-      timeoutId = window.setTimeout(() => {
-        const actions: PetAnimAction[] = ['squishHop', 'headWiggle', 'happyBounce'];
+      if (step === 0) {
+        // MOMENT 1: Show 1 Text Message
+        const pool = [...sounds, ...caringLines, ...sharedPhrases];
+        const chosenText = pool[Math.floor(Math.random() * pool.length)];
+
+        setPlaygroundAction('headWiggle');
+        setPlaygroundBubble(chosenText);
+
+        addTimer(() => {
+          setPlaygroundAction('breathe');
+        }, 700);
+
+        // Hide message after 2.5s, then wait EXACTLY 2-second gap
+        timeoutId = window.setTimeout(() => {
+          setPlaygroundBubble(null);
+          setPlaygroundAction('breathe');
+          step = 1;
+
+          // 2-Second Gap resting quietly before next action
+          timeoutId = window.setTimeout(executeNextMoment, 2000);
+        }, 2500);
+
+      } else {
+        // MOMENT 2: Sleep or Action (No message)
+        const actions: PetAnimAction[] = ['sleepy', 'squishHop', 'happyBounce', 'headWiggle'];
         const chosenAction = actions[Math.floor(Math.random() * actions.length)];
 
         if (chosenAction === 'squishHop') {
-          const deltaX = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 50) + 20);
-          const newX = Math.max(-100, Math.min(100, playgroundX + deltaX));
+          const deltaX = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 40) + 15);
+          const newX = Math.max(-80, Math.min(80, playgroundX + deltaX));
           setPlaygroundFacingLeft(newX < playgroundX);
           setPlaygroundX(newX);
           setPlaygroundAction('squishHop');
           addTimer(() => setPlaygroundAction('breathe'), 900);
+        } else if (chosenAction === 'sleepy') {
+          setPlaygroundAction('sleepy');
+          addTimer(() => setPlaygroundAction('breathe'), 2500);
         } else if (chosenAction === 'headWiggle') {
           setPlaygroundAction('headWiggle');
           addTimer(() => setPlaygroundAction('breathe'), 700);
@@ -92,23 +122,18 @@ export const PetCareView: React.FC<PetCareViewProps> = ({
           addTimer(() => setPlaygroundAction('breathe'), 1100);
         }
 
-        const petConfig = getPetConfig(selectedPetId);
-        const ambientObj = (petAmbientData.pets as Record<string, { sounds: string[]; caring_lines?: string[] }>)[petConfig.jsonKey];
-        const sounds = ambientObj?.sounds || ["nyaa~"];
-        const caringLines = ambientObj?.caring_lines || ["You're doing great!"];
-        const sharedPhrases = petAmbientData.shared_phrases || ["waku waku!"];
+        // Action duration 2.0s, then wait EXACTLY 2-second gap
+        timeoutId = window.setTimeout(() => {
+          setPlaygroundAction('breathe');
+          step = 0;
 
-        const pool = [...sounds, ...caringLines, ...sharedPhrases];
-        const chosenText = pool[Math.floor(Math.random() * pool.length)];
-
-        setPlaygroundBubble(chosenText);
-        addTimer(() => setPlaygroundBubble(null), 2500);
-
-        runPlaygroundLoop();
-      }, delay);
+          // 2-Second Gap resting quietly before next message
+          timeoutId = window.setTimeout(executeNextMoment, 2000);
+        }, 2000);
+      }
     };
 
-    runPlaygroundLoop();
+    executeNextMoment();
 
     return () => {
       window.clearTimeout(timeoutId);
