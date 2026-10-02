@@ -1,6 +1,7 @@
 import React from 'react';
 import { Calendar, BookOpen, Plus, Cloud, Download, LogIn, LogOut, Lock, ShieldCheck, UserCheck } from 'lucide-react';
 import type { User } from '../firebase';
+import { THEMES } from '../config/themes';
 import type { ThemeId } from '../config/themes';
 import type { LegalTabType } from './LegalModal';
 import { StreakBadge } from './StreakBadge';
@@ -72,16 +73,16 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           )}
 
-          {/* Theme Quick Toggle (Light Strawberry 🍓 / Cozy Chocolate 🍫) */}
+          {/* Theme Quick Toggle */}
           <button
             type="button"
             className="theme-btn-pill cursor-pointer hover:scale-105 active:scale-95 transition-all"
             onClick={onToggleTheme}
-            title={`Current: ${activeTheme === 'strawberry' ? 'Strawberry 🍓' : 'Chocolate 🍫'}. Click to switch theme!`}
+            title={`Current: ${THEMES[activeTheme]?.name || 'Theme'}. Click to switch theme!`}
           >
-            <span className="text-sm">{activeTheme === 'strawberry' ? '🍓' : '🍫'}</span>
+            <span className="text-sm">{THEMES[activeTheme]?.emoji || '🎨'}</span>
             <span className="hidden sm:inline font-bold text-xs">
-              {activeTheme === 'strawberry' ? 'Strawberry' : 'Chocolate'}
+              {THEMES[activeTheme]?.name.split(' ')[0] || 'Theme'}
             </span>
           </button>
 

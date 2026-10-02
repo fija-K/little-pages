@@ -887,7 +887,7 @@ export function App() {
         isUnlocked={isUnlocked}
         onLockNow={handleLockNow}
         activeTheme={activeTheme}
-        onToggleTheme={() => setActiveTheme(prev => prev === 'strawberry' ? 'chocolate' : 'strawberry')}
+        onToggleTheme={() => setIsThemeModalOpen(true)}
         onOpenLegal={(tab) => {
           setLegalModalTab(tab);
           setIsLegalModalOpen(true);
