@@ -101,10 +101,74 @@ export const BackupModal: React.FC<BackupModalProps> = ({
     setShowUnencryptedWarning(false);
   };
 
-  // Dual Restore (Encrypted + Legacy Plaintext)
+const MAX_BACKUP_FILE_BYTES = 15 * 1024 * 1024; // 15 MB file size limit
+
+function sanitizeImportedEntry(raw: any): JournalEntry | null {
+  if (!raw || typeof raw !== 'object') return null;
+
+  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : `entry-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const date = typeof raw.date === 'string' ? raw.date.substring(0, 10) : new Date().toISOString().split('T')[0];
+  const title = typeof raw.title === 'string' ? raw.title : 'Untitled Page';
+  const content = typeof raw.content === 'string' ? raw.content : '';
+  const mood = typeof raw.mood === 'string' && ['happy', 'cozy', 'tired', 'anxious', 'excited', 'blah'].includes(raw.mood) ? raw.mood : 'happy';
+  const pageColor = typeof raw.pageColor === 'string' && ['blush', 'lavender', 'sage', 'butter', 'peach', 'sky'].includes(raw.pageColor) ? raw.pageColor : 'blush';
+  const tags = Array.isArray(raw.tags) ? raw.tags.filter((t: any) => typeof t === 'string') : [];
+  const stickers = Array.isArray(raw.stickers)
+    ? raw.stickers.filter((s: any) => s && typeof s === 'object' && typeof s.id === 'string')
+    : [];
+
+  return {
+    id,
+    date,
+    title,
+    content,
+    mood: mood as any,
+    pageColor: pageColor as any,
+    tags,
+    stickers,
+    createdAt: typeof raw.createdAt === 'number' ? raw.createdAt : Date.now(),
+    updatedAt: typeof raw.updatedAt === 'number' ? raw.updatedAt : Date.now(),
+    isFavorite: !!raw.isFavorite
+  };
+}
+
+function sanitizeImportedGoal(raw: any): GoalItem | null {
+  if (!raw || typeof raw !== 'object') return null;
+
+  const id = typeof raw.id === 'string' && raw.id.trim() ? raw.id.trim() : `goal-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const text = typeof raw.text === 'string' ? raw.text : '';
+  const type = typeof raw.type === 'string' && ['short-term', 'long-term'].includes(raw.type) ? raw.type : 'short-term';
+  const completed = !!raw.completed;
+  const deadline = typeof raw.deadline === 'string' ? raw.deadline.substring(0, 10) : undefined;
+  const subItems = Array.isArray(raw.subItems)
+    ? raw.subItems.filter((s: any) => s && typeof s === 'object' && typeof s.id === 'string' && typeof s.text === 'string').map((s: any) => ({
+        id: s.id,
+        text: s.text,
+        completed: !!s.completed
+      }))
+    : [];
+
+  return {
+    id,
+    text,
+    type: type as any,
+    completed,
+    deadline,
+    subItems,
+    createdAt: typeof raw.createdAt === 'number' ? raw.createdAt : Date.now(),
+    updatedAt: typeof raw.updatedAt === 'number' ? raw.updatedAt : Date.now()
+  };
+}
+
+  // Dual Restore (Encrypted + Legacy Plaintext with strict validation)
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > MAX_BACKUP_FILE_BYTES) {
+      alert('Backup file is too large (exceeds 15 MB limit).');
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = async (event) => {
@@ -122,8 +186,12 @@ export const BackupModal: React.FC<BackupModalProps> = ({
             const decryptedString = await decryptText(parsed.ciphertext, parsed.iv, encryptionKey);
             const decryptedPayload = JSON.parse(decryptedString);
 
-            const importedEntries = Array.isArray(decryptedPayload.entries) ? decryptedPayload.entries : [];
-            const importedGoals = Array.isArray(decryptedPayload.goals) ? decryptedPayload.goals : [];
+            const rawEntries = Array.isArray(decryptedPayload.entries) ? decryptedPayload.entries : [];
+            const rawGoals = Array.isArray(decryptedPayload.goals) ? decryptedPayload.goals : [];
+
+            const importedEntries = rawEntries.map(sanitizeImportedEntry).filter(Boolean) as JournalEntry[];
+            const importedGoals = rawGoals.map(sanitizeImportedGoal).filter(Boolean) as GoalItem[];
+
             if (decryptedPayload.theme && onSelectTheme) {
               onSelectTheme(decryptedPayload.theme);
             }
@@ -137,12 +205,17 @@ export const BackupModal: React.FC<BackupModalProps> = ({
         }
         // Legacy Plaintext format (Array or object with entries/goals)
         else if (Array.isArray(parsed)) {
-          onImportBackup(parsed, []);
-          alert(`Successfully imported ${parsed.length} journal pages! ✨`);
+          const importedEntries = parsed.map(sanitizeImportedEntry).filter(Boolean) as JournalEntry[];
+          onImportBackup(importedEntries, []);
+          alert(`Successfully imported ${importedEntries.length} journal pages! ✨`);
           onClose();
         } else if (parsed && typeof parsed === 'object' && Array.isArray(parsed.entries)) {
-          const importedEntries = parsed.entries || [];
-          const importedGoals = Array.isArray(parsed.goals) ? parsed.goals : [];
+          const rawEntries = Array.isArray(parsed.entries) ? parsed.entries : [];
+          const rawGoals = Array.isArray(parsed.goals) ? parsed.goals : [];
+
+          const importedEntries = rawEntries.map(sanitizeImportedEntry).filter(Boolean) as JournalEntry[];
+          const importedGoals = rawGoals.map(sanitizeImportedGoal).filter(Boolean) as GoalItem[];
+
           if (parsed.theme && onSelectTheme) {
             onSelectTheme(parsed.theme);
           }

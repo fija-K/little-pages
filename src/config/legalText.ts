@@ -70,7 +70,7 @@ export const PRIVACY_POLICY_DATA = {
     bullets: [
       {
         label: "What We Receive",
-        details: "Your Firebase Account ID (UID) and email address. We never ask for, use, or store your display name or profile photo (any name/photo provided by OAuth sign-in is stripped immediately)."
+        details: "Your Firebase Account ID (UID) and email address. Little Pages never uses or saves your name or photo. The Google sign-in system may hold them in your account record. Use email sign-in to avoid sharing them."
       },
       {
         label: "What Is Encrypted",
@@ -78,7 +78,7 @@ export const PRIVACY_POLICY_DATA = {
       },
       {
         label: "What Is Visible To Us",
-        details: "Document creation timestamps (used for Firestore chronological sorting) and payload sizes."
+        details: "Our servers can still see how many entries you have, their sizes, and when you sync, but not what's in them."
       },
       {
         label: "Storage Location & Isolation",
@@ -86,7 +86,7 @@ export const PRIVACY_POLICY_DATA = {
       },
       {
         label: "No Profile Data",
-        details: "We never use or store your name or profile photo in our database or application state."
+        details: "Little Pages never uses or saves your name or photo. The Google sign-in system may hold them in your account record. Use email sign-in to avoid sharing them."
       },
       {
         label: "Retention & Deletion",

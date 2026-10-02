@@ -7,7 +7,7 @@ import type { LegalTabType } from './LegalModal';
 
 interface LockScreenProps {
   vaultConfig: VaultSecurityConfig;
-  onUnlockSuccess: (key: CryptoKey) => void;
+  onUnlockSuccess: (key: CryptoKey, passphrase?: string) => void;
   onOpenLegal: (tab: LegalTabType) => void;
 }
 
@@ -43,7 +43,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({
       }
 
       if (key) {
-        onUnlockSuccess(key);
+        onUnlockSuccess(key, useRecoveryKeyMode ? undefined : passphrase);
       } else {
         setError(
           useRecoveryKeyMode

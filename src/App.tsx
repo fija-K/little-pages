@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { JournalEntry, EncryptedJournalEntry, FilterState, GoalItem, EncryptedGoalItem, GoalSubItem, GoalType } from './types/journal';
+import { DEFAULT_PBKDF2_ITERATIONS, upgradeVaultConfigIterations } from './utils/crypto';
 import type { VaultSecurityConfig } from './utils/crypto';
 import type { ThemeId } from './config/themes';
 import {
@@ -184,9 +185,29 @@ export function App() {
     setDecryptedGoals(decryptedList);
   }, []);
 
-  // Unlock callback + Automated Metadata Migration
-  const handleUnlockSuccess = async (key: CryptoKey) => {
-    setEncryptionKey(key);
+  // Unlock callback + Automated Metadata Migration + Safe Iteration Upgrade (250,000 -> 600,000)
+  const handleUnlockSuccess = async (unlockedKey: CryptoKey, passphrase?: string) => {
+    let keyToUse = unlockedKey;
+
+    // Upgrade vault PBKDF2 iterations to 600,000 if unlocked with passphrase
+    if (passphrase && vaultConfig && (!vaultConfig.iterations || vaultConfig.iterations < DEFAULT_PBKDF2_ITERATIONS)) {
+      try {
+        const upgradeResult = await upgradeVaultConfigIterations(passphrase, vaultConfig);
+        if (upgradeResult) {
+          saveVaultConfig(upgradeResult.config);
+          setVaultConfig(upgradeResult.config);
+          keyToUse = upgradeResult.key;
+          if (user) {
+            const configDocRef = doc(db, 'users', user.uid, 'vault_config', 'config');
+            setDoc(configDocRef, upgradeResult.config, { merge: true }).catch(() => {});
+          }
+        }
+      } catch (upgErr) {
+        console.error('Vault PBKDF2 iteration upgrade deferred:', upgErr);
+      }
+    }
+
+    setEncryptionKey(keyToUse);
     const storedEntries = getStoredEncryptedEntries();
     const storedGoals = getStoredEncryptedGoals();
 
@@ -195,7 +216,7 @@ export function App() {
     for (const encryptedItem of storedEntries) {
       if (encryptedItem.id.startsWith('sample-entry-')) continue;
       try {
-        const decrypted = await decryptJournalEntry(encryptedItem, key);
+        const decrypted = await decryptJournalEntry(encryptedItem, keyToUse);
         decryptedEntriesList.push(decrypted);
         if (!encryptedItem.encryptedMetadata) entryNeedsMigration = true;
       } catch (err) {
@@ -208,7 +229,7 @@ export function App() {
     let goalNeedsMigration = false;
     for (const encryptedItem of storedGoals) {
       try {
-        const decrypted = await decryptGoalItem(encryptedItem, key);
+        const decrypted = await decryptGoalItem(encryptedItem, keyToUse);
         decryptedGoalsList.push(decrypted);
         if (!encryptedItem.encryptedGoalMeta) goalNeedsMigration = true;
       } catch (err) {
@@ -221,7 +242,7 @@ export function App() {
     if (entryNeedsMigration) {
       const migratedEncryptedEntries: EncryptedJournalEntry[] = [];
       for (const entry of decryptedEntriesList) {
-        const enc = await encryptJournalEntry(entry, key);
+        const enc = await encryptJournalEntry(entry, keyToUse);
         migratedEncryptedEntries.push(enc);
         if (user) {
           try {
@@ -239,7 +260,7 @@ export function App() {
     if (goalNeedsMigration) {
       const migratedEncryptedGoals: EncryptedGoalItem[] = [];
       for (const goal of decryptedGoalsList) {
-        const enc = await encryptGoalItem(goal, key);
+        const enc = await encryptGoalItem(goal, keyToUse);
         migratedEncryptedGoals.push(enc);
         if (user) {
           try {
@@ -689,6 +710,7 @@ export function App() {
     clearLocalVaultConfig();
     clearLocalEntries();
     localStorage.clear();
+    sessionStorage.clear();
 
     setVaultConfig(null);
     setEncryptionKey(null);
