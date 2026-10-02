@@ -24,9 +24,9 @@ export const PetCareView: React.FC<PetCareViewProps> = ({
   const [keywords, setKeywords] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('little_pages_pet_keywords');
-      return saved ? JSON.parse(saved) : ['reading', 'cozy tea', 'music'];
+      return saved ? JSON.parse(saved) : [];
     } catch {
-      return ['reading', 'cozy tea', 'music'];
+      return [];
     }
   });
 
