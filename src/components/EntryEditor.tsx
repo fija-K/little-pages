@@ -19,6 +19,8 @@ interface EntryEditorProps {
   onSave: (entry: JournalEntry) => void;
   onCancel: () => void;
   onDelete?: (id: string) => void;
+  onTyping?: () => void;
+  onRegisterInsertPromptBody?: (handler: (questionText: string) => void) => void;
 }
 
 export const EntryEditor: React.FC<EntryEditorProps> = ({
@@ -26,7 +28,9 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   initialDateIso,
   onSave,
   onCancel,
-  onDelete
+  onDelete,
+  onTyping,
+  onRegisterInsertPromptBody
 }) => {
   const cardRef = useRef<HTMLFormElement>(null);
 
@@ -73,6 +77,14 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
       setFontSize(entry.fontSize || defaultFontSize);
     }
   }, [entry]);
+
+  useEffect(() => {
+    if (onRegisterInsertPromptBody) {
+      onRegisterInsertPromptBody((questionText: string) => {
+        setContent((prev) => (prev ? `${questionText}\n\n${prev}` : questionText));
+      });
+    }
+  }, [onRegisterInsertPromptBody]);
 
   const pageTheme = PAGE_COLORS[pageColor];
 
@@ -371,7 +383,10 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
             className="diary-title-input"
             placeholder="Give this page a title..."
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              onTyping?.();
+            }}
             style={{ fontFamily: currentTitleFontCss }}
           />
         </div>
@@ -381,7 +396,10 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
             className="ruled-textarea"
             placeholder="Dear Diary, today was..."
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              setContent(e.target.value);
+              onTyping?.();
+            }}
             style={{ fontFamily: currentBodyFontCss, fontSize: currentFontSizeCss }}
             rows={12}
           />

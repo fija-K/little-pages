@@ -1,0 +1,694 @@
+{
+  "version": 2,
+  "note": "time: any | morning | evening. topic is used for cooldowns so the same angle doesn't repeat back to back.",
+  "pets": {
+    "chinchilla": [
+      {
+        "id": "chinchilla_01",
+        "topic": "food",
+        "time": "any",
+        "pet_line": "I found a piece of hay that was exactly right.",
+        "question": "What did you enjoy eating today?"
+      },
+      {
+        "id": "chinchilla_02",
+        "topic": "self_care",
+        "time": "any",
+        "pet_line": "I took a dust bath and came out feeling fluffy.",
+        "question": "What made you feel fresh today?"
+      },
+      {
+        "id": "chinchilla_03",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I jumped to the highest ledge in one go.",
+        "question": "What's something you reached for today?"
+      },
+      {
+        "id": "chinchilla_04",
+        "topic": "rest",
+        "time": "morning",
+        "pet_line": "I stayed in my little hut a bit longer this morning.",
+        "question": "How did your morning start?"
+      },
+      {
+        "id": "chinchilla_05",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I chewed on a wooden stick for a good while.",
+        "question": "What kept you busy today?"
+      },
+      {
+        "id": "chinchilla_06",
+        "topic": "senses",
+        "time": "evening",
+        "pet_line": "It got quiet tonight, and I like it that way.",
+        "question": "What's one calm moment you had today?"
+      },
+      {
+        "id": "chinchilla_07",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "Someone talked to me in a soft voice today.",
+        "question": "Who did you talk to today?"
+      },
+      {
+        "id": "chinchilla_08",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "It was cool today, my favorite kind of weather.",
+        "question": "How was the weather where you were?"
+      },
+      {
+        "id": "chinchilla_09",
+        "topic": "movement",
+        "time": "evening",
+        "pet_line": "I ran on my wheel for a while tonight.",
+        "question": "Did you move around today?"
+      },
+      {
+        "id": "chinchilla_10",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I want to try a new ledge.",
+        "question": "What do you want to try tomorrow?"
+      },
+      {
+        "id": "chinchilla_11",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone cleaned my cage and it feels brand new.",
+        "question": "What small thing made your day easier?"
+      },
+      {
+        "id": "chinchilla_12",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I popped straight up in the air. Couldn't help it.",
+        "question": "What made you smile today?"
+      }
+    ],
+    "cockatiel": [
+      {
+        "id": "cockatiel_01",
+        "topic": "happiness",
+        "time": "morning",
+        "pet_line": "I whistled a little tune as soon as the sun came up.",
+        "question": "What's got you in a good mood today?"
+      },
+      {
+        "id": "cockatiel_02",
+        "topic": "food",
+        "time": "any",
+        "pet_line": "I got a bit of millet and saved the best bite for last.",
+        "question": "What's something tasty you had today?"
+      },
+      {
+        "id": "cockatiel_03",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "I sat on someone's shoulder for ages today.",
+        "question": "Who did you spend time with today?"
+      },
+      {
+        "id": "cockatiel_04",
+        "topic": "self_care",
+        "time": "any",
+        "pet_line": "I spent a long time fixing my feathers.",
+        "question": "What did you do to take care of yourself today?"
+      },
+      {
+        "id": "cockatiel_05",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I finally got the tune right.",
+        "question": "What did you get better at today?"
+      },
+      {
+        "id": "cockatiel_06",
+        "topic": "senses",
+        "time": "morning",
+        "pet_line": "My crest went straight up when the window opened.",
+        "question": "What caught your attention this morning?"
+      },
+      {
+        "id": "cockatiel_07",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I flapped across the room just for fun.",
+        "question": "Did you go anywhere today?"
+      },
+      {
+        "id": "cockatiel_08",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I fluffed up and tucked my head in for the night.",
+        "question": "How are you winding down tonight?"
+      },
+      {
+        "id": "cockatiel_09",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "The sunlight was warm on my perch.",
+        "question": "How was the weather for you today?"
+      },
+      {
+        "id": "cockatiel_10",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I copied a sound from the kitchen and everyone laughed.",
+        "question": "What made you laugh today?"
+      },
+      {
+        "id": "cockatiel_11",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I'm going to learn a new tune.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "cockatiel_12",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone put fresh water in my bowl. Small, but nice.",
+        "question": "What are you glad about today?"
+      }
+    ],
+    "pigeon": [
+      {
+        "id": "pigeon_01",
+        "topic": "movement",
+        "time": "morning",
+        "pet_line": "I strutted around the rooftop like I owned it.",
+        "question": "How did you start your day?"
+      },
+      {
+        "id": "pigeon_02",
+        "topic": "food",
+        "time": "any",
+        "pet_line": "I found some crumbs near the bench today.",
+        "question": "What's something good you ate today?"
+      },
+      {
+        "id": "pigeon_03",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "A whole flock sat with me on the wire today.",
+        "question": "Who did you spend time with today?"
+      },
+      {
+        "id": "pigeon_04",
+        "topic": "senses",
+        "time": "any",
+        "pet_line": "The view from the rooftop was really nice today.",
+        "question": "What's one nice thing you saw today?"
+      },
+      {
+        "id": "pigeon_05",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "It drizzled a little, so I puffed up and waited it out.",
+        "question": "How was the weather for you today?"
+      },
+      {
+        "id": "pigeon_06",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I flew a big loop over the street today.",
+        "question": "Did you go anywhere today?"
+      },
+      {
+        "id": "pigeon_07",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I did my little bob-and-coo dance.",
+        "question": "What made you smile today?"
+      },
+      {
+        "id": "pigeon_08",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I settled on my ledge as the sky turned orange.",
+        "question": "How are you winding down today?"
+      },
+      {
+        "id": "pigeon_09",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I found a better spot on the roof.",
+        "question": "What's one small thing that went well today?"
+      },
+      {
+        "id": "pigeon_10",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I'm checking out the park.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "pigeon_11",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone stopped and let me finish my crumbs.",
+        "question": "What kind thing happened today?"
+      },
+      {
+        "id": "pigeon_12",
+        "topic": "self_care",
+        "time": "morning",
+        "pet_line": "I spent the morning in a sunny spot, warming up.",
+        "question": "What did you do just for yourself today?"
+      }
+    ],
+    "poodle": [
+      {
+        "id": "poodle_01",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I pranced down the street like it was a runway.",
+        "question": "Did you go anywhere today?"
+      },
+      {
+        "id": "poodle_02",
+        "topic": "self_care",
+        "time": "any",
+        "pet_line": "I got brushed and now I'm extra fluffy.",
+        "question": "What made you feel good today?"
+      },
+      {
+        "id": "poodle_03",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I played fetch and showed off a trick.",
+        "question": "What did you do for fun today?"
+      },
+      {
+        "id": "poodle_04",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "A kid told me I looked like a cloud.",
+        "question": "What's the nicest thing someone said today?"
+      },
+      {
+        "id": "poodle_05",
+        "topic": "food",
+        "time": "morning",
+        "pet_line": "Breakfast was gone in seconds.",
+        "question": "What did you start your day with?"
+      },
+      {
+        "id": "poodle_06",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I learned a new trick today.",
+        "question": "What did you learn or finish today?"
+      },
+      {
+        "id": "poodle_07",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "It was a perfect day for a walk.",
+        "question": "How was the weather today?"
+      },
+      {
+        "id": "poodle_08",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I curled up on the couch after a big day.",
+        "question": "How are you winding down tonight?"
+      },
+      {
+        "id": "poodle_09",
+        "topic": "senses",
+        "time": "any",
+        "pet_line": "I smelled something lovely on the walk and sniffed for ages.",
+        "question": "What's one nice thing you noticed today?"
+      },
+      {
+        "id": "poodle_10",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I wagged my whole body when someone got home.",
+        "question": "What made you smile today?"
+      },
+      {
+        "id": "poodle_11",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I'm hoping for a longer walk.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "poodle_12",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone gave me a treat just for being cute.",
+        "question": "What's one thing you're glad about today?"
+      }
+    ],
+    "pug": [
+      {
+        "id": "pug_01",
+        "topic": "rest",
+        "time": "any",
+        "pet_line": "I took a nap and snored so loud I woke myself up.",
+        "question": "Did you get some rest today?"
+      },
+      {
+        "id": "pug_02",
+        "topic": "food",
+        "time": "any",
+        "pet_line": "I stared at a snack until someone shared.",
+        "question": "What's something tasty you had today?"
+      },
+      {
+        "id": "pug_03",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I waddled to the garden and back. Good workout.",
+        "question": "Did you move around today?"
+      },
+      {
+        "id": "pug_04",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "I found a sunny patch on the floor and stayed there.",
+        "question": "How was the weather where you were?"
+      },
+      {
+        "id": "pug_05",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "Someone gave me a belly rub today.",
+        "question": "Who was kind to you today?"
+      },
+      {
+        "id": "pug_06",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I did a happy snort when I saw my favorite person.",
+        "question": "What made you smile today?"
+      },
+      {
+        "id": "pug_07",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I chased my own tail, then forgot why.",
+        "question": "What made you laugh today?"
+      },
+      {
+        "id": "pug_08",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I'm on the couch with a blanket, ready for the night.",
+        "question": "How are you winding down tonight?"
+      },
+      {
+        "id": "pug_09",
+        "topic": "small_win",
+        "time": "morning",
+        "pet_line": "I got up on the sofa all by myself this morning.",
+        "question": "What's one small thing you did today?"
+      },
+      {
+        "id": "pug_10",
+        "topic": "senses",
+        "time": "any",
+        "pet_line": "The wind smelled interesting on our walk, so I stopped to think about it.",
+        "question": "What's one thing you noticed today?"
+      },
+      {
+        "id": "pug_11",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I'm planning another nap and a snack.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "pug_12",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone wiped my wrinkles and I felt brand new.",
+        "question": "What small thing felt good today?"
+      }
+    ],
+    "hedgehog": [
+      {
+        "id": "hedgehog_01",
+        "topic": "rest",
+        "time": "any",
+        "pet_line": "I curled into a tiny ball and stayed cozy for a while.",
+        "question": "Where did you take a break today?"
+      },
+      {
+        "id": "hedgehog_02",
+        "topic": "food",
+        "time": "evening",
+        "pet_line": "I went snuffling around for a snack after sunset.",
+        "question": "What's something tasty you had today?"
+      },
+      {
+        "id": "hedgehog_03",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I took a slow walk through the leaves.",
+        "question": "Did you go anywhere today?"
+      },
+      {
+        "id": "hedgehog_04",
+        "topic": "senses",
+        "time": "any",
+        "pet_line": "The leaves crunched under my feet. It sounded great.",
+        "question": "What's one nice sound you heard today?"
+      },
+      {
+        "id": "hedgehog_05",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I popped out of my ball and wiggled my nose.",
+        "question": "What made you smile today?"
+      },
+      {
+        "id": "hedgehog_06",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "Someone gave me a very careful, very gentle hello.",
+        "question": "Who did you say hi to today?"
+      },
+      {
+        "id": "hedgehog_07",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I squeezed through a tiny gap in the fence.",
+        "question": "What's one small thing you managed today?"
+      },
+      {
+        "id": "hedgehog_08",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "It was a bit chilly, so I stayed bundled up.",
+        "question": "How was the weather where you were?"
+      },
+      {
+        "id": "hedgehog_09",
+        "topic": "self_care",
+        "time": "morning",
+        "pet_line": "I stretched out slowly before getting up this morning.",
+        "question": "What did you do just for yourself today?"
+      },
+      {
+        "id": "hedgehog_10",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I want to explore the garden corner.",
+        "question": "What do you want to try tomorrow?"
+      },
+      {
+        "id": "hedgehog_11",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone left a soft blanket for me. So warm.",
+        "question": "What small thing felt good today?"
+      },
+      {
+        "id": "hedgehog_12",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I rolled down a tiny hill just for fun.",
+        "question": "What did you do for fun today?"
+      }
+    ],
+    "bunny": [
+      {
+        "id": "bunny_01",
+        "topic": "food",
+        "time": "any",
+        "pet_line": "I munched on a crunchy carrot today.",
+        "question": "What did you enjoy eating today?"
+      },
+      {
+        "id": "bunny_02",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I hopped around the yard three times.",
+        "question": "Did you move around today?"
+      },
+      {
+        "id": "bunny_03",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I did a little binky in the air. Couldn't help it.",
+        "question": "What made you smile today?"
+      },
+      {
+        "id": "bunny_04",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I flopped on my side and fell asleep fast.",
+        "question": "How are you winding down tonight?"
+      },
+      {
+        "id": "bunny_05",
+        "topic": "senses",
+        "time": "morning",
+        "pet_line": "The grass smelled fresh and sweet this morning.",
+        "question": "What did your morning feel like?"
+      },
+      {
+        "id": "bunny_06",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "Someone scratched the spot between my ears.",
+        "question": "Who was kind to you today?"
+      },
+      {
+        "id": "bunny_07",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I pushed a little ball around until it rolled away.",
+        "question": "What made you laugh today?"
+      },
+      {
+        "id": "bunny_08",
+        "topic": "weather",
+        "time": "any",
+        "pet_line": "The sun was out, so I stretched out in the warm patch.",
+        "question": "How was the weather today?"
+      },
+      {
+        "id": "bunny_09",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I found where the best clover grows.",
+        "question": "What's something new you found today?"
+      },
+      {
+        "id": "bunny_10",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "Tomorrow I'm hoping for more clover.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "bunny_11",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "Someone saved me the best part of their salad.",
+        "question": "What are you glad about today?"
+      },
+      {
+        "id": "bunny_12",
+        "topic": "self_care",
+        "time": "any",
+        "pet_line": "I washed my ears and now I'm all neat.",
+        "question": "What did you do to take care of yourself today?"
+      }
+    ],
+    "cat": [
+      {
+        "id": "cat_01",
+        "topic": "rest",
+        "time": "any",
+        "pet_line": "I found a sunny spot on the floor and stayed there.",
+        "question": "Where did you relax today?"
+      },
+      {
+        "id": "cat_02",
+        "topic": "food",
+        "time": "morning",
+        "pet_line": "I had breakfast and then a very long stretch.",
+        "question": "What did you start your morning with?"
+      },
+      {
+        "id": "cat_03",
+        "topic": "play",
+        "time": "any",
+        "pet_line": "I chased a tiny shadow across the floor.",
+        "question": "What made you laugh today?"
+      },
+      {
+        "id": "cat_04",
+        "topic": "senses",
+        "time": "evening",
+        "pet_line": "The evening light on the wall looked really nice.",
+        "question": "What's one nice thing you saw today?"
+      },
+      {
+        "id": "cat_05",
+        "topic": "people",
+        "time": "any",
+        "pet_line": "Someone gave me a gentle scratch behind the ears.",
+        "question": "Who was kind to you today?"
+      },
+      {
+        "id": "cat_06",
+        "topic": "small_win",
+        "time": "any",
+        "pet_line": "I jumped onto the high shelf on the first try.",
+        "question": "What's one small thing you got done today?"
+      },
+      {
+        "id": "cat_07",
+        "topic": "movement",
+        "time": "any",
+        "pet_line": "I did a little zoomie down the hall.",
+        "question": "Did you move around today?"
+      },
+      {
+        "id": "cat_08",
+        "topic": "weather",
+        "time": "morning",
+        "pet_line": "I watched the birds outside for a long time this morning.",
+        "question": "What does your day look like?"
+      },
+      {
+        "id": "cat_09",
+        "topic": "rest",
+        "time": "evening",
+        "pet_line": "I curled up early tonight. It felt right.",
+        "question": "How are you winding down tonight?"
+      },
+      {
+        "id": "cat_10",
+        "topic": "plans",
+        "time": "evening",
+        "pet_line": "I'm already thinking about my sunny spot for tomorrow.",
+        "question": "What are you looking forward to tomorrow?"
+      },
+      {
+        "id": "cat_11",
+        "topic": "gratitude",
+        "time": "any",
+        "pet_line": "I got a quiet corner and a full bowl today.",
+        "question": "What's one thing you're glad about today?"
+      },
+      {
+        "id": "cat_12",
+        "topic": "happiness",
+        "time": "any",
+        "pet_line": "I purred the moment someone sat next to me.",
+        "question": "What made you smile today?"
+      }
+    ]
+  }
+}

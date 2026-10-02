@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Check, Palette, Sparkles } from 'lucide-react';
 import { THEMES } from '../config/themes';
 import type { ThemeId } from '../config/themes';
+import { PET_CONFIGS } from '../config/pets';
 
 interface ThemeModalProps {
   isOpen: boolean;
@@ -10,6 +11,10 @@ interface ThemeModalProps {
   onSelectTheme: (themeId: ThemeId) => void;
   bgStickersEnabled: boolean;
   onToggleBgStickers: () => void;
+  petEnabled: boolean;
+  onTogglePetEnabled: () => void;
+  selectedPetId: string;
+  onSelectPetId: (petId: string) => void;
 }
 
 export const ThemeModal: React.FC<ThemeModalProps> = ({
@@ -18,7 +23,11 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
   activeTheme,
   onSelectTheme,
   bgStickersEnabled,
-  onToggleBgStickers
+  onToggleBgStickers,
+  petEnabled,
+  onTogglePetEnabled,
+  selectedPetId,
+  onSelectPetId
 }) => {
   if (!isOpen) return null;
 
@@ -111,6 +120,54 @@ export const ThemeModal: React.FC<ThemeModalProps> = ({
             />
             <div className="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
           </label>
+        </div>
+
+        {/* Pet Companion Settings */}
+        <div className="pt-3 border-t border-stone-200 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-base">🐥</span>
+              <div>
+                <h4 className="text-xs font-bold text-stone-800">Pet Companion</h4>
+                <p className="text-[11px] text-stone-500">Show cozy pet friend in Little Pages</p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={petEnabled}
+                onChange={onTogglePetEnabled}
+              />
+              <div className="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
+            </label>
+          </div>
+
+          {petEnabled && (
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-bold text-stone-600 block">Choose Default Pet Companion:</span>
+              <div className="grid grid-cols-4 gap-2">
+                {PET_CONFIGS.map(pet => {
+                  const isSelected = selectedPetId === pet.id;
+                  return (
+                    <button
+                      key={pet.id}
+                      type="button"
+                      onClick={() => onSelectPetId(pet.id)}
+                      className={`p-2 rounded-xl border-2 text-center transition-all flex flex-col items-center justify-center gap-1 ${
+                        isSelected
+                          ? 'border-pink-500 bg-pink-50 text-stone-800 font-bold scale-[1.03] shadow-xs'
+                          : 'border-stone-200 text-stone-600 hover:border-pink-200 hover:bg-stone-50'
+                      }`}
+                    >
+                      <span className="text-lg">{pet.icon}</span>
+                      <span className="text-[10px] truncate w-full">{pet.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

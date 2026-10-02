@@ -47,6 +47,8 @@ import { ThemeModal } from './components/ThemeModal';
 import { LegalModal } from './components/LegalModal';
 import { FooterLinks } from './components/FooterLinks';
 import { AuthModal } from './components/AuthModal';
+import { PetCompanionLayer } from './components/PetCompanionLayer';
+import { DEFAULT_PET_ID } from './config/pets';
 
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes idle timeout
 
@@ -76,13 +78,33 @@ export function App() {
     sortBy: 'newest'
   });
 
-  // Theme & Background Sticker States
+  // Theme, Background Sticker & Pet Companion States
   const [activeTheme, setActiveTheme] = useState<ThemeId>(() => (localStorage.getItem('little_pages_theme') as ThemeId) || 'strawberry');
   const [bgStickersEnabled, setBgStickersEnabled] = useState<boolean>(() => localStorage.getItem('little_pages_bg_stickers') !== 'false');
+  const [petEnabled, setPetEnabled] = useState<boolean>(() => localStorage.getItem('little_pages_pet_enabled') !== 'false');
+  const [selectedPetId, setSelectedPetId] = useState<string>(() => localStorage.getItem('little_pages_selected_pet') || DEFAULT_PET_ID);
+  
   const [isThemeModalOpen, setIsThemeModalOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
   const [legalModalTab, setLegalModalTab] = useState<LegalTabType>('summary');
+
+  const petTypingHandlerRef = useRef<(() => void) | null>(null);
+  const petSaveHandlerRef = useRef<(() => void) | null>(null);
+  const insertPromptBodyHandlerRef = useRef<((text: string) => void) | null>(null);
+
+  const handleTogglePetEnabled = useCallback(() => {
+    setPetEnabled(prev => {
+      const next = !prev;
+      localStorage.setItem('little_pages_pet_enabled', String(next));
+      return next;
+    });
+  }, []);
+
+  const handleSelectPetId = useCallback((petId: string) => {
+    setSelectedPetId(petId);
+    localStorage.setItem('little_pages_selected_pet', petId);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', activeTheme);
@@ -543,6 +565,8 @@ export function App() {
       }
     }
 
+    petSaveHandlerRef.current?.();
+
     setCurrentView('list');
     setEditingEntry(null);
   };
@@ -902,6 +926,10 @@ export function App() {
               setEditingEntry(null);
             }}
             onDelete={handleDeleteEntry}
+            onTyping={() => petTypingHandlerRef.current?.()}
+            onRegisterInsertPromptBody={(handler) => {
+              insertPromptBodyHandlerRef.current = handler;
+            }}
           />
         )}
       </main>
@@ -950,6 +978,10 @@ export function App() {
         onSelectTheme={(t) => setActiveTheme(t)}
         bgStickersEnabled={bgStickersEnabled}
         onToggleBgStickers={handleToggleBgStickers}
+        petEnabled={petEnabled}
+        onTogglePetEnabled={handleTogglePetEnabled}
+        selectedPetId={selectedPetId}
+        onSelectPetId={handleSelectPetId}
       />
 
       <AuthModal
@@ -965,6 +997,22 @@ export function App() {
         isOpen={isLegalModalOpen}
         onClose={() => setIsLegalModalOpen(false)}
         initialTab={legalModalTab}
+      />
+
+      <PetCompanionLayer
+        petId={selectedPetId}
+        enabled={petEnabled}
+        isUnlocked={isUnlocked}
+        currentView={currentView}
+        isNewEntry={editingEntry === null || (!editingEntry.title && !editingEntry.content)}
+        onOpenEditor={() => handleNewEntry()}
+        onInsertPromptBody={(text) => insertPromptBodyHandlerRef.current?.(text)}
+        onRegisterTypingHandler={(handler) => {
+          petTypingHandlerRef.current = handler;
+        }}
+        onRegisterSaveHandler={(handler) => {
+          petSaveHandlerRef.current = handler;
+        }}
       />
     </div>
   );
