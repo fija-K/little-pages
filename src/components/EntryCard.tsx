@@ -35,6 +35,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({
   return (
     <article
       className="torn-paper-card"
+      data-pet-avoid="true"
       style={{
         backgroundColor: pageTheme.bg,
         borderColor: pageTheme.border,

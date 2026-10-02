@@ -10,6 +10,9 @@ export interface PetProps {
   bubbleContent?: React.ReactNode;
   onTap?: () => void;
   className?: string;
+  translateX?: number;
+  facingLeft?: boolean;
+  inline?: boolean;
 }
 
 export const Pet: React.FC<PetProps> = ({
@@ -17,7 +20,10 @@ export const Pet: React.FC<PetProps> = ({
   action = 'breathe',
   bubbleContent = null,
   onTap,
-  className = ''
+  className = '',
+  translateX = 0,
+  facingLeft = false,
+  inline = false
 }) => {
   const petConfig = getPetConfig(petId);
 
@@ -36,16 +42,18 @@ export const Pet: React.FC<PetProps> = ({
     ? 'happy'
     : action;
 
+  const transformStyle = inline && translateX ? `translateX(${translateX}px)` : undefined;
+
   return (
-    <div className={`pet-widget-layer ${className}`}>
-      <div className="pet-widget-container">
+    <div className={`pet-widget-layer ${inline ? 'inline' : ''} ${className}`}>
+      <div className="pet-widget-container" style={{ transform: transformStyle }}>
         {bubbleContent && (
           <div className="pet-speech-bubble">
             {bubbleContent}
           </div>
         )}
 
-        <div className="pet-flip-wrapper">
+        <div className={`pet-flip-wrapper ${facingLeft ? 'left' : ''}`}>
           <button
             type="button"
             className={`pet-body-btn ${animClass}`}

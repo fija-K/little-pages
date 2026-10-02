@@ -6,7 +6,7 @@ export interface PetCompanionLayerProps {
   petId: string;
   enabled: boolean;
   isUnlocked: boolean;
-  currentView: 'list' | 'calendar' | 'editor';
+  currentView: 'list' | 'calendar' | 'pet-care' | 'editor';
   isNewEntry: boolean;
   onOpenEditor: () => void;
   onInsertPromptBody: (questionText: string) => void;
@@ -31,13 +31,15 @@ export const PetCompanionLayer: React.FC<PetCompanionLayerProps> = ({
     currentPrompt,
     isPromptBubbleVisible,
     saveMessage,
+    ambientBubble,
     handleGreetingLetsWrite,
     handleGreetingNotNow,
     handleSwapPrompt,
     handleInsertQuestion,
     handleDismissPrompt,
     handleUserTyping,
-    handleEntrySaved
+    handleEntrySaved,
+    handlePetTap
   } = usePetCompanion({
     petId,
     enabled,
@@ -60,7 +62,7 @@ export const PetCompanionLayer: React.FC<PetCompanionLayerProps> = ({
     }
   }, [onRegisterSaveHandler, handleEntrySaved]);
 
-  if (!isUnlocked || !enabled) {
+  if (!isUnlocked || !enabled || currentView === 'pet-care') {
     return null;
   }
 
@@ -154,6 +156,15 @@ export const PetCompanionLayer: React.FC<PetCompanionLayerProps> = ({
     );
   }
 
+  // Fallback to ambient chatter bubble if no active prompt/greeting bubble
+  if (!bubbleContent && ambientBubble) {
+    bubbleContent = (
+      <div className="text-center font-bold text-stone-700">
+        {ambientBubble}
+      </div>
+    );
+  }
+
   return (
     <Pet
       petId={petId}
@@ -162,6 +173,8 @@ export const PetCompanionLayer: React.FC<PetCompanionLayerProps> = ({
       onTap={() => {
         if (currentView === 'editor' && !isPromptBubbleVisible && isNewEntry) {
           handleSwapPrompt();
+        } else {
+          handlePetTap();
         }
       }}
     />

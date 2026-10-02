@@ -6,8 +6,8 @@ import type { LegalTabType } from './LegalModal';
 import { StreakBadge } from './StreakBadge';
 
 interface HeaderProps {
-  currentView: 'list' | 'calendar' | 'editor';
-  onNavigate: (view: 'list' | 'calendar' | 'editor') => void;
+  currentView: 'list' | 'calendar' | 'pet-care' | 'editor';
+  onNavigate: (view: 'list' | 'calendar' | 'pet-care' | 'editor') => void;
   onNewEntry: () => void;
   currentStreak: number;
   user: User | null;
@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="diary-header">
       <div className="header-top-bar">
-        <div className="title-area">
+        <div className="title-area" data-pet-avoid="true">
           <div className="notebook-spine-accent" />
           <div className="diary-logo-group">
             <h1 className="diary-main-title">
@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        <div className="header-actions-right">
+        <div className="header-actions-right" data-pet-avoid="true">
           <StreakBadge currentStreak={currentStreak} />
 
           {isUnlocked && (
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      <nav className="header-nav-tabs">
+      <nav className="header-nav-tabs" data-pet-avoid="true">
         <button
           type="button"
           className={`nav-tab-btn ${currentView === 'list' ? 'active' : ''}`}
@@ -159,6 +159,15 @@ export const Header: React.FC<HeaderProps> = ({
 
         <button
           type="button"
+          className={`nav-tab-btn ${currentView === 'pet-care' ? 'active' : ''}`}
+          onClick={() => onNavigate('pet-care')}
+        >
+          <span className="text-sm">🐾</span>
+          <span>Pet Care</span>
+        </button>
+
+        <button
+          type="button"
           className="new-page-cta-btn"
           onClick={onNewEntry}
         >
@@ -166,16 +175,6 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="whitespace-nowrap">New Page</span>
         </button>
       </nav>
-
-      {/* Floating Action Button (FAB) for New Page on Mobile */}
-      <button
-        type="button"
-        className="mobile-fab-new-page sm:hidden"
-        onClick={onNewEntry}
-        title="Open a new journal page"
-      >
-        <Plus className="w-6 h-6 text-white" />
-      </button>
     </header>
   );
 };

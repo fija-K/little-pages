@@ -35,7 +35,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   };
 
   return (
-    <div className="search-filter-card">
+    <div className="search-filter-card" data-pet-avoid="true">
       <div className="search-input-wrapper">
         <Search className="w-4 h-4 search-icon" />
         <input

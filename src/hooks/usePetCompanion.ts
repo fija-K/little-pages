@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { PetAnimAction } from '../components/Pet';
 import petFallbackData from '../data/pet_fallback.json';
+import petAmbientData from '../data/pet_ambient.json';
 import { getPetConfig } from '../config/pets';
 
 export interface PetPrompt {
@@ -55,15 +56,12 @@ export function pickPrompt(petId: string): PetPrompt | null {
   const lastServedId = history[0] || null;
   const lastTopic = allPrompts.find(p => p.id === lastServedId)?.topic || null;
 
-  // 1. Filter by time slot matching (time matches slot or is 'any')
   let candidates = allPrompts.filter(p => p.time === currentSlot || p.time === 'any');
   if (candidates.length === 0) candidates = allPrompts;
 
-  // 2. Filter out last 8 served prompt IDs if possible
   let unserved = candidates.filter(p => !history.includes(p.id));
   if (unserved.length === 0) unserved = candidates;
 
-  // 3. Avoid back-to-back same topic if possible
   let topicFiltered = unserved.filter(p => p.topic !== lastTopic);
   if (topicFiltered.length === 0) topicFiltered = unserved;
 
@@ -77,7 +75,7 @@ export function pickPrompt(petId: string): PetPrompt | null {
 export interface UsePetCompanionOptions {
   petId: string;
   enabled: boolean;
-  currentView: 'list' | 'calendar' | 'editor';
+  currentView: 'list' | 'calendar' | 'pet-care' | 'editor';
   isNewEntry: boolean;
   onOpenEditor: () => void;
   onInsertPromptBody: (questionText: string) => void;
@@ -96,8 +94,17 @@ export function usePetCompanion({
   const [currentPrompt, setCurrentPrompt] = useState<PetPrompt | null>(null);
   const [isPromptBubbleVisible, setIsPromptBubbleVisible] = useState<boolean>(false);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
+  const [ambientBubble, setAmbientBubble] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  // Flow State Machine: 'sound' -> 'sound_gap' (2-3s) -> 'question' -> on skip -> 'skip_cooldown' (10s) -> 'sound'
+  const [cycleStage, setCycleStage] = useState<'sound' | 'sound_gap' | 'question' | 'skip_cooldown'>('sound');
 
   const timersRef = useRef<number[]>([]);
+  const lastSoundRef = useRef<string | null>(null);
+  const perPetSoundCountRef = useRef<number>(0);
+  const totalSoundCountRef = useRef<number>(0);
+  const typingTimerRef = useRef<number | null>(null);
 
   const addTimer = useCallback((fn: () => void, ms: number) => {
     const id = window.setTimeout(fn, ms);
@@ -114,58 +121,111 @@ export function usePetCompanion({
     return () => clearTimers();
   }, [clearTimers]);
 
-  // 1. HOME GREETING FLOW
+  const petConfig = getPetConfig(petId);
+  const jsonKey = petConfig.jsonKey;
+  const petAmbientObj = (petAmbientData.pets as Record<string, { sounds: string[]; caring_lines?: string[] }>)[jsonKey] || {
+    sounds: ["nyaa~", "purr purr~"]
+  };
+  const sharedPhrases = petAmbientData.shared_phrases || ["waku waku!", "pyon pyon!"];
+
+  // Pick 1 text sound word (NO AUDIO)
+  const pickSoundText = useCallback((): string => {
+    const petSounds = petAmbientObj.sounds;
+    const ratio = totalSoundCountRef.current > 0 ? perPetSoundCountRef.current / totalSoundCountRef.current : 0;
+
+    let chosen = '';
+    if (ratio < 0.5 || Math.random() < 0.7) {
+      const unused = petSounds.filter(s => s !== lastSoundRef.current);
+      chosen = unused[Math.floor(Math.random() * unused.length)] || petSounds[0];
+      perPetSoundCountRef.current += 1;
+    } else {
+      const unused = sharedPhrases.filter(s => s !== lastSoundRef.current);
+      chosen = unused[Math.floor(Math.random() * unused.length)] || sharedPhrases[0];
+    }
+
+    lastSoundRef.current = chosen;
+    totalSoundCountRef.current += 1;
+    return chosen;
+  }, [petAmbientObj, sharedPhrases]);
+
+  // MAIN STATE MACHINE LOOP
+  // Flow: 1. Sound Text Word (display 2.5s) -> 2. Gap (2.5s) -> 3. Question -> 4. Skip (10s gap) -> Repeat 1.
   useEffect(() => {
-    if (!enabled || currentView !== 'list') return;
+    if (!enabled || isTyping || saveMessage) return;
 
-    const greeted = sessionStorage.getItem('little_pages_pet_greeted');
-    if (!greeted) {
-      // Set greeted flag immediately as greeting starts
-      sessionStorage.setItem('little_pages_pet_greeted', 'true');
+    const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    if (cycleStage === 'sound') {
+      // Step 1: Display 1 Text Sound Word
       clearTimers();
-      setAction('happyBounce');
-      setGreetingState('welcome');
+      const soundText = pickSoundText();
+      setAmbientBubble(soundText);
+      setIsPromptBubbleVisible(false);
 
+      if (!reducedMotion) {
+        setAction('squishHop');
+        addTimer(() => setAction('breathe'), 800);
+      }
+
+      // Display sound text for 2.5 seconds, then transition to 2-3s gap
       addTimer(() => {
+        setAmbientBubble(null);
+        setCycleStage('sound_gap');
+      }, 2500);
+
+    } else if (cycleStage === 'sound_gap') {
+      // Step 2: 2-3 Second Gap between text sound and question
+      clearTimers();
+      setAction('breathe');
+
+      // 2.5 second gap (2-3 sec gap)
+      addTimer(() => {
+        setCycleStage('question');
+      }, 2500);
+
+    } else if (cycleStage === 'question') {
+      // Step 3: Question Stage
+      clearTimers();
+      if (!reducedMotion) {
         setAction('headWiggle');
-      }, 1200);
+        addTimer(() => setAction('breathe'), 700);
+      }
 
-      addTimer(() => {
-        setAction('breathe');
+      if (currentView === 'list') {
         setGreetingState('question');
-      }, 3000);
-    }
-  }, [enabled, currentView, clearTimers, addTimer]);
-
-  // 2. EDITOR OPEN FLOW
-  useEffect(() => {
-    if (!enabled || currentView !== 'editor') {
-      setIsPromptBubbleVisible(false);
-      setCurrentPrompt(null);
-      setSaveMessage(null);
-      return;
-    }
-
-    // Only show editor prompt flow for new/empty entries
-    if (isNewEntry) {
-      clearTimers();
-      setAction('squishHop');
-      setIsPromptBubbleVisible(false);
-
-      addTimer(() => {
-        setAction('breathe');
+      } else if (currentView === 'editor' && isNewEntry) {
         const prompt = pickPrompt(petId);
         setCurrentPrompt(prompt);
         setIsPromptBubbleVisible(true);
-      }, 2500);
-    } else {
-      setAction('breathe');
-      setIsPromptBubbleVisible(false);
-    }
-  }, [enabled, currentView, isNewEntry, petId, clearTimers, addTimer]);
+      }
 
-  // Handle Home Greeting "Let's write"
+    } else if (cycleStage === 'skip_cooldown') {
+      // Step 4: After User Clicks Skip -> 10 Second Gap
+      clearTimers();
+      setGreetingState('idle');
+      setIsPromptBubbleVisible(false);
+      setAmbientBubble(null);
+      setAction('breathe');
+
+      // Exactly 10 second gap after skip
+      addTimer(() => {
+        setCycleStage('sound');
+      }, 10000);
+    }
+  }, [
+    cycleStage,
+    enabled,
+    isTyping,
+    saveMessage,
+    currentView,
+    isNewEntry,
+    petId,
+    pickSoundText,
+    clearTimers,
+    addTimer
+  ]);
+
+  // Handle Home Greeting / Question "Let's write"
   const handleGreetingLetsWrite = useCallback(() => {
     clearTimers();
     setGreetingState('idle');
@@ -173,16 +233,16 @@ export function usePetCompanion({
     onOpenEditor();
   }, [clearTimers, onOpenEditor]);
 
-  // Handle Home Greeting "Not now"
+  // Handle Home Greeting / Question Skip ("Not now")
   const handleGreetingNotNow = useCallback(() => {
     clearTimers();
     setGreetingState('sleepy_dismiss');
     setAction('sleepy');
 
     addTimer(() => {
-      setGreetingState('idle');
-      setAction('breathe');
-    }, 4000);
+      // 10 Second Gap after Skip
+      setCycleStage('skip_cooldown');
+    }, 1200);
   }, [clearTimers, addTimer]);
 
   // Handle Swap Prompt ("Another one")
@@ -199,37 +259,82 @@ export function usePetCompanion({
       onInsertPromptBody(currentPrompt.question);
       setIsPromptBubbleVisible(false);
       setAction('happyBounce');
-      addTimer(() => setAction('breathe'), 1200);
+      addTimer(() => {
+        setAction('breathe');
+        setCycleStage('skip_cooldown');
+      }, 1200);
     }
   }, [currentPrompt, onInsertPromptBody, addTimer]);
 
-  // Handle Dismiss Prompt Bubble
+  // Handle Dismiss / Skip Prompt in Editor
   const handleDismissPrompt = useCallback(() => {
+    clearTimers();
     setIsPromptBubbleVisible(false);
     setAction('breathe');
-  }, []);
+    // 10 Second Gap after Skip
+    setCycleStage('skip_cooldown');
+  }, [clearTimers]);
 
   // Handle User Typing in Editor
   const handleUserTyping = useCallback(() => {
-    if (isPromptBubbleVisible) {
-      setIsPromptBubbleVisible(false);
-      setAction('breathe');
+    setIsTyping(true);
+    setIsPromptBubbleVisible(false);
+    setAmbientBubble(null);
+    setAction('breathe');
+
+    if (typingTimerRef.current !== null) {
+      window.clearTimeout(typingTimerRef.current);
     }
-  }, [isPromptBubbleVisible]);
+
+    typingTimerRef.current = window.setTimeout(() => {
+      setIsTyping(false);
+      typingTimerRef.current = null;
+      setCycleStage('sound');
+    }, 20000);
+  }, []);
 
   // Handle Entry Saved Event
   const handleEntrySaved = useCallback(() => {
     if (!enabled) return;
     clearTimers();
     setIsPromptBubbleVisible(false);
+    setAmbientBubble(null);
     setSaveMessage('Saved. See you next time.');
     setAction('cheer');
 
     addTimer(() => {
       setSaveMessage(null);
       setAction('sleepy');
+      // Transition back to 10s cooldown after save
+      setCycleStage('skip_cooldown');
     }, 3000);
   }, [enabled, clearTimers, addTimer]);
+
+  // Handle Interactive Pet Tap/Click
+  const handlePetTap = useCallback(() => {
+    clearTimers();
+
+    const sounds = petAmbientObj.sounds;
+    const sound = sounds[Math.floor(Math.random() * sounds.length)] || sounds[0];
+    perPetSoundCountRef.current += 1;
+    totalSoundCountRef.current += 1;
+
+    let text = sound;
+    if (Math.random() > 0.5) {
+      const phrase = sharedPhrases[Math.floor(Math.random() * sharedPhrases.length)];
+      text = `${sound} ${phrase}`;
+    }
+
+    setAmbientBubble(text);
+    setAction('squishHop');
+
+    addTimer(() => {
+      setAction('breathe');
+      setAmbientBubble(null);
+      // Resume sound gap -> question after tap
+      setCycleStage('sound_gap');
+    }, 2000);
+  }, [clearTimers, addTimer, petAmbientObj, sharedPhrases]);
 
   return {
     action,
@@ -237,12 +342,17 @@ export function usePetCompanion({
     currentPrompt,
     isPromptBubbleVisible,
     saveMessage,
+    ambientBubble,
+    isTyping,
     handleGreetingLetsWrite,
     handleGreetingNotNow,
     handleSwapPrompt,
     handleInsertQuestion,
     handleDismissPrompt,
     handleUserTyping,
-    handleEntrySaved
+    handleEntrySaved,
+    handlePetTap
   };
 }
+
+export default usePetCompanion;

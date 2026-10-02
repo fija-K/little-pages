@@ -48,6 +48,7 @@ import { LegalModal } from './components/LegalModal';
 import { FooterLinks } from './components/FooterLinks';
 import { AuthModal } from './components/AuthModal';
 import { PetCompanionLayer } from './components/PetCompanionLayer';
+import { PetCareView } from './components/PetCareView';
 import { DEFAULT_PET_ID } from './config/pets';
 
 const IDLE_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes idle timeout
@@ -65,7 +66,7 @@ export function App() {
   const [encryptedGoals, setEncryptedGoals] = useState<EncryptedGoalItem[]>([]);
   const [activeGoalsPanel, setActiveGoalsPanel] = useState<GoalType | null>(null);
 
-  const [currentView, setCurrentView] = useState<'list' | 'calendar' | 'editor'>('list');
+  const [currentView, setCurrentView] = useState<'list' | 'calendar' | 'pet-care' | 'editor'>('list');
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [editorInitialDate, setEditorInitialDate] = useState<string | undefined>(undefined);
   const [isBackupOpen, setIsBackupOpen] = useState<boolean>(false);
@@ -913,6 +914,15 @@ export function App() {
             entries={decryptedEntries}
             onSelectDate={(dateIso) => handleNewEntry(dateIso)}
             onEditEntry={handleEditEntry}
+          />
+        )}
+
+        {currentView === 'pet-care' && (
+          <PetCareView
+            selectedPetId={selectedPetId}
+            onSelectPetId={handleSelectPetId}
+            petEnabled={petEnabled}
+            onTogglePetEnabled={handleTogglePetEnabled}
           />
         )}
 

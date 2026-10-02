@@ -6,6 +6,31 @@
   pointer-events: none;
 }
 
+.pet-widget-layer.viewport-pos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.pet-widget-layer.inline {
+  position: relative;
+  bottom: auto;
+  right: auto;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.pet-image.docked-image {
+  width: 64px;
+  max-height: 72px;
+}
+
 .pet-widget-container {
   position: relative;
   display: flex;

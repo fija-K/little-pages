@@ -222,7 +222,7 @@ export const EntryEditor: React.FC<EntryEditorProps> = ({
   const currentFontSizeCss = getFontSizeCss(fontSize);
 
   return (
-    <div className={`entry-editor-wrapper ${showSavedStamp ? 'stamp-animation' : ''}`}>
+    <div className={`entry-editor-wrapper ${showSavedStamp ? 'stamp-animation' : ''}`} data-pet-avoid="true">
       <div className="editor-top-actions">
         <button
           type="button"

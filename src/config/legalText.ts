@@ -43,6 +43,11 @@ export const SUMMARY_POINTS: SummaryPoint[] = [
     icon: "🗑️",
     title: "Complete Control",
     text: "You can purge all your local and cloud data anytime with one click in settings."
+  },
+  {
+    icon: "🐥",
+    title: "Pet Companion & Optional AI Chat",
+    text: "Pet settings and 'About me' keywords are stored unencrypted in your local browser storage. Chat messages and keywords are sent to xAI's Grok API ONLY when you explicitly enable the optional AI chat feature. Your journal entry contents are NEVER sent."
   }
 ];
 

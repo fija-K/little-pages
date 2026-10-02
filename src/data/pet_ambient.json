@@ -1,0 +1,138 @@
+{
+  "shared_phrases": [
+    "waku waku!",
+    "ehehe~",
+    "kira kira~",
+    "fuwa fuwa~",
+    "pyon pyon!",
+    "yatta!",
+    "ganbare~!",
+    "doki doki!",
+    "mofu mofu~",
+    "nikoniko~",
+    "yosh!",
+    "pika pika!"
+  ],
+  "pets": {
+    "cat": {
+      "sounds": ["nyaa~", "nyan nyan!", "mrrp!", "purr purr~", "mew mew!"],
+      "caring_lines": [
+        "How are you feeling today? nyaa~",
+        "You're doing great, take your time~",
+        "Did you drink some water today? purr purr~",
+        "I'm right here with you, mrrp!",
+        "Today is a fresh page, nyaa~",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, mew mew!",
+        "Ready to write something cozy?"
+      ]
+    },
+    "chinchilla": {
+      "sounds": ["squeak squeak!", "chirp chirp~", "kyuu~", "pyoko pyoko!"],
+      "caring_lines": [
+        "How are you feeling today? kyuu~",
+        "You're doing great, take your time~",
+        "Did you drink some water today? squeak squeak!",
+        "I'm right here with you, pyoko pyoko!",
+        "Today is a fresh page, chirp chirp~",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, kyuu~",
+        "Ready to write something cozy?"
+      ]
+    },
+    "cockatiel": {
+      "sounds": ["pi pi pi!", "tweet tweet!", "piyo piyo~", "whistle~ fiu fiu!"],
+      "caring_lines": [
+        "How are you feeling today? tweet tweet!",
+        "You're doing great, take your time~",
+        "Did you drink some water today? pi pi pi!",
+        "I'm right here with you, piyo piyo~",
+        "Today is a fresh page, whistle~ fiu fiu!",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, tweet tweet!",
+        "Ready to write something cozy?"
+      ]
+    },
+    "pigeon": {
+      "sounds": ["poppo~", "coo coo!", "kuru kuru~", "bobbing~ pokopoko!"],
+      "caring_lines": [
+        "How are you feeling today? coo coo!",
+        "You're doing great, take your time~",
+        "Did you drink some water today? poppo~",
+        "I'm right here with you, kuru kuru~",
+        "Today is a fresh page, bobbing~ pokopoko!",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, coo coo!",
+        "Ready to write something cozy?"
+      ]
+    },
+    "poodle": {
+      "sounds": ["wan wan!", "woof woof!", "yip yip!", "arf~ fuwa fuwa!"],
+      "caring_lines": [
+        "How are you feeling today? wan wan!",
+        "You're doing great, take your time~",
+        "Did you drink some water today? woof woof!",
+        "I'm right here with you, yip yip!",
+        "Today is a fresh page, arf~ fuwa fuwa!",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, wan wan!",
+        "Ready to write something cozy?"
+      ]
+    },
+    "pug": {
+      "sounds": ["snort snort!", "huff huff~", "boof!", "kyun~"],
+      "caring_lines": [
+        "How are you feeling today? boof!",
+        "You're doing great, take your time~",
+        "Did you drink some water today? snort snort!",
+        "I'm right here with you, huff huff~",
+        "Today is a fresh page, kyun~",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, boof!",
+        "Ready to write something cozy?"
+      ]
+    },
+    "hedgehog": {
+      "sounds": ["sniff sniff~", "snuffle snuffle!", "poko poko~", "kyuu~"],
+      "caring_lines": [
+        "How are you feeling today? sniff sniff~",
+        "You're doing great, take your time~",
+        "Did you drink some water today? snuffle snuffle!",
+        "I'm right here with you, poko poko~",
+        "Today is a fresh page, kyuu~",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, sniff sniff~",
+        "Ready to write something cozy?"
+      ]
+    },
+    "bunny": {
+      "sounds": ["nibble nibble~", "*thump thump*", "pyon pyon!", "munya munya~"],
+      "caring_lines": [
+        "How are you feeling today? pyon pyon!",
+        "You're doing great, take your time~",
+        "Did you drink some water today? munya munya~",
+        "I'm right here with you, nibble nibble~",
+        "Today is a fresh page, *thump thump*",
+        "What made you smile today?",
+        "No rush, I'm happy just being here with you.",
+        "Take a soft little breath with me~",
+        "You've got this today, pyon pyon!",
+        "Ready to write something cozy?"
+      ]
+    }
+  }
+}

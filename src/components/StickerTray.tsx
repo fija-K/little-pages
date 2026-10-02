@@ -23,6 +23,7 @@ export const StickerTray: React.FC<StickerTrayProps> = ({
     <div className="sticker-tray-overlay" onClick={onClose}>
       <div
         className="sticker-tray-sheet"
+        data-pet-avoid="true"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticker-tray-header">

@@ -63,7 +63,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   };
 
   return (
-    <div className="calendar-view-card">
+    <div className="calendar-view-card" data-pet-avoid="true">
       <div className="calendar-header-bar">
         <div className="month-title-group">
           <h2 className="calendar-month-name">
